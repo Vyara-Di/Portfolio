@@ -135,6 +135,14 @@ File	Section
 | File | Used on |
 |------|---------|
 | `sculpture.glb` | Homepage hero — interactive 3D sculpture |
+
+### Favicon
+
+The project includes a custom favicon located at:
+
+```html
+<link rel="icon" type="image/png" href="images/Fav-icon.png">
+
 ---
 How to replace a file on GitHub
 Navigate to the file's path in the repository (e.g. `images/project-01/hero.jpg`).
