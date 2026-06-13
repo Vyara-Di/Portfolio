@@ -834,10 +834,10 @@ if(G && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     opacity: 0.22
   });
   var solidMat = new THREE.MeshPhongMaterial({
-    color: 0x7c4a1e,
-    emissive: new Three.Color('#7c4a1e'),
-    emissiveIntensity: 0.12,
-    shininess: 90,
+    color: 0x111010,
+    emissive: hexToThree(ACCENT_COLORS[0]),
+    emissiveIntensity: 0.08,
+    shininess: 80,
     transparent: true,
     opacity: 0.82,
     side: THREE.FrontSide
@@ -895,7 +895,7 @@ if(G && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
         var size = new THREE.Vector3();
         box.getSize(size);
         var maxDim = Math.max(size.x, size.y, size.z);
-        model.scale.setScalar(4.0 / maxDim);
+        model.scale.setScalar(2.0 / maxDim);
         // Centre on origin
         box.setFromObject(model);
         var centre = new THREE.Vector3();
@@ -934,7 +934,7 @@ if(G && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   var knotWire  = new THREE.Object3D(); // empty — wire handled inside modelGroup
 
   // Ring accent
-  var ringGeo = new THREE.TorusGeometry(1.2, 0.012, 8, 100);
+  var ringGeo = new THREE.TorusGeometry(1.68, 0.012, 8, 100);
   var ringMat = new THREE.MeshBasicMaterial({
     color: hexToThree(ACCENT_COLORS[0]),
     transparent: true, opacity: 0.45
@@ -944,7 +944,7 @@ if(G && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   scene.add(ring);
 
   // Second thinner ring, tilted opposite
-  var ring2Geo = new THREE.TorusGeometry(1.5, 0.007, 8, 100);
+  var ring2Geo = new THREE.TorusGeometry(2.0, 0.007, 8, 100);
   var ring2Mat = new THREE.MeshBasicMaterial({
     color: hexToThree(ACCENT_COLORS[0]),
     transparent: true, opacity: 0.22
