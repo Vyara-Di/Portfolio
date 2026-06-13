@@ -21,6 +21,11 @@ File	Used on
 `Render-Hero.png`	Hero render, right
 `Render-Hero-left.png`	Hero render, left
 `photo.jpg`	Profile / about photo
+`card-02.jpg`	Project 2 visual
+`card-03.jpg`	Project 3 visual
+`card-04.jpg`	Project 4 visual
+`card-05.jpg`	Project 5 visual
+`card-06.jpg`	Project 6 visual
 ---
 `images/project-01/` — LG Electronics
 File	Section
