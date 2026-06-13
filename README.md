@@ -123,11 +123,11 @@ File	Section
 `videos/project-01/` — LG Electronics
 File	Section
 `intro.mp4`	Page intro / background
-`overview-02.mp4`	Website Content — hero banners
+`overview-02.webm`	Website Content — hero banners
 `overview-03.mp4`	Website Content — hero banners
-`detail-01.mp4`	Paid Media campaigns
+`detail-01.webm`	Paid Media campaigns
 `detail-02.mp4`	Paid Media campaigns
-`detail-03.mp4`	Paid Media campaigns
+`detail-03.webm`	Paid Media campaigns
 > All videos autoplay muted and loop. Recommended format: `.mp4` (H.264), keep under 10 MB per file for fast loading.
 
  `models/` — 3D assets
