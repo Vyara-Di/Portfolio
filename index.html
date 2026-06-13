@@ -32,107 +32,39 @@ body.project-open{overflow:hidden}
 a{color:inherit;text-decoration:none}
 img{display:block;width:100%;height:100%;object-fit:cover}
 
-/* atmosphere — grain + vignette stay, blobs removed (mesh replaces them) */
-.grain{position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.032;mix-blend-mode:overlay;
+/* atmosphere */
+.grain{position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.045;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(130% 130% at 50% 30%,transparent 55%,rgba(24,22,15,.11) 100%)}
+  background:radial-gradient(130% 130% at 50% 30%,transparent 55%,rgba(24,22,15,.09) 100%)}
 
-/* ============================================================
-   HERO — full-viewport mesh canvas
-============================================================ */
-.hero{
-  position:relative;overflow:hidden;z-index:10;
-  min-height:100vh;display:flex;flex-direction:row;
-  align-items:center;justify-content:flex-start;
-  padding:0 5vw;
-  background:#0f0e0b;
-}
-#heroCanvas{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  z-index:0;display:block;
-}
-/* text left half */
-.hero-text-layer{
-  position:relative;z-index:4;pointer-events:none;
-  flex:0 0 auto;width:50%;max-width:680px;
-}
-/* 3D sculpture — right half */
-.hero-sculpture{
-  position:relative;z-index:4;
-  flex:0 0 auto;width:50%;height:100vh;
-  display:flex;align-items:center;justify-content:center;
-  pointer-events:auto;
-}
-#sculptureCanvas{
-  width:100%;height:100%;display:block;
-  cursor:grab;
-}
-#sculptureCanvas:active{ cursor:grabbing; }
-.sculpture-hint{
-  position:absolute;bottom:110px;right:5vw;
-  z-index:5;pointer-events:none;
-  font-family:"Spline Sans Mono",monospace;font-size:10px;letter-spacing:.22em;
-  text-transform:uppercase;color:rgba(255,255,255,.22);
-  white-space:nowrap;
-  animation:hintPulse 3s ease-in-out infinite 1.5s;
-}
-@media(max-width:900px){
-  .hero{ flex-direction:column; align-items:flex-start; justify-content:center; }
-  .hero-text-layer{ width:100%; max-width:none; }
-  .hero-sculpture{ width:100%; height:50vw; min-height:260px; }
-  .sculpture-hint{ display:none; }
-}
-/* click hint */
-.hero-hint{
-  position:absolute;bottom:100px;left:50%;transform:translateX(-50%);
-  z-index:5;pointer-events:none;
-  font-family:"Spline Sans Mono",monospace;font-size:10px;letter-spacing:.22em;
-  text-transform:uppercase;color:rgba(255,255,255,.28);
-  white-space:nowrap;
-  animation:hintPulse 3s ease-in-out infinite;
-}
-@keyframes hintPulse{0%,100%{opacity:.28}50%{opacity:.55}}
-
-/* text lives above canvas */
-.hero h1{font-family:"Syne",sans-serif;font-weight:500;line-height:.9;letter-spacing:-.03em;
-  font-size:clamp(3rem,7vw,10rem);color:#fff}
-.hero h1 .ln{display:block;overflow:hidden}
-.hero h1 .acc{color:var(--ember)}
-.hero .sub{max-width:520px;margin-top:34px;font-size:clamp(15px,1.35vw,18px);line-height:1.62;
-  color:rgba(255,255,255,.52)}
-.mask-line{overflow:hidden;display:block}
-.mask-line>*{display:block}
-
-/* scroll indicator */
-.scroll-ind{position:absolute;bottom:36px;left:5vw;z-index:5;
-  display:flex;flex-direction:column;align-items:flex-start;gap:12px;
-  font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.22em;
-  text-transform:uppercase;color:rgba(255,255,255,.38);pointer-events:auto}
-.scroll-ind span:first-child{transition:color .35s var(--ease)}
-.scroll-ind:hover span:first-child{color:var(--ember)}
-.scroll-ind .track{width:1px;height:52px;background:rgba(255,255,255,.12);position:relative;overflow:hidden}
-.scroll-ind .track::after{content:"";position:absolute;top:-55%;left:0;width:100%;height:50%;
-  background:var(--ember);animation:drop 2s var(--ease) infinite}
+/* blurred gradient blobs */
+.bg-blobs{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.42;will-change:transform}
+.b1{width:40vw;height:40vw;background:#d8c7a1;top:-10%;left:-8%;animation:float1 18s ease-in-out infinite}
+.b2{width:32vw;height:32vw;background:#b6a06f;top:15%;right:-8%;animation:float2 22s ease-in-out infinite}
+.b3{width:38vw;height:38vw;background:#8a6b52;bottom:-15%;left:20%;animation:float3 20s ease-in-out infinite}
+.b4{width:28vw;height:28vw;background:#b85a46;bottom:10%;right:12%;animation:float4 16s ease-in-out infinite}
+@keyframes float1{50%{transform:translate(60px,40px) scale(1.08)}}
+@keyframes float2{50%{transform:translate(-80px,60px) scale(.92)}}
+@keyframes float3{50%{transform:translate(50px,-70px) scale(1.05)}}
+@keyframes float4{50%{transform:translate(-40px,-50px) scale(1.1)}}
 @keyframes drop{0%{top:-55%}100%{top:105%}}
+.hero .blob{animation-duration:12s}
 
-/* ============================================================
-   CURSOR
-============================================================ */
+
+/* cursor */
 .cur-dot,.cur-ring{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;border-radius:50%;transform:translate(-50%,-50%);will-change:transform}
 .cur-dot{width:5px;height:5px;background:var(--ember)}
-.cur-ring{width:36px;height:36px;border:1px solid rgba(255,255,255,.38);
+.cur-ring{width:36px;height:36px;border:1px solid rgba(24,22,15,.38);
   transition:width .35s var(--ease),height .35s var(--ease),background .35s,border-color .35s,opacity .35s}
 body.cur-hover .cur-ring{width:60px;height:60px;border-color:var(--ember);background:rgba(195,79,43,.07)}
-body.cur-drag  .cur-ring{width:72px;height:72px;border-color:var(--ember);background:rgba(195,79,43,.10)}
+body.cur-drag .cur-ring{width:72px;height:72px;border-color:var(--ember);background:rgba(195,79,43,.10)}
 .cur-ring .lbl{position:absolute;inset:0;display:grid;place-items:center;font-family:"Spline Sans Mono",monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;opacity:0;transition:opacity .3s}
 body.cur-drag .cur-ring .lbl{opacity:.7}
 @media(hover:none){.cur-dot,.cur-ring{display:none}body{cursor:auto}}
 
-/* ============================================================
-   NAV
-============================================================ */
+/* nav */
 header{position:fixed;top:0;left:0;width:100%;z-index:120;
   display:flex;align-items:center;justify-content:space-between;
   padding:24px clamp(20px,5vw,64px);mix-blend-mode:difference;color:#fff}
@@ -146,6 +78,71 @@ nav.main a.cta::after{display:none}
 nav.main a.cta span{position:relative;z-index:2}
 nav.main a.cta::before{content:"";position:absolute;inset:0;background:var(--ember);transform:translateY(101%);transition:transform .5s var(--ease);z-index:1}
 nav.main a.cta:hover::before{transform:translateY(0)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;z-index:10;min-height:100vh;display:flex;flex-direction:column;
+  align-items:left;justify-content:center;text-align:left;padding:0 5vw}
+.hero .eyebrow{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.36em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:32px}
+.hero h1{font-family:"Syne",sans-serif;font-weight:500;line-height:.9;letter-spacing:-.03em;
+  font-size:clamp(3rem,13vw,14rem)}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 .acc{color:var(--ember)}
+.hero .sub{max-width:520px;margin-top:34px;font-size:clamp(15px,1.35vw,18px);line-height:1.62;
+  color:var(--ink-soft)}
+.mask-line{overflow:hidden;display:block}
+.mask-line>*{display:block;will-change:transform}
+.scroll-ind{position:absolute;bottom:36px;left:5vw;
+  display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+  font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+.scroll-ind span:first-child{transition:color .35s var(--ease)}
+.scroll-ind:hover span:first-child{color:var(--ember)}
+.scroll-ind .track{width:1px;height:52px;background:var(--line);position:relative;overflow:hidden}
+.scroll-ind .track::after{content:"";position:absolute;top:-55%;left:0;width:100%;height:50%;
+  background:var(--ember);animation:drop 2s var(--ease) infinite}
+
+.hero-image{
+  position:absolute;
+  right:-5%;
+  top:56%;
+  width:min(40vw,600px);
+  height:auto;
+  opacity:1;
+  transform:translateY(-50%);
+  mix-blend-mode:multiply;
+  animation:heroFloat 6s ease-in-out infinite;
+}
+
+.hero-image-left{
+  position:absolute;
+  left:-6%;
+  top:15%;
+  width:min(60vw,900px);
+  height:auto;
+  opacity:1;
+  transform:translateY(-50%);
+  mix-blend-mode:multiply;
+  animation:heroFloat 6s ease-in-out infinite;
+	z-index:-10
+}
+
+@keyframes heroFloat{
+  0%{
+    transform:translateY(-50%) scale(1);
+  }
+  50%{
+    transform:translateY(calc(-50% + 20px)) scale(1.03);
+  }
+  100%{
+    transform:translateY(-50%) scale(1);
+  }
+}
+@media(max-width:640px){
+  .hero-image{width:52vw;right:-8%;opacity:.7}
+  .hero-image-left{width:72vw;left:-10%;opacity:.5}
+}
+
+/* section labels */
 .sec-head{display:flex;align-items:baseline;gap:16px;padding:0 clamp(20px,5vw,64px);margin-bottom:52px}
 .sec-head .idx{font-family:"Spline Sans Mono",monospace;font-size:12px;color:var(--ember);letter-spacing:.08em}
 .sec-head h2{font-family:"Syne",sans-serif;font-weight:700;font-size:clamp(1.8rem,4.5vw,3.6rem);letter-spacing:-.025em;line-height:1}
@@ -209,19 +206,18 @@ nav.main a.cta:hover::before{transform:translateY(0)}
 
 /* about */
 .about{position:relative;z-index:10;padding:14vh clamp(20px,5vw,64px);max-width:1400px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,110px);align-items:start}
+  display:grid;grid-template-columns:1fr 0.52fr;gap:clamp(28px,6vw,120px);align-items:start}
 @media(max-width:820px){.about{grid-template-columns:1fr;gap:36px}}
 .about .lead{font-family:"Syne",sans-serif;font-weight:600;font-size:clamp(1.5rem,2.8vw,2.5rem);
   line-height:1.2;letter-spacing:-.02em}
 .about .lead .acc{color:var(--ember)}
 .about p{color:var(--ink-soft);line-height:1.72;font-size:15px;margin-bottom:16px;max-width:44ch}
-/* photo placeholder */
+/* photo placeholder — right column */
 .about-photo{
-  width:100%;aspect-ratio:3/4;max-width:260px;
+  width:100%;aspect-ratio:3/4;
   overflow:hidden;border-radius:3px;
   background:var(--paper-2);
-  margin-bottom:28px;
-  position:relative;
+  position:sticky;top:120px;
   display:block;
 }
 .about-photo::before{
@@ -527,6 +523,12 @@ body.lb-open{overflow:hidden}
 
 <div class="vignette"></div>
 <div class="grain"></div>
+<div class="bg-blobs">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
 <div class="cur-dot"></div>
 <div class="cur-ring"><span class="lbl">drag</span><span class="zlbl">+ Zoom</span></div>
 <div id="curtain"></div>
@@ -544,23 +546,27 @@ body.lb-open{overflow:hidden}
 <!-- ===== LANDING ===== -->
 <div id="landing">
   <section class="hero" id="hero">
-    <canvas id="heroCanvas"></canvas>
-    <div class="hero-text-layer">
-      <h1>
-        <span class="ln"><span data-hero>Creative</span></span>
-        <span class="ln"><span data-hero><span class="acc">designer</span></span></span>
-      </h1>
-      <p class="sub mask-line"><span data-hero>I make identities, interfaces, and motion systems that hold their own. Independent practice, no middleman, just the work.</span></p>
-    </div>
-    <div class="hero-sculpture">
-      <canvas id="sculptureCanvas"></canvas>
-    </div>
-    <span class="hero-hint">Click anywhere to change colour</span>
-    <span class="sculpture-hint">Drag to rotate</span>
+    <h1>
+      <span class="ln"><span data-hero>Creative</span></span>
+      <span class="ln"><span data-hero><span class="acc">designer</span></span></span>
+    </h1>
+    <p class="sub mask-line"><span data-hero>I make identities, interfaces, and motion systems that hold their own. Independent practice, no middleman, just the work.</span></p>
     <div class="scroll-ind" data-hero-fade data-scroll="work">
       <span>Scroll to view</span>
       <span class="track"></span>
     </div>
+	<div class="hero-image-layer">
+		 <img
+		src="images/index/Render-Hero.png"
+		alt=""
+		class="hero-image">
+	</div>
+		<div class="hero-image-layer-left">
+		 <img
+		src="images/index/Render-Hero-left.png"
+		alt=""
+		class="hero-image-left">
+	</div>
   </section>
 
   <section class="work" id="work">
@@ -573,21 +579,22 @@ body.lb-open{overflow:hidden}
     <div class="masonry" id="masonry"></div>
   </section>
 
-  <section id="about">
+    <section id="about">
     <div class="about">
+      <!-- LEFT: all text + stats -->
       <div class="col">
         <p class="lead reveal">I design things that <span class="acc">feel considered</span>. Not just branded — thoughtful, from the first pixel to the last.</p>
-        <!-- photo placeholder — replace src with your portrait -->
-        <div class="about-photo reveal">
-          <img src="images/index/photo.jpg" alt="Vyara Dimitrova" onerror="this.removeAttribute('src')">
+        <p class="reveal">I’m a designer with 8 years of experience across digital and print, shaping brand systems that hold across identity, editorial, out-of-home, motion, and digital environments. My focus is on structure and consistency—translating ideas into visual systems that scale without losing precision or character. Based in Germany.</p>
+        <div class="stats reveal">
+          <div><div class="n" data-count="24" data-suffix="+">0</div><div class="l">Projects</div></div>
+          <div><div class="n" data-count="10" data-suffix="">0</div><div class="l">Brands</div></div>
+          <div><div class="n" data-count="8" data-suffix="yr">0</div><div class="l">Experience</div></div>
         </div>
       </div>
+      <!-- RIGHT: photo -->
       <div class="col">
-        <p class="reveal">Designer with eight years of experience in print and digital across corporate and agency environments, creating engaging, strategic concepts and cohesive visual solutions.</p>
-        <div class="stats reveal">
-          <div><div class="n" data-count="120" data-suffix="+">0</div><div class="l">Projects</div></div>
-          <div><div class="n" data-count="8" data-suffix="">0</div><div class="l">Countries</div></div>
-          <div><div class="n" data-count="11" data-suffix="yr">0</div><div class="l">Experience</div></div>
+        <div class="about-photo reveal">
+          <img src="images/index/photo.jpg" alt="Vyara Dimitrova" onerror="this.removeAttribute('src')">
         </div>
       </div>
     </div>
@@ -619,8 +626,6 @@ body.lb-open{overflow:hidden}
   <div class="lb-count" id="lbCount"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
@@ -631,417 +636,6 @@ if(G && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
 
 
 
-
-/* ================================================================
-   HERO MESH — canvas particle network with click-ripple colour
-================================================================ */
-(function(){
-  var canvas = document.getElementById('heroCanvas');
-  if(!canvas) return;
-  var ctx = canvas.getContext('2d');
-
-  /* ── COLOUR PALETTES — cycles on each click ── */
-  var PALETTES = [
-    { bg:'#0f0e0b', node:'rgba(255,255,255,0.38)', edge:'rgba(255,255,255,0.13)',
-      ripple:['#C34F2B','#e8693d','#ff8c5a'] },
-    { bg:'#08090f', node:'rgba(120,140,255,0.44)', edge:'rgba(100,120,255,0.14)',
-      ripple:['#4f6bc3','#7b9fff','#b0c4ff'] },
-    { bg:'#080f0c', node:'rgba(80,200,140,0.40)', edge:'rgba(60,180,110,0.13)',
-      ripple:['#2d8a5e','#4dbf86','#88e8b8'] },
-    { bg:'#0f0b0d', node:'rgba(230,160,140,0.42)', edge:'rgba(210,130,110,0.13)',
-      ripple:['#b8614a','#e0876e','#f5b8aa'] },
-    { bg:'#0c080f', node:'rgba(180,120,255,0.42)', edge:'rgba(160,90,255,0.13)',
-      ripple:['#7a3db5','#a86de0','#d4a8ff'] },
-    { bg:'#0f0e0b', node:'rgba(205,185,140,0.40)', edge:'rgba(185,160,100,0.14)',
-      ripple:['#C34F2B','#d4a264','#eddba0'] },
-  ];
-  var palIdx = 0;
-  var PAL = PALETTES[0];
-
-  var W, H, nodes = [], RIPPLES = [];
-  var NODE_COUNT_BASE = 90;
-
-  function buildNodes(){
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-    var count = Math.round(NODE_COUNT_BASE * (W*H) / (1440*900));
-    count = Math.max(50, Math.min(180, count));
-    nodes = [];
-    for(var i=0; i<count; i++){
-      nodes.push({
-        x: Math.random()*W, y: Math.random()*H,
-        vx:(Math.random()-.5)*.28, vy:(Math.random()-.5)*.22,
-        r: Math.random()*1.6+0.8, brightness:0,
-      });
-    }
-  }
-  buildNodes();
-  addEventListener('resize', buildNodes);
-
-  function spawnRipple(x,y){
-    RIPPLES.push({x:x,y:y,radius:0,maxRadius:Math.max(W,H)*1.1,
-      speed:4.5,colorIdx:Math.floor(Math.random()*PAL.ripple.length)});
-  }
-
-  /* click → next palette + ripple */
-  canvas.addEventListener('click', function(e){
-    var r=canvas.getBoundingClientRect();
-    palIdx=(palIdx+1)%PALETTES.length; PAL=PALETTES[palIdx];
-    spawnRipple(e.clientX-r.left, e.clientY-r.top);
-  });
-  canvas.addEventListener('touchend', function(e){
-    e.preventDefault();
-    var t=e.changedTouches[0], r=canvas.getBoundingClientRect();
-    palIdx=(palIdx+1)%PALETTES.length; PAL=PALETTES[palIdx];
-    spawnRipple(t.clientX-r.left, t.clientY-r.top);
-  });
-  setTimeout(function(){ spawnRipple(W*.62, H*.38); }, 900);
-
-  var mx=-9999, my=-9999;
-  canvas.addEventListener('mousemove', function(e){
-    var r=canvas.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top;
-  });
-  canvas.addEventListener('mouseleave', function(){ mx=-9999; my=-9999; });
-
-  function hexToRgb(h){
-    return {r:parseInt(h.slice(1,3),16),g:parseInt(h.slice(3,5),16),b:parseInt(h.slice(5,7),16)};
-  }
-  function lerp(a,b,t){ return a+(b-a)*t; }
-  var bgR=15,bgG=14,bgB=11;
-
-  function loop(){
-    requestAnimationFrame(loop);
-    var tBg=hexToRgb(PAL.bg);
-    bgR=lerp(bgR,tBg.r,.025); bgG=lerp(bgG,tBg.g,.025); bgB=lerp(bgB,tBg.b,.025);
-    ctx.fillStyle='rgb('+Math.round(bgR)+','+Math.round(bgG)+','+Math.round(bgB)+')';
-    ctx.fillRect(0,0,W,H);
-
-    var ED=Math.min(W,H)*.22, ED2=ED*ED;
-
-    /* advance ripples */
-    for(var ri=RIPPLES.length-1; ri>=0; ri--){
-      RIPPLES[ri].radius += RIPPLES[ri].speed + RIPPLES[ri].radius*.012;
-      if(RIPPLES[ri].radius > RIPPLES[ri].maxRadius) RIPPLES.splice(ri,1);
-    }
-
-    /* update nodes */
-    for(var i=0; i<nodes.length; i++){
-      var n=nodes[i];
-      var mdx=mx-n.x, mdy=my-n.y, md2=mdx*mdx+mdy*mdy;
-      if(md2<22500){ var mf=(1-md2/22500)*.006; n.vx+=mdx*mf; n.vy+=mdy*mf; }
-      n.vx*=.992; n.vy*=.992;
-      n.x+=n.vx; n.y+=n.vy;
-      if(n.x<-10) n.x=W+10; if(n.x>W+10) n.x=-10;
-      if(n.y<-10) n.y=H+10; if(n.y>H+10) n.y=-10;
-      var bright=0;
-      for(var ri2=0; ri2<RIPPLES.length; ri2++){
-        var rp=RIPPLES[ri2];
-        var dist=Math.sqrt((n.x-rp.x)*(n.x-rp.x)+(n.y-rp.y)*(n.y-rp.y));
-        var wave=Math.max(0,1-Math.abs(dist-rp.radius)/80);
-        var fade=Math.max(0,1-rp.radius/rp.maxRadius);
-        bright=Math.max(bright, wave*fade*1.8);
-      }
-      n.brightness+=(bright-n.brightness)*.18;
-    }
-
-    /* edges */
-    for(var i=0; i<nodes.length; i++){
-      var a=nodes[i];
-      for(var j=i+1; j<nodes.length; j++){
-        var b=nodes[j];
-        var dx=a.x-b.x, dy=a.y-b.y, d2=dx*dx+dy*dy;
-        if(d2>ED2) continue;
-        var alpha=(1-d2/ED2), lit=(a.brightness+b.brightness)*.5;
-        if(lit>.02){
-          var rgb=hexToRgb(PAL.ripple[0]);
-          ctx.strokeStyle='rgba('+rgb.r+','+rgb.g+','+rgb.b+','+(alpha*lit*.9)+')';
-          ctx.lineWidth=1.2+lit*1.4;
-        } else {
-          ctx.strokeStyle='rgba(255,255,255,'+(alpha*.14)+')';
-          ctx.lineWidth=.7;
-        }
-        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
-      }
-    }
-
-    /* nodes */
-    for(var i=0; i<nodes.length; i++){
-      var n=nodes[i], lit=n.brightness;
-      if(lit>.02){
-        var gc=PAL.ripple[Math.floor(lit*2)%PAL.ripple.length]||PAL.ripple[0];
-        var rgb=hexToRgb(gc);
-        var grad=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*(4+lit*12));
-        grad.addColorStop(0,'rgba('+rgb.r+','+rgb.g+','+rgb.b+','+(0.6+lit*.4)+')');
-        grad.addColorStop(.3,'rgba('+rgb.r+','+rgb.g+','+rgb.b+','+(0.15*lit)+')');
-        grad.addColorStop(1,'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0)');
-        ctx.fillStyle=grad;
-        ctx.beginPath(); ctx.arc(n.x,n.y,n.r*(4+lit*12),0,Math.PI*2); ctx.fill();
-        ctx.fillStyle='rgba('+rgb.r+','+rgb.g+','+rgb.b+',.95)';
-        ctx.beginPath(); ctx.arc(n.x,n.y,n.r*(1+lit*1.5),0,Math.PI*2); ctx.fill();
-      } else {
-        ctx.fillStyle=PAL.node;
-        ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fill();
-      }
-    }
-
-    /* ripple ring */
-    for(var ri=0; ri<RIPPLES.length; ri++){
-      var rp=RIPPLES[ri];
-      var fade=Math.max(0,1-rp.radius/rp.maxRadius);
-      if(fade<.01) continue;
-      var rgb=hexToRgb(PAL.ripple[rp.colorIdx]||PAL.ripple[0]);
-      ctx.beginPath(); ctx.arc(rp.x,rp.y,rp.radius,0,Math.PI*2);
-      ctx.strokeStyle='rgba('+rgb.r+','+rgb.g+','+rgb.b+','+(fade*.18)+')';
-      ctx.lineWidth=1.5; ctx.stroke();
-    }
-  }
-  loop();
-})();
-
-/* ================================================================
-   3D SCULPTURE — abstract rotatable Three.js object
-   Syncs accent colour with the mesh canvas palette on click.
-================================================================ */
-(function(){
-  var el = document.getElementById('sculptureCanvas');
-  if(!el || typeof THREE === 'undefined') return;
-
-  /* ── renderer ── */
-  var renderer = new THREE.WebGLRenderer({ canvas: el, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 0);
-
-  /* ── scene / camera ── */
-  var scene  = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-  camera.position.set(0, 0, 3);
-
-  /* ── accent colours — mirrors PALETTES in mesh canvas ── */
-  var ACCENT_COLORS = [
-    '#C34F2B','#4f6bc3','#2d8a5e','#b8614a','#7a3db5','#C34F2B'
-  ];
-  var accentIdx = 0;
-
-  function hexToThree(h){
-    return new THREE.Color(h);
-  }
-
-  /* ── materials ── */
-  var solidMat = new THREE.MeshPhongMaterial({
-    color: 0x8C6239,
-    emissive: hexToThree(ACCENT_COLORS[0]),
-    emissiveIntensity: 0.06,
-    shininess: 120,
-    transparent: true,
-    opacity: 0.95,
-    side: THREE.FrontSide
-  });
-
-  /* ── geometry — external 3D model ── */
-  // Replace this path with your local .glb / .gltf file
-  var MODEL_PATH = 'models/sculpture.glb';
-
-  // Placeholder shown while the model loads (or if it fails)
-  // Sized to match the original torus knot bounding sphere (~1.0 radius)
-  var placeholderGeo = new THREE.SphereGeometry(2.0, 3, 2); // low-poly cage
-  var placeholderMat = new THREE.MeshBasicMaterial({
-    color: hexToThree(ACCENT_COLORS[0]),
-    wireframe: true,
-    transparent: true,
-    opacity: 0.28,
-  });
-  var placeholder = new THREE.Mesh(placeholderGeo, placeholderMat);
-
-  // Label — world-space sprite showing the expected filename
-  var labelCanvas = document.createElement('canvas');
-  labelCanvas.width = 512; labelCanvas.height = 80;
-  var lctx = labelCanvas.getContext('2d');
-  lctx.fillStyle = 'rgba(0,0,0,0)';
-  lctx.fillRect(0,0,512,80);
-  lctx.font = '500 22px "Spline Sans Mono", monospace';
-  lctx.fillStyle = 'rgba(255,255,255,0.45)';
-  lctx.textAlign = 'center';
-  lctx.fillText(MODEL_PATH, 256, 30);
-  lctx.font = '400 16px "Spline Sans Mono", monospace';
-  lctx.fillStyle = 'rgba(255,255,255,0.22)';
-  lctx.fillText('Place .glb file at this path', 256, 56);
-  var labelTex = new THREE.CanvasTexture(labelCanvas);
-  var labelMat = new THREE.SpriteMaterial({ map: labelTex, transparent: true });
-  var labelSprite = new THREE.Sprite(labelMat);
-  labelSprite.scale.set(2.8, 0.44, 1);
-  labelSprite.position.set(0, -1.7, 0);
-
-  var modelGroup = new THREE.Group();
-  modelGroup.add(placeholder, labelSprite);
-
-  // Load the actual model
-  if(typeof THREE.GLTFLoader !== 'undefined'){
-    var loader = new THREE.GLTFLoader();
-    loader.load(
-      MODEL_PATH,
-      function(gltf){
-        // Success — swap placeholder for real model
-        modelGroup.remove(placeholder);
-        modelGroup.remove(labelSprite);
-        var model = gltf.scene;
-        // Normalise scale to fit within radius ~1.0 (same as original knot)
-        var box = new THREE.Box3().setFromObject(model);
-        var size = new THREE.Vector3();
-        box.getSize(size);
-        var maxDim = Math.max(size.x, size.y, size.z);
-        model.scale.setScalar(2.0 / maxDim);
-        // Centre on origin
-        box.setFromObject(model);
-        var centre = new THREE.Vector3();
-        box.getCenter(centre);
-        model.position.sub(centre);
-        // Apply same material feel
-        model.traverse(function(child){
-          if(child.isMesh){
-            child.material = solidMat.clone();
-          }
-        });
-        modelGroup.add(model);
-      },
-      function(xhr){
-        // Progress — pulse placeholder opacity
-        var pct = xhr.total ? xhr.loaded / xhr.total : 0;
-        placeholderMat.opacity = 0.18 + pct * 0.3;
-      },
-      function(err){
-        // Error — placeholder stays, label updates
-        lctx.clearRect(0,0,512,80);
-        lctx.fillStyle = 'rgba(195,79,43,0.7)';
-        lctx.font = '500 20px monospace';
-        lctx.textAlign = 'center';
-        lctx.fillText('Model not found: ' + MODEL_PATH, 256, 30);
-        lctx.fillStyle = 'rgba(255,255,255,0.3)';
-        lctx.font = '400 15px monospace';
-        lctx.fillText('Add your .glb file at the path above', 256, 56);
-        labelTex.needsUpdate = true;
-      }
-    );
-  }
-
-  // knotSolid / knotWire aliases so the group line below stays unchanged
-  var knotSolid = modelGroup;
-  var knotWire  = new THREE.Object3D(); // empty — wire handled inside modelGroup
-
-  // Ring accent
-  var ringGeo = new THREE.TorusGeometry(1.1, 0.008, 8, 100);
-  var ringMat = new THREE.MeshBasicMaterial({
-    color: hexToThree(ACCENT_COLORS[0]),
-    transparent: true, opacity: 0.45
-  });
-  var ring = new THREE.Mesh(ringGeo, ringMat);
-  ring.rotation.x = Math.PI * 0.3;
-  scene.add(ring);
-
-  // Second thinner ring, tilted opposite
-  var ring2Geo = new THREE.TorusGeometry(1.4, 0.007, 8, 100);
-  var ring2Mat = new THREE.MeshBasicMaterial({
-    color: hexToThree(ACCENT_COLORS[0]),
-    transparent: true, opacity: 0.22
-  });
-  var ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-  ring2.rotation.x = -Math.PI * 0.5;
-  ring2.rotation.z = Math.PI * 0.2;
-  scene.add(ring2);
-
-  /* ── lights ── */
-  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
-  var pt = new THREE.PointLight(0xffffff, 1.4, 12);
-  pt.position.set(3, 3, 4);
-  scene.add(pt);
-  var pt2 = new THREE.PointLight(hexToThree(ACCENT_COLORS[0]), 0.9, 10);
-  pt2.position.set(-2, -1, 2);
-  scene.add(pt2);
-  var accentLight = pt2;
-
-  /* ── group for drag rotation ── */
-  var group = new THREE.Group();
-  group.add(knotSolid, knotWire, ring, ring2);
-  scene.add(group);
-
-  /* ── resize ── */
-  function resize(){
-    var w = el.clientWidth, h = el.clientHeight;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  /* ── drag to rotate ── */
-  var isDragging = false, lastX = 0, lastY = 0;
-  var velX = 0, velY = 0;
-  var targetRotX = 0, targetRotY = 0;
-
-  function onDown(x, y){ isDragging = true; lastX = x; lastY = y; velX = 0; velY = 0; }
-  function onMove(x, y){
-    if(!isDragging) return;
-    var dx = x - lastX, dy = y - lastY;
-    velX = dy * 0.008; velY = dx * 0.008;
-    targetRotX += velX; targetRotY += velY;
-    lastX = x; lastY = y;
-  }
-  function onUp(){ isDragging = false; }
-
-  el.addEventListener('mousedown',  function(e){ onDown(e.clientX, e.clientY); });
-  el.addEventListener('mousemove',  function(e){ onMove(e.clientX, e.clientY); });
-  el.addEventListener('mouseup',    onUp);
-  el.addEventListener('mouseleave', onUp);
-  el.addEventListener('touchstart', function(e){ var t=e.touches[0]; onDown(t.clientX, t.clientY); e.stopPropagation(); }, {passive:true});
-  el.addEventListener('touchmove',  function(e){ var t=e.touches[0]; onMove(t.clientX, t.clientY); e.stopPropagation(); }, {passive:true});
-  el.addEventListener('touchend',   onUp);
-
-  /* ── colour sync — listen for palette change via click on heroCanvas ── */
-  var heroCanvas = document.getElementById('heroCanvas');
-  if(heroCanvas){
-    heroCanvas.addEventListener('click', function(){
-      accentIdx = (accentIdx + 1) % ACCENT_COLORS.length;
-      var c = hexToThree(ACCENT_COLORS[accentIdx]);
-      wireMat.color.set(c);
-      solidMat.emissive.set(c);
-      placeholderMat.color.set(c);
-      ringMat.color.set(c);
-      ring2Mat.color.set(c);
-      accentLight.color.set(c);
-    });
-  }
-
-  /* ── animate ── */
-  var autoRotY = 0, autoRotX = 0;
-  function animate(){
-    requestAnimationFrame(animate);
-
-    // idle auto-rotation
-    if(!isDragging){
-      velX *= 0.94; velY *= 0.94;
-      targetRotX += velX;
-      targetRotY += velY;
-      autoRotY += 0.0028;
-    } else {
-      autoRotY = group.rotation.y;
-    }
-
-    // smooth lerp
-    group.rotation.x += (targetRotX - group.rotation.x) * 0.08;
-    group.rotation.y += ((targetRotY + autoRotY) * 0.5 - group.rotation.y) * 0.06;
-
-    if(!isDragging){
-      group.rotation.y += 0.0014;
-    }
-
-    // rings counter-rotate gently
-    ring.rotation.y  += 0.004;
-    ring2.rotation.z += 0.003;
-
-    renderer.render(scene, camera);
-  }
-  animate();
-})();
 
 /* ---- custom cursor ---- */
 (function(){
@@ -1076,11 +670,11 @@ var P=[
   // position 1 = local video, positions 2-6 = local images
   var assets=[
     {type:"video", src:"/videos/index/card-01.webm"},
-    {type:"image", src:"/images/index/card-02.jpg"},
-    {type:"image", src:"/images/index/card-03.jpg"},
-    {type:"image", src:"/images/index/card-04.jpg"},
-    {type:"image", src:"/images/index/card-05.jpg"},
-    {type:"image", src:"/images/index/card-06.jpg"}
+    {type:"image", src:"/images/index/card-02.webp"},
+    {type:"image", src:"/images/index/card-03.webp"},
+    {type:"image", src:"/images/index/card-04.webp"},
+    {type:"image", src:"/images/index/card-05.webp"},
+    {type:"image", src:"/images/index/card-06.webp"}
   ];
   P.forEach(function(p,i){
     var a=document.createElement("a");
