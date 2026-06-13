@@ -206,19 +206,18 @@ nav.main a.cta:hover::before{transform:translateY(0)}
 
 /* about */
 .about{position:relative;z-index:10;padding:14vh clamp(20px,5vw,64px);max-width:1400px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,110px);align-items:start}
+  display:grid;grid-template-columns:1fr 0.52fr;gap:clamp(28px,6vw,120px);align-items:start}
 @media(max-width:820px){.about{grid-template-columns:1fr;gap:36px}}
 .about .lead{font-family:"Syne",sans-serif;font-weight:600;font-size:clamp(1.5rem,2.8vw,2.5rem);
   line-height:1.2;letter-spacing:-.02em}
 .about .lead .acc{color:var(--ember)}
 .about p{color:var(--ink-soft);line-height:1.72;font-size:15px;margin-bottom:16px;max-width:44ch}
-/* photo placeholder */
+/* photo placeholder — right column */
 .about-photo{
-  width:100%;aspect-ratio:3/4;max-width:260px;
+  width:100%;aspect-ratio:3/4;
   overflow:hidden;border-radius:3px;
   background:var(--paper-2);
-  margin-bottom:28px;
-  position:relative;
+  position:sticky;top:120px;
   display:block;
 }
 .about-photo::before{
@@ -580,21 +579,22 @@ body.lb-open{overflow:hidden}
     <div class="masonry" id="masonry"></div>
   </section>
 
-  <section id="about">
+    <section id="about">
     <div class="about">
+      <!-- LEFT: all text + stats -->
       <div class="col">
         <p class="lead reveal">I design things that <span class="acc">feel considered</span>. Not just branded — thoughtful, from the first pixel to the last.</p>
-        <!-- photo placeholder — replace src with your portrait -->
-        <div class="about-photo reveal">
-          <img src="images/index/photo.jpg" alt="Vyara Dimitrova" onerror="this.removeAttribute('src')">
+        <p class="reveal">I’m a designer with 8 years of experience across digital and print, shaping brand systems that hold across identity, editorial, out-of-home, motion, and digital environments. My focus is on structure and consistency—translating ideas into visual systems that scale without losing precision or character. Based in Germany.</p>
+        <div class="stats reveal">
+          <div><div class="n" data-count="24" data-suffix="+">0</div><div class="l">Projects</div></div>
+          <div><div class="n" data-count="10" data-suffix="">0</div><div class="l">Brands</div></div>
+          <div><div class="n" data-count="8" data-suffix="yr">0</div><div class="l">Experience</div></div>
         </div>
       </div>
+      <!-- RIGHT: photo -->
       <div class="col">
-        <p class="reveal">Designer with eight years of experience in print and digital across corporate and agency environments, creating engaging, strategic concepts and cohesive visual solutions.</p>
-        <div class="stats reveal">
-          <div><div class="n" data-count="120" data-suffix="+">0</div><div class="l">Projects</div></div>
-          <div><div class="n" data-count="8" data-suffix="">0</div><div class="l">Countries</div></div>
-          <div><div class="n" data-count="11" data-suffix="yr">0</div><div class="l">Experience</div></div>
+        <div class="about-photo reveal">
+          <img src="images/index/photo.jpg" alt="Vyara Dimitrova" onerror="this.removeAttribute('src')">
         </div>
       </div>
     </div>
@@ -669,7 +669,7 @@ var P=[
   var slugs={LG:"project-01",MyMarket:"project-02",Smart:"project-03",Reverto:"project-04",Crea:"project-05",Maynooth:"project-06"};
   // position 1 = local video, positions 2-6 = local images
   var assets=[
-    {type:"video", src:"videos/index/card-01.webm"},
+    {type:"video", src:"/videos/index/card-01.webm"},
     {type:"image", src:"/images/index/card-02.webp"},
     {type:"image", src:"/images/index/card-03.webp"},
     {type:"image", src:"/images/index/card-04.webp"},
