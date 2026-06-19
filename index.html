@@ -139,6 +139,20 @@
   .loader__egg:hover .loader__egg-reveal{max-width:260px}
   .loader.is-leaving .loader__egg{opacity:0;transition:opacity .3s var(--ease)}
 
+  /* skip control — quiet, corner-anchored, never competes with the kinetic word.
+     Fades in slightly after the loader starts so it doesn't flash on instant
+     (session-skip) loads, and disappears the moment the curtain lifts. */
+  .loader__skip{position:absolute;z-index:4;right:clamp(20px,3vw,34px);bottom:clamp(20px,3vh,34px);
+    font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--ink-soft);
+    padding:8px 4px;opacity:0;animation:skipIn .5s var(--ease) .8s forwards;
+    transition:color .25s var(--ease)}
+  @keyframes skipIn{to{opacity:.7}}
+  .loader__skip::after{content:"";display:block;height:1.5px;width:100%;background:currentColor;
+    transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+  .loader__skip:hover{color:var(--ink)}
+  .loader__skip:hover::after{transform:scaleX(1)}
+  .loader.is-leaving .loader__skip{opacity:0!important;pointer-events:none;animation:none;transition:opacity .25s var(--ease)}
+
   /* --- nav (centered, minimal) --- */
   .nav{position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:1000;
     opacity:0;transition:top .4s var(--ease),opacity .8s var(--ease)}
@@ -728,6 +742,7 @@
 
       <span class="loader__egg" id="loaderEgg"><span class="loader__egg-mark">&#10024;</span><span class="loader__egg-reveal">&nbsp;You found me. Hi.</span></span>
     </div>
+    <button type="button" class="loader__skip" id="loaderSkip">Skip</button>
   </div>
 
   <!-- NAV -->
@@ -1039,6 +1054,18 @@
     lastX = e.clientX; lastY = e.clientY;
   }
   function onUp(){ dragging = false; tAxis = null; mount.classList.remove('is-dragging'); }
+
+  /* attach: mouse drags on the mount, touch drags on the mount (with the
+     axis-lock above so vertical swipes still scroll the page), and the
+     move/up listeners live on window so a drag that leaves the canvas
+     bounds doesn't get "stuck" mid-rotation */
+  mount.addEventListener('mousedown', onDown);
+  mount.addEventListener('touchstart', onDown, { passive: true });
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove, { passive: true });
+  window.addEventListener('mouseup', onUp);
+  window.addEventListener('touchend', onUp);
+  window.addEventListener('touchcancel', onUp);
 	
 
   /* cursor-follow tilt (desktop, not dragging) */
@@ -1492,6 +1519,20 @@ var quipWrap   = document.getElementById('loaderQuip');
 var wordEl     = document.getElementById('loaderWordText');
 var wordWrap   = document.getElementById('loaderWord');
 var eggEl      = document.getElementById('loaderEgg');
+var skipBtn    = document.getElementById('loaderSkip');
+
+/* Seen the full intro already this session? Skip straight to the fast
+   (reduced-motion-style) reveal — same path used for prefers-reduced-motion,
+   so it's already tested and instant. A hiring manager re-checking the site
+   mid-interview shouldn't have to sit through the curtain twice. */
+var SEEN_KEY = 'vd_intro_seen';
+var skipIntro = false;
+try { skipIntro = sessionStorage.getItem(SEEN_KEY) === '1'; } catch (e){ /* storage blocked — fall back to full intro */ }
+try { sessionStorage.setItem(SEEN_KEY, '1'); } catch (e){}
+
+/* fast-path: either the user prefers reduced motion, or they've already
+   sat through the full intro once this session — both skip the same way */
+var fastIntro = reduce || skipIntro;
 
 /* generic slide-swap used by both the big word and the witty line */
 function swapText(wrap, current, html, cls){
@@ -1526,17 +1567,18 @@ function nextWord(){
   }, 130);
   if (isLast){ clearInterval(wordTimer); wordTimer = null; }
 }
-if (!reduce) wordTimer = setInterval(nextWord, 1000);
+if (!fastIntro) wordTimer = setInterval(nextWord, 1000);
 
 /* "Creative" disappears with a blurred fade-out after word 5 (shows 4s, leaves ~5s) */
-if (!reduce) setTimeout(function(){ wordWrap.classList.add('is-out'); }, 3500);
+if (!fastIntro) setTimeout(function(){ wordWrap.classList.add('is-out'); }, 3500);
 
 /* status sentence swaps instantly to "Welcome in!" at 4.5s — no transition */
 var quipTimer = null;
-if (!reduce) setTimeout(function(){ quipEl.innerHTML = 'Welcome in!'; }, 3200);
+if (!fastIntro) setTimeout(function(){ quipEl.innerHTML = 'Welcome in!'; }, 3200);
 
-/* easter egg: click the sparkle for escalating replies */
-if (eggEl){
+/* easter egg: click the sparkle for escalating replies (full intro only —
+   it would just flash and vanish on the fast path) */
+if (eggEl && !fastIntro){
   setTimeout(function(){ eggEl.classList.add('is-visible'); }, 1000);
   var eggClicks = 0;
   var eggMessages = ['You found me. Hi.', 'Stop clicking.', 'I mean it.', 'Fine. You win. \u2665'];
@@ -1547,12 +1589,31 @@ if (eggEl){
   });
 }
 
-/* total intro = 6s: words 0–5s, "Welcome in!" 4.5–6s, then curtain lifts */
-setTimeout(revealHero, reduce ? 600 : 4500);
+/* skip control — only meaningful during the full intro; on the fast path
+   (reduced motion or repeat visit) the curtain is already lifting */
+var revealed = false;
+function revealOnce(){ if (revealed) return; revealed = true; revealHero(); }
+if (skipBtn){
+  if (fastIntro){
+    skipBtn.style.display = 'none';
+  } else {
+    skipBtn.addEventListener('click', revealOnce);
+  }
+}
+document.addEventListener('keydown', function(e){
+  if (!fastIntro && (e.key === 'Escape' || e.key === 'Enter') && document.body.classList.contains('is-locked')){
+    revealOnce();
+  }
+});
+
+/* total intro = 6s: words 0–5s, "Welcome in!" 4.5–6s, then curtain lifts.
+   Fast path (reduced motion / repeat visit) lifts almost immediately. */
+setTimeout(revealOnce, fastIntro ? 200 : 4500);
 
 function revealHero(){
   if (wordTimer){ clearInterval(wordTimer); wordTimer = null; }
   if (quipTimer){ clearInterval(quipTimer); quipTimer = null; }
+  if (skipBtn){ skipBtn.removeEventListener('click', revealOnce); }
 
   var nav       = document.getElementById('nav');
   var heroTop   = document.querySelector('.hero__top');
@@ -1568,7 +1629,8 @@ function revealHero(){
     setTimeout(function(){ if (hint) hint.classList.add('is-in'); kickReveals(); }, 460);
   }
 
-  /* ensure word is on CREATIVE (in case the auto-cycle hasn't reached it yet) */
+  /* ensure word is on CREATIVE (in case the auto-cycle hasn't reached it yet,
+     or we skipped/fast-pathed before it ever started) */
   if (wordIdx < loaderWords.length - 1){
     wordEl = swapText(wordWrap, wordEl, 'CREATI<span class="o">V</span>E', 'loader__word-inner');
   }
@@ -1577,7 +1639,7 @@ function revealHero(){
 
   var revealFn = window.__sculpture ? window.__sculpture.reveal : function(cb){ cb && cb(); };
 
-  if (reduce){
+  if (fastIntro){
     loader.classList.add('is-leaving');
     revealFn(function(){});
     revealCopy();
