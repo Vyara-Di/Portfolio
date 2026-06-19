@@ -164,7 +164,7 @@
 
   /* 3D canvas — fullscreen, lives in hero from frame 1, loader covers it */
   .hero__sculpture{position:absolute;inset:0;z-index:0;display:block}
-  .hero__sculpture canvas{display:block;width:100%!important;height:100%!important;touch-action:none;cursor:grab}
+  .hero__sculpture canvas{display:block;width:100%!important;height:100%!important;touch-action:pan-y;cursor:grab}
   .hero__sculpture.is-dragging canvas{cursor:grabbing}
 
   .hero__sculpt-hint{position:absolute;left:50%;bottom:clamp(18px,3vh,30px);transform:translateX(-50%);z-index:4;
@@ -945,27 +945,49 @@
   resize();
 
   /* drag to rotate */
+/* drag to rotate */
   var dragging = false, lastX = 0, lastY = 0;
+  /* touch axis lock: decide on first move whether the swipe is a vertical
+     scroll (let the page scroll) or a horizontal drag (rotate the model) */
+  var tStartX = 0, tStartY = 0, tAxis = null;
   function onDown(e){
+    if (e.touches){
+      var t = e.touches[0];
+      tStartX = lastX = t.clientX;
+      tStartY = lastY = t.clientY;
+      tAxis = null;       // undecided until the finger clearly moves
+      dragging = false;   // don't rotate (or kill auto-spin) until it's horizontal
+      return;
+    }
     dragging = true; autoSpin = false; mount.classList.add('is-dragging');
-    var p = e.touches ? e.touches[0] : e;
-    lastX = p.clientX; lastY = p.clientY;
+    lastX = e.clientX; lastY = e.clientY;
   }
   function onMove(e){
+    if (e.touches){
+      var t = e.touches[0];
+      if (tAxis === null){
+        var dx = Math.abs(t.clientX - tStartX);
+        var dy = Math.abs(t.clientY - tStartY);
+        if (dx < 8 && dy < 8) return;        // wait for a clear direction
+        if (dx > dy){                         // horizontal → rotate
+          tAxis = 'h'; dragging = true; autoSpin = false; mount.classList.add('is-dragging');
+        } else {                              // vertical → let the page scroll
+          tAxis = 'v'; return;
+        }
+      }
+      if (tAxis !== 'h') return;
+      targetRotY += (t.clientX - lastX) * 0.006;   // horizontal rotation only
+      lastX = t.clientX; lastY = t.clientY;
+      return;
+    }
     if (!dragging) return;
-    var p = e.touches ? e.touches[0] : e;
-    targetRotY += (p.clientX - lastX) * 0.006;
-    targetRotX += (p.clientY - lastY) * 0.006;
+    targetRotY += (e.clientX - lastX) * 0.006;
+    targetRotX += (e.clientY - lastY) * 0.006;
     targetRotX = Math.max(-0.9, Math.min(0.9, targetRotX));
-    lastX = p.clientX; lastY = p.clientY;
+    lastX = e.clientX; lastY = e.clientY;
   }
-  function onUp(){ dragging = false; mount.classList.remove('is-dragging'); }
-  mount.addEventListener('mousedown', onDown);
-  window.addEventListener('mousemove', onMove);
-  window.addEventListener('mouseup',   onUp);
-  mount.addEventListener('touchstart', onDown, { passive: true });
-  window.addEventListener('touchmove',  onMove, { passive: true });
-  window.addEventListener('touchend',   onUp);
+  function onUp(){ dragging = false; tAxis = null; mount.classList.remove('is-dragging'); }
+	
 
   /* cursor-follow tilt (desktop, not dragging) */
   if (window.matchMedia('(pointer:fine)').matches && !reduce){
