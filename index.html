@@ -14,7 +14,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --beige:#E9E1D4;--beige-lt:#F3EEE5;--sand:#DCD0BD;--ink:#221E1A;--ink-soft:#6B635A;
@@ -193,7 +195,7 @@
   .hero__word--right.is-in{transition-delay:.22s}
   .hero__word .o{color:var(--orange);display:inline-block}
   .hero__word--right.is-in .o{animation:opop .6s var(--ease-io) .75s both}
-  @keyframes opop{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-6deg)}100%{transform:scale(1) rotate(0)}}
+  @keyframes opop{0%{transform:scale(1)}45%{transform:scale(1.08)}100%{transform:scale(1)}}
 
   .hero__sub{position:relative;z-index:3;margin-top:clamp(30px,4.4vh,48px);
     max-width:44ch;font-size:clamp(1rem,1.5vw,1.16rem);color:var(--ink-soft)}
@@ -635,6 +637,18 @@
   .proj__next-arrow{font-size:2rem;color:var(--orange);transition:transform .4s var(--ease)}
   .proj__next:hover .proj__next-arrow{transform:translateX(8px)}
 
+  /* closing screen — shown only after the last project, instead of "Next Project" */
+  .proj__end{display:flex;flex-direction:column;align-items:center;gap:clamp(28px,5vh,48px);
+    padding:clamp(80px,14vh,140px) var(--pad) clamp(60px,10vh,100px);border-top:1px solid var(--line);
+    text-align:center}
+  .proj__end-thanks{font-size:clamp(1.05rem,2vw,1.3rem);font-weight:400;color:var(--ink-soft);max-width:34ch}
+  .proj__end-thanks .o{color:var(--orange);font-weight:700}
+  .proj__end .contact__card{width:100%}
+  .proj__end-home{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;
+    color:var(--ink-soft);padding:10px 4px;border-bottom:1.5px solid var(--line);
+    transition:color .35s var(--ease),border-color .35s var(--ease)}
+  .proj__end-home:hover{color:var(--ink);border-color:var(--orange)}
+
   /* tools strip — auto-scrolling marquee */
   .proj__tools{overflow:hidden;padding:clamp(16px,2.5vh,28px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .proj__tools--spaced{margin-top:clamp(60px,10vh,120px)}
@@ -828,8 +842,9 @@
     </button>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<!-- Three.js is NOT loaded statically. The sculpture script below pulls it in
+     on demand, and only on capable devices — so phones, data-saver mode and
+     reduced-motion users never download ~600 KB of WebGL they won't use. -->
 
 <!-- ===================== SCULPTURE ===================== -->
 <script>
@@ -838,7 +853,44 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var mount  = document.getElementById('heroSculpture');
   var hint   = document.getElementById('sculptHint');
-  if (!mount || typeof THREE === 'undefined') return;
+  if (!mount) return;
+
+  /* ---- capability gate ----------------------------------------------------
+     The 3D hero is pure decoration. Skip it (and its ~600 KB download) on
+     reduced-motion, data-saver, low-memory / low-core devices, or where WebGL
+     is unavailable. The hero still looks complete: the radial blob + kinetic
+     headline render with zero JS cost. */
+  var nav = navigator;
+  function webglOK(){
+    try {
+      var c = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext &&
+        (c.getContext('webgl') || c.getContext('experimental-webgl')));
+    } catch (e){ return false; }
+  }
+  var lowPower = reduce
+    || (nav.connection && nav.connection.saveData)
+    || (typeof nav.deviceMemory === 'number' && nav.deviceMemory < 4)
+    || (typeof nav.hardwareConcurrency === 'number' && nav.hardwareConcurrency <= 2);
+  if (lowPower || !webglOK()) return;
+
+  /* ---- load Three.js + GLTFLoader on demand, then init -------------------- */
+  function loadScript(src){
+    return new Promise(function(resolve, reject){
+      var s = document.createElement('script');
+      s.src = src; s.async = true;
+      s.onload = resolve; s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+  var THREE_BASE = 'https://cdn.jsdelivr.net/npm/three@0.128.0';
+  loadScript(THREE_BASE + '/build/three.min.js')
+    .then(function(){ return loadScript(THREE_BASE + '/examples/js/loaders/GLTFLoader.js'); })
+    .then(initSculpture)
+    .catch(function(err){ console.warn('[sculpture] could not load Three.js', err); });
+
+  function initSculpture(){
+  if (typeof THREE === 'undefined') return;
 
   /* scene */
   var scene  = new THREE.Scene();
@@ -848,7 +900,8 @@
   camera.position.set(0, 0, 7);
 
   var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  var dprCap = (typeof nav.deviceMemory === 'number' && nav.deviceMemory < 8) ? 1.5 : 2;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, dprCap));
   renderer.setSize(W, H);
   renderer.outputEncoding = THREE.sRGBEncoding;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -945,7 +998,6 @@
   resize();
 
   /* drag to rotate */
-/* drag to rotate */
   var dragging = false, lastX = 0, lastY = 0;
   /* touch axis lock: decide on first move whether the swipe is a vertical
      scroll (let the page scroll) or a horizontal drag (rotate the model) */
@@ -1022,6 +1074,7 @@
       })(performance.now());
     }
   };
+  } /* end initSculpture */
 })();
 </script>
 
@@ -1351,6 +1404,87 @@
   function projVid(slug, name){ return 'images/' + slug + '/' + name + '.mp4'; }
   function rnd(a, b){ return a + Math.random() * (b - a); }
 
+  /* ---------------------------------------------------------------------------
+     MEDIA OPTIMISATION (one place, reused everywhere)
+
+     The HTML builders below stay simple — they just emit plain <img>/<video>.
+     These two passes upgrade that markup after it is inserted:
+
+       enhanceImages()  · adds decoding="async" + lazy loading to every image
+                        · when MEDIA.cdn is set, rewrites each jpg into a
+                          responsive srcset served through a format-negotiating
+                          CDN (Cloudflare Images / imgix / Cloudinary …). Those
+                          CDNs derive AVIF + WebP from the original jpg on the
+                          fly, so you get modern formats automatically even when
+                          only .jpg exists on disk. Leave cdn:'' and everything
+                          serves the original jpg unchanged (current behaviour).
+
+       enhanceVideos()  · never preloads; loads + plays a clip only when it is
+                          near the viewport and pauses it once scrolled away,
+                          which is the single biggest CPU/GPU/battery win on
+                          slow devices with several autoplay loops on a page.
+  --------------------------------------------------------------------------- */
+  var MEDIA = {
+    cdn: '',                            // e.g. 'https://cdn.yoursite.com' — '' = serve local jpg/mp4 as-is
+    widths: [480, 768, 1200, 1800]      // responsive widths requested from the CDN
+  };
+
+  function cdnUrl(path, w){
+    // Cloudflare-Images style query; adjust to match your provider's API.
+    return MEDIA.cdn.replace(/\/+$/, '') + '/' + path.replace(/^\/+/, '') +
+           '?format=auto&width=' + w;
+  }
+
+  function enhanceImages(root){
+    if (!root) return;
+    root.querySelectorAll('img:not([data-enh])').forEach(function(img){
+      img.setAttribute('data-enh', '');
+      img.decoding = 'async';
+      if (!img.hasAttribute('loading')) img.loading = 'lazy';
+      var src = img.getAttribute('src');
+      if (MEDIA.cdn && src && src.indexOf('http') !== 0){
+        img.srcset = MEDIA.widths.map(function(w){
+          return cdnUrl(src, w) + ' ' + w + 'w';
+        }).join(', ');
+        if (!img.getAttribute('sizes')) img.sizes = '(max-width:700px) 92vw, 1200px';
+        img.src = cdnUrl(src, MEDIA.widths[MEDIA.widths.length - 1]);
+      }
+    });
+  }
+
+  var videoIO = null;
+  function enhanceVideos(root){
+    if (!root) return;
+    if (!('IntersectionObserver' in window)){
+      root.querySelectorAll('video[data-src]').forEach(function(v){
+        if (!v.src){ v.src = v.dataset.src; v.load(); }
+      });
+      return;
+    }
+    if (!videoIO){
+      videoIO = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          var v = en.target;
+          if (en.isIntersecting){
+            if (!v.src && v.dataset.src){ v.src = v.dataset.src; v.load(); }
+            var p = v.play(); if (p && p.catch) p.catch(function(){});
+          } else if (!v.paused){
+            v.pause();
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+    }
+    root.querySelectorAll('video:not([data-vlazy])').forEach(function(v){
+      v.setAttribute('data-vlazy', '');
+      if (v.getAttribute('src') && !v.dataset.src){
+        v.dataset.src = v.getAttribute('src');
+        v.removeAttribute('src');
+      }
+      v.preload = 'none';
+      videoIO.observe(v);
+    });
+  }
+
 /* --- loader: kinetic discipline word + witty sentence + easter egg --- */
 var loader     = document.getElementById('loader');
 var quipEl     = document.getElementById('loaderQuipText');
@@ -1520,6 +1654,9 @@ function revealHero(){
     cardsWrap.appendChild(card);
     card.dataset.projIdx = i;
   });
+
+  /* upgrade the cards + any static page imagery (studio portrait, etc.) */
+  enhanceImages(document.body);
 
   /* --- project detail overlay --- */
 
@@ -1717,7 +1854,7 @@ function makeQuote(q){
       /* Live site browser mockup */
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">( Live Site )</div></div>'
-        + '<div class="proj__browser proj__reveal" data-sd="1">'
+        + '<div class="proj__browser proj__reveal" data-sd="1" style="margin-bottom:clamp(40px,7vh,80px)">'
         + '<div class="proj__browser-bar"><div class="proj__browser-dots"><span class="proj__browser-dot"></span><span class="proj__browser-dot"></span><span class="proj__browser-dot"></span></div>'
         + '<span class="proj__browser-url">maynooth-furniture.com</span></div>'
         + '<div class="proj__browser-scroll" id="browserScroll"><img src="' + I('mockup') + '" alt="Maynooth Furniture website" loading="lazy"></div>'
@@ -1729,12 +1866,6 @@ function makeQuote(q){
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">05 \u2014 The Reflection</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.reflection + '</p></div>'
-        + '</div>';
-
-      /* Reflection visual: editorial spread */
-      html += '<div class="proj__reflection-visual">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('gallery-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
         + '</div>';
 
     } else if (idx === 2) {
@@ -1849,7 +1980,7 @@ function makeQuote(q){
         + '</div>';
 
       /* Reflection: single 1:1 image */
-      html += '<div class="proj__reflection-accent bento--blur" data-zoomable style="aspect-ratio:1/1;max-width:680px;margin:0 auto">'
+      html += '<div class="proj__reflection-accent bento--blur" data-zoomable style="aspect-ratio:1/1;max-width:680px;margin:0 auto clamp(40px,7vh,80px)">'
         + '<img src="' + I('reflection') + '" alt="" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover">'
         + '</div>';
 
@@ -2070,14 +2201,38 @@ function makeQuote(q){
 
     html += '</div>'; /* close proj__body */
 
-    /* Next project */
-    html += '<div class="proj__next" data-next="' + nextIdx + '">'
-      + '<span class="proj__next-label">Next Project</span>'
-      + '<span class="proj__next-title">' + nextD.t + '</span>'
-      + '<span class="proj__next-arrow">→</span>'
-      + '</div>';
+    /* Closing: every project gets a "Next Project" strip EXCEPT the last one
+       (idx === projData.length - 1), which instead closes the story with a
+       thank-you note and the same contact card used on the homepage —
+       so the journey ends on an invitation, not a loop back to project 1. */
+    if (idx === projData.length - 1){
+      html += '<div class="proj__end">'
+        + '<p class="proj__end-thanks">Thanks for following the work all the way to the end <span class="o">&hearts;</span></p>'
+        + '<div class="contact__card" style="margin:0 auto">'
+        +   '<div class="sec__head" style="margin-bottom:0">'
+        +     '<span class="eyebrow"><span class="dot"></span>Let\u2019s talk</span>'
+        +     '<h2 style="margin-top:24px"><span class="lt">Let\u2019s make something</span><br>that lasts.</h2>'
+        +   '</div>'
+        +   '<a href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" class="contact__mail" data-cursor data-magnetic>vyara.dmtrv@gmail.com</a>'
+        +   '<div class="contact__socials">'
+        +     '<a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>'
+        +     '<a href="https://linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>'
+        +     '<a href="/assets/Vyara-Dimitrova_Resume.pdf" data-cursor target="_blank" rel="noopener">Read.cv</a>'
+        +   '</div>'
+        + '</div>'
+        + '<button type="button" class="proj__end-home" data-cursor>\u2190 Back to home</button>'
+        + '</div>';
+    } else {
+      html += '<div class="proj__next" data-next="' + nextIdx + '">'
+        + '<span class="proj__next-label">Next Project</span>'
+        + '<span class="proj__next-title">' + nextD.t + '</span>'
+        + '<span class="proj__next-arrow">→</span>'
+        + '</div>';
+    }
 
     projContent.innerHTML = html;
+    enhanceImages(projContent);
+    enhanceVideos(projContent);
     proj.scrollTop = 0;
     proj.classList.add('is-open');
     proj.setAttribute('aria-hidden', 'false');
@@ -2159,6 +2314,7 @@ function onProjScroll(){
     proj.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('proj-open');
     if (projIO){ projIO.disconnect(); projIO = null; }
+    if (videoIO){ videoIO.disconnect(); videoIO = null; }
     projParallax = [];
     currentProj = -1;
   }
@@ -2176,10 +2332,15 @@ function onProjScroll(){
   /* next project strip */
   proj.addEventListener('click', function(e){
     var next = e.target.closest('.proj__next');
-    if (!next) return;
-    var idx = parseInt(next.dataset.next, 10);
-    closeProject();
-    setTimeout(function(){ openProject(idx); }, 400);
+    if (next){
+      var idx = parseInt(next.dataset.next, 10);
+      closeProject();
+      setTimeout(function(){ openProject(idx); }, 400);
+      return;
+    }
+    if (e.target.closest('.proj__end-home')){
+      closeProject();
+    }
   });
 
   /* --- lightbox (fullscreen image viewer) --- */
@@ -2244,7 +2405,12 @@ function onProjScroll(){
     });
     navLinks.forEach(function(l){ l.classList.toggle('is-cur', l === cur); });
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', function(){
+    if (scrollPending) return;
+    scrollPending = true;
+    requestAnimationFrame(function(){ scrollPending = false; onScroll(); });
+  }, { passive: true });
+  var scrollPending = false;
   onScroll();
 
   /* --- scroll reveal (IntersectionObserver) --- */
