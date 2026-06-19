@@ -348,10 +348,61 @@
   .contact__socials a:hover::after{transform:scaleX(1);transform-origin:left}
 
   /* --- footer --- */
-  .foot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;
-    padding:30px var(--pad);border-top:1px solid var(--line);
+  .foot{position:relative;overflow:hidden;background:var(--beige);
+    border-top:1px solid var(--line);
+    padding:clamp(64px,12vh,140px) var(--pad) clamp(28px,5vh,46px)}
+  .foot__glow{position:absolute;top:-12%;right:-6%;width:min(60vw,560px);aspect-ratio:1;
+    z-index:0;pointer-events:none;
+    background:radial-gradient(circle at 60% 40%,rgba(229,96,43,.18),transparent 62%),
+               radial-gradient(circle at 40% 60%,rgba(201,138,125,.16),transparent 66%);
+    filter:blur(10px)}
+  .foot__inner{position:relative;z-index:1;max-width:1100px;margin:0 auto}
+  .foot__top{display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(40px,7vw,96px);
+    align-items:start;padding-bottom:clamp(46px,8vh,88px);border-bottom:1px solid var(--line)}
+  .foot__brand{max-width:46ch}
+  .foot__big{margin-top:20px;font-size:clamp(2.4rem,7vw,5.4rem);font-weight:800;
+    line-height:.96;letter-spacing:-.04em;color:var(--ink)}
+  .foot__big .o{color:var(--orange)}
+  .foot__note{margin-top:clamp(20px,3vh,30px);max-width:42ch;
+    font-size:clamp(.95rem,1.3vw,1.08rem);font-weight:400;color:var(--ink-soft);line-height:1.55}
+
+  .foot__cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(22px,3vw,40px)}
+  .foot__col{display:flex;flex-direction:column;align-items:flex-start;gap:13px}
+  .foot__col-h{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;
+    color:var(--ink);margin-bottom:4px}
+  .foot__col a{position:relative;font-size:.96rem;font-weight:600;color:var(--ink-soft);
+    padding-bottom:2px;transition:color .35s var(--ease)}
+  .foot__col a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1.5px;
+    background:var(--orange);transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease)}
+  .foot__col a:hover{color:var(--ink)}
+  .foot__col a:hover::after{transform:scaleX(1);transform-origin:left}
+  .foot__mail{word-break:break-word}
+  .foot__avail{display:inline-flex;align-items:center;gap:.6em;margin-top:2px;
+    font-size:.78rem;font-weight:600;color:var(--ink-soft);letter-spacing:.02em}
+  .foot__avail i{width:7px;height:7px;border-radius:50%;background:var(--orange);
+    flex:0 0 auto;animation:pulse 2.4s var(--ease) infinite}
+
+  .foot__base{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;
+    padding-top:clamp(24px,4vh,36px);
     font-size:.76rem;font-weight:500;letter-spacing:.04em;color:var(--ink-soft)}
-  .foot em{color:var(--orange);font-style:normal}
+  .foot__copy{color:var(--ink)}
+  .foot__totop{margin-left:auto;display:inline-flex;align-items:center;gap:.6em;
+    font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--ink);
+    border:1.5px solid var(--line);border-radius:40px;padding:9px 18px;will-change:transform;
+    transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),transform .25s var(--ease)}
+  .foot__totop:hover{background:var(--ink);color:var(--beige-lt);border-color:var(--ink)}
+  .foot__totop svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease)}
+  .foot__totop:hover svg{transform:translateY(-3px)}
+
+  @media(max-width:820px){
+    .foot__top{grid-template-columns:1fr;gap:clamp(34px,6vh,54px)}
+  }
+  @media(max-width:540px){
+    .foot__cols{grid-template-columns:1fr 1fr;gap:26px 22px}
+    .foot__base{gap:10px 18px}
+    .foot__totop{margin-left:0;margin-top:4px}
+  }
 
   /* --- project detail overlay --- */
   .proj{position:fixed;inset:0;z-index:7000;background:var(--beige);overflow-y:auto;overflow-x:hidden;
@@ -712,6 +763,48 @@
     .card--b{margin-top:0}
     .card__inner{animation:none}
   }
+  /* ───────────────────────────────────────────────────────────
+     UNIFIED SCROLLYTELLING
+     Every project page previously revealed its media with a mix of
+     fly-ins (left/right + rotate), clip-path wipes, blur-zooms and
+     scale pops — different per project and even per grid. This block
+     collapses them all into one calm vertical fade-up, matching the
+     baseline .proj__reveal language, so the storytelling reads the
+     same quiet way across all six projects. (Placed last so it wins;
+     defined above the reduced-motion query so that still overrides.)
+     ─────────────────────────────────────────────────────────── */
+  .bento--fly,
+  .bento--blur,
+  .bento--clip,
+  .proj__img--fly,
+  .proj__img--fly.from-left,
+  .proj__approach-line,
+  .proj__step--domino,
+  .proj__print-full,
+  .proj__video-reel,
+  .proj__reflection-accent,
+  .proj__video--clip{
+    opacity:0;filter:none;clip-path:none;transform:translateY(30px);
+    transition:opacity .7s var(--ease),transform .9s var(--ease-io),box-shadow .5s var(--ease);
+  }
+  .bento--fly.is-vis,
+  .bento--blur.is-vis,
+  .bento--clip.is-vis,
+  .proj__img--fly.is-vis,
+  .proj__img--fly.from-left.is-vis,
+  .proj__approach-line.is-vis,
+  .proj__step--domino.is-vis,
+  .proj__print-full.is-vis,
+  .proj__video-reel.is-vis,
+  .proj__reflection-accent.is-vis,
+  .proj__video--clip.is-vis{
+    opacity:1;filter:none;clip-path:none;transform:none;
+  }
+  /* quote + hero title keep their rise but drop the rotation flourish,
+     so the calm vertical motion is the page's single signature */
+  .proj__quote-word{transform:translateY(18px)}
+  .proj__title-char{transform:translateY(110%)}
+
   @media(prefers-reduced-motion:reduce){
     *{animation-duration:.001ms!important;animation-iteration-count:1!important;
       transition-duration:.001ms!important;scroll-behavior:auto!important}
@@ -793,6 +886,7 @@
     <section class="sec" id="studio">
       <div class="sec__head reveal">
         <span class="eyebrow"><span class="dot"></span>About</span>
+        <h2>Hello<span style="color:var(--orange)">.</span></h2>
       </div>
       <div class="studio__grid">
         <div class="studio__photo reveal" data-d="1">
@@ -845,8 +939,48 @@
   </div>
 
   <footer class="foot">
-    <span>Thanks for visiting</span>
-    <span>Built pixel by pixel, then rebuilt a few times.</span>
+    <div class="foot__glow" aria-hidden="true"></div>
+    <div class="foot__inner">
+
+      <div class="foot__top">
+        <div class="foot__brand reveal">
+          <span class="eyebrow"><span class="dot"></span>Frankfurt / Varna · Open to new work</span>
+          <h2 class="foot__big">Made in<br>two <span class="o">cities.</span></h2>
+          <p class="foot__note">Brand &amp; identity design, built to last — wherever good people are making good things. If that sounds like you, I'd love to hear about it.</p>
+        </div>
+
+        <nav class="foot__cols" aria-label="Footer">
+          <div class="foot__col reveal" data-d="1">
+            <span class="foot__col-h">Navigate</span>
+            <a href="#top" data-cursor>Home</a>
+            <a href="#work" data-cursor>Work</a>
+            <a href="#studio" data-cursor>About</a>
+            <a href="#contact" data-cursor>Contact</a>
+          </div>
+          <div class="foot__col reveal" data-d="2">
+            <span class="foot__col-h">Elsewhere</span>
+            <a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>
+            <a href="https://linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
+            <a href="/assets/Vyara-Dimitrova_Resume.pdf" data-cursor target="_blank" rel="noopener">Read.cv</a>
+          </div>
+          <div class="foot__col reveal" data-d="3">
+            <span class="foot__col-h">Say hello</span>
+            <a href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" class="foot__mail" data-cursor>vyara.dmtrv@gmail.com</a>
+            <span class="foot__avail"><i></i> Usually replies within a day</span>
+          </div>
+        </nav>
+      </div>
+
+      <div class="foot__base">
+        <span class="foot__copy">© 2026 Vyara Dimitrova</span>
+        <span class="foot__made">Built pixel by pixel, then rebuilt a few times.</span>
+        <a href="#top" class="foot__totop" data-cursor data-magnetic>
+          Back to top
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+        </a>
+      </div>
+
+    </div>
   </footer>
 
   <!-- LIGHTBOX -->
