@@ -189,6 +189,8 @@
     opacity:0;transition:opacity .8s var(--ease) .8s;pointer-events:none}
   .hero__sculpt-hint.is-in{opacity:.8}
   .hero__sculpt-hint svg{width:14px;height:14px}
+  /* no drag-to-rotate on mobile, so hide the hint there */
+  @media(max-width:768px){.hero__sculpt-hint{display:none!important}}
 
   .hero__top{position:relative;z-index:4;display:inline-flex;align-items:center;gap:.5em;
     border:1.5px solid var(--line);border-radius:40px;padding:7px 16px;
@@ -1085,9 +1087,13 @@
   var rL = new THREE.DirectionalLight(0xE5602B, 1.0); rL.position.set(-5, -2, 4); scene.add(rL);
   var fL = new THREE.DirectionalLight(0xC98A7D, 0.7); fL.position.set(0, -4, -5); scene.add(fL);
 
+  /* mobile flag — drives a smaller sculpture and disables touch drag-to-rotate */
+  var isMobile = window.matchMedia('(max-width: 768px)').matches;
+
   /* group + scale tween state */
   var group = new THREE.Group(); scene.add(group);
-  var ENTRY_SCALE = 0.17, FULL_SCALE = 1;
+  /* on mobile, shrink the sculpture ~45% so it doesn't crowd the headline */
+  var ENTRY_SCALE = 0.17, FULL_SCALE = isMobile ? 0.55 : 1;
   var entryScale = ENTRY_SCALE;
   group.scale.setScalar(entryScale);
 
@@ -1194,12 +1200,17 @@
      move/up listeners live on window so a drag that leaves the canvas
      bounds doesn't get "stuck" mid-rotation */
   mount.addEventListener('mousedown', onDown);
-  mount.addEventListener('touchstart', onDown, { passive: true });
   window.addEventListener('mousemove', onMove);
-  window.addEventListener('touchmove', onMove, { passive: true });
   window.addEventListener('mouseup', onUp);
-  window.addEventListener('touchend', onUp);
-  window.addEventListener('touchcancel', onUp);
+  /* Mobile: no drag-to-rotate. The sculpture keeps its gentle auto-spin, and
+     vertical swipes scroll the page normally (touch-action:pan-y on the canvas).
+     Touch drag listeners are only attached on non-mobile touch devices. */
+  if (!isMobile){
+    mount.addEventListener('touchstart', onDown, { passive: true });
+    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchend', onUp);
+    window.addEventListener('touchcancel', onUp);
+  }
 	
 
   /* cursor-follow tilt (desktop, not dragging) */
@@ -1633,7 +1644,7 @@
             v.pause();
           }
         });
-      }, { rootMargin: '200px 0px' });
+      }, { rootMargin: '0px', threshold: 0.01 });
     }
     root.querySelectorAll('video:not([data-vlazy])').forEach(function(v){
       v.setAttribute('data-vlazy', '');
@@ -1921,7 +1932,7 @@ function makeQuote(q){
       /* PROJECT 1 — LG Electronics: motion-first, videos in bento */
       /* Hero video reel — full cinematic strip */
       html += '<div class="proj__video-reel bento--blur" data-zoomable>'
-        + '<video src="' + V('reel') + '" autoplay muted loop playsinline preload="auto"></video>'
+        + '<video src="' + V('reel') + '" muted loop playsinline preload="none"></video>'
         + '</div>';
 
       /* 02 CHALLENGE */
@@ -1932,9 +1943,9 @@ function makeQuote(q){
 
       /* Video bento grid — autoplay clips */
       html += '<div class="proj__bento proj__bento--video">'
-        + '<div class="bento bento--blur" data-zoomable><video src="' + V('bento-1') + '" autoplay muted loop playsinline preload="auto"></video></div>'
-        + '<div class="bento bento--blur bento--square-ph" data-zoomable><video src="' + V('bento-2') + '" autoplay muted loop playsinline preload="auto"></video></div>'
-        + '<div class="bento bento--blur bento--square-ph" data-zoomable><video src="' + V('bento-3') + '" autoplay muted loop playsinline preload="auto"></video></div>'
+        + '<div class="bento bento--blur" data-zoomable><video src="' + V('bento-1') + '" muted loop playsinline preload="none"></video></div>'
+        + '<div class="bento bento--blur bento--square-ph" data-zoomable><video src="' + V('bento-2') + '" muted loop playsinline preload="none"></video></div>'
+        + '<div class="bento bento--blur bento--square-ph" data-zoomable><video src="' + V('bento-3') + '" muted loop playsinline preload="none"></video></div>'
         + '</div>';
 
       /* 03 APPROACH — flowing text, no cards */
