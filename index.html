@@ -90,22 +90,43 @@
     transition:opacity .4s var(--ease),transform .55s var(--ease)}
   .loader.is-leaving .loader__inner{opacity:0;transform:translateY(-22px)}
 
-  @keyframes loaderUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  /* --- signature reveal: pen-tool draws the V mark --- */
+  .loader__sig{position:relative;width:clamp(108px,16vw,156px);height:auto;overflow:visible}
+  .loader__sig svg{display:block;width:100%;height:auto;overflow:visible}
 
-  /* big kinetic word — same blur-reveal language as the hero headline */
-  .loader__word{position:relative;line-height:1;overflow:visible;
-    font-weight:800;letter-spacing:-.04em;font-size:clamp(2.6rem,9vw,6.2rem);
-    transition:opacity .7s var(--ease-io),filter .7s var(--ease-io)}
-  .loader__word-inner{display:block;white-space:nowrap}
-  .loader__word-inner .o{color:var(--orange)}
-  /* word 1 reveals with the hero headline's blur language (0 → 100 opacity) */
-  @keyframes loaderWordIn{
-    from{opacity:0;filter:blur(14px);transform:translateY(40px) scale(.92)}
-    to{opacity:1;filter:blur(0);transform:none}
-  }
-  .loader__word-inner.first-in{animation:loaderWordIn .9s var(--ease-io) both}
-  /* "Creative" disappears with a blurred fade (100 → 0 opacity) at the end */
-  .loader__word.is-out{opacity:0;filter:blur(14px)}
+  /* the V stroke itself — drawn on with dash-offset, then locks solid */
+  .sig__path{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:1110;stroke-dashoffset:1110;transition:stroke .5s var(--ease)}
+  .loader__sig.is-drawing .sig__path{animation:sigDraw 1.7s var(--ease-io) .15s forwards}
+  @keyframes sigDraw{to{stroke-dashoffset:0}}
+  /* lock: stroke shifts to the brand orange right as the last segment lands */
+  .loader__sig.is-locked .sig__path{stroke:var(--orange);stroke-dashoffset:0;animation:none}
+
+  /* construction geometry — anchors + bezier handles, editorial-tool language */
+  .sig__construct{opacity:0;transition:opacity .35s var(--ease)}
+  .loader__sig.is-drawing .sig__construct{opacity:1}
+  .loader__sig.is-locked .sig__construct{opacity:0;transition:opacity .4s var(--ease)}
+  .sig__handle-line{stroke:var(--ink-soft);stroke-width:1;stroke-dasharray:3 3;opacity:0;
+    transition:opacity .55s var(--ease)}
+  .sig__handle-line.is-on{opacity:.32}
+  .sig__handle{fill:var(--beige-lt);stroke:var(--ink-soft);stroke-width:1.2;opacity:0;
+    transform-origin:center;transform:scale(.7);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+  .sig__handle.is-on{opacity:.75;transform:scale(1)}
+  .sig__anchor{fill:var(--orange);opacity:0;transform-origin:center;transform:scale(.75);
+    transition:opacity .45s var(--ease),transform .45s var(--ease)}
+  .sig__anchor.is-on{opacity:.85;transform:scale(1)}
+  /* pen nib that travels alongside the path, leading the ink */
+  .sig__nib{opacity:0;transition:opacity .25s var(--ease)}
+  .loader__sig.is-drawing .sig__nib{opacity:1;animation:sigNibFade 1.7s linear .15s forwards}
+  .loader__sig.is-locked .sig__nib{opacity:0}
+  @keyframes sigNibFade{0%{opacity:1}92%{opacity:1}100%{opacity:0}}
+  .sig__nib-dot{fill:var(--orange)}
+
+  /* a quiet flash on lock — reads as "snapped into place" rather than a bounce */
+  @keyframes sigLockFlash{0%{filter:drop-shadow(0 0 0 rgba(229,96,43,0))}
+    40%{filter:drop-shadow(0 0 10px rgba(229,96,43,.55))}
+    100%{filter:drop-shadow(0 0 0 rgba(229,96,43,0))}}
+  .loader__sig.is-locked{animation:sigLockFlash .6s var(--ease-io)}
 
   /* witty status sentence (kept) */
   .loader__quip{position:relative;min-height:1.4em;overflow:hidden;min-width:min(90vw,420px);max-width:min(90vw,420px);
@@ -115,11 +136,13 @@
   .loader__quip-inner.is-in{transform:translateY(0);opacity:1}
   .loader__quip-inner.from-below{transform:translateY(120%);opacity:0}
 
-  /* progress hairline — no numbers */
+  /* progress hairline — no numbers; fill is triggered by JS so it starts and
+     finishes exactly in step with the pen-draw animation */
   .loader__bar{position:relative;width:clamp(180px,22vw,260px);height:1.5px;background:var(--line);
     overflow:hidden;margin-top:4px}
   .loader__bar i{position:absolute;inset:0;transform-origin:left;transform:scaleX(0);
-    background:var(--orange);animation:fill 4.5s cubic-bezier(.7,0,.84,0) forwards}
+    background:var(--orange)}
+  .loader__bar.is-filling i{animation:fill 1.7s var(--ease-io) forwards}
   @keyframes fill{to{transform:scaleX(1)}}
 
   /* easter egg — 2× size, vertical float + scale pulse only */
@@ -815,10 +838,34 @@
       <div class="loader__frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
       <div class="loader__inner">
-        <div class="loader__word" id="loaderWord">
-          <span class="loader__word-inner is-in first-in" id="loaderWordText">Identity<span class="o">.</span></span>
+        <div class="loader__sig" id="loaderSig">
+          <svg viewBox="0 0 219.38 162.22" aria-hidden="true">
+            <!-- construction geometry: anchors + bezier handles, drawn first -->
+            <g class="sig__construct" id="sigConstruct">
+              <line class="sig__handle-line" id="hl1" x1="175.92" y1="2.28" x2="213.76" y2="2.28"></line>
+              <circle class="sig__handle" id="h1" cx="213.76" cy="2.28" r="3.2"></circle>
+              <line class="sig__handle-line" id="hl2" x1="2.14" y1="2.28" x2="45.24" y2="2.28"></line>
+              <circle class="sig__handle" id="h2" cx="45.24" cy="2.28" r="3.2"></circle>
+              <line class="sig__handle-line" id="hl3" x1="109.55" y1="46.71" x2="109.55" y2="34.88"></line>
+              <circle class="sig__handle" id="h3" cx="109.55" cy="34.88" r="3.2"></circle>
+              <circle class="sig__anchor" id="a1" cx="175.92" cy="2.28" r="3.6"></circle>
+              <circle class="sig__anchor" id="a2" cx="109.55" cy="159.94" r="3.6"></circle>
+              <circle class="sig__anchor" id="a3" cx="97.09" cy="159.94" r="3.6"></circle>
+              <circle class="sig__anchor" id="a4" cx="2.14" cy="2.28" r="3.6"></circle>
+              <circle class="sig__anchor" id="a5" cx="109.55" cy="46.71" r="3.6"></circle>
+            </g>
+            <!-- the mark, drawn on by the pen -->
+            <path class="sig__path" id="sigPath" d="M162.37,24.56l13.55-22.28h37.84l-85.14,157.67H97.09L2.14,2.28h43.1l59.91,105.46V57.92l0,0
+              c-4.68-1.57-8.06-5.99-8.06-11.21c0-6.53,5.29-11.83,11.82-11.83c6.53,0,11.83,5.3,11.83,11.83c0,4.88-2.96,9.06-7.18,10.87l0,0
+              v94.66l56.05-104.06c0,0-14.01-3.15-18.91-22.42c-4.91-19.27-3.51-23.48-3.51-23.48H72.21c0,0-0.7,4.56-3.5,12.27
+              c-2.8,7.7-3.16,6.71-3.16,6.71"></path>
+            <!-- pen nib leading the ink along the upper-right stroke -->
+            <g class="sig__nib" id="sigNib">
+              <circle class="sig__nib-dot" cx="213.76" cy="2.28" r="2.6"></circle>
+            </g>
+          </svg>
         </div>
-        <div class="loader__bar"><i></i></div>
+        <div class="loader__bar" id="loaderBar"><i></i></div>
         <div class="loader__quip" id="loaderQuip"><span class="loader__quip-inner is-in" id="loaderQuipText">Loading evidence that I know what I'm doing&hellip;</span></div>
       </div>
 
@@ -1673,12 +1720,12 @@
     });
   }
 
-/* --- loader: kinetic discipline word + witty sentence + easter egg --- */
+/* --- loader: pen-tool signature reveal + witty sentence + easter egg --- */
 var loader     = document.getElementById('loader');
 var quipEl     = document.getElementById('loaderQuipText');
 var quipWrap   = document.getElementById('loaderQuip');
-var wordEl     = document.getElementById('loaderWordText');
-var wordWrap   = document.getElementById('loaderWord');
+var sigEl      = document.getElementById('loaderSig');
+var barWrap    = document.getElementById('loaderBar');
 var eggEl      = document.getElementById('loaderEgg');
 var skipBtn    = document.getElementById('loaderSkip');
 
@@ -1695,7 +1742,7 @@ try { sessionStorage.setItem(SEEN_KEY, '1'); } catch (e){}
    sat through the full intro once this session — both skip the same way */
 var fastIntro = reduce || skipIntro;
 
-/* generic slide-swap used by both the big word and the witty line */
+/* generic slide-swap used by the witty line */
 function swapText(wrap, current, html, cls){
   var next = document.createElement('span');
   next.className = cls + ' from-below';
@@ -1711,31 +1758,41 @@ function swapText(wrap, current, html, cls){
   return next;
 }
 
-/* big word: 4 disciplines then CREATIVE — runs once through, no loop */
-var loaderWords = ['Identity', 'Web', 'Packaging', 'Editorial', 'CREATIVE'];
-var wordIdx = 0, wordTimer = null;
-function nextWord(){
-  wordIdx++;
-  var isLast = wordIdx === loaderWords.length - 1;
-  var html = isLast ? 'CREATI<span class="o">V</span>E' : loaderWords[wordIdx] + '<span class="o">.</span>';
-  wordEl.classList.remove('first-in');
-  /* quick crossfade — fade out, swap, fade back in (~130ms each way) */
-  wordEl.style.transition = 'opacity .13s ease';
-  wordEl.style.opacity = '0';
-  setTimeout(function(){
-    wordEl.innerHTML = html;
-    wordEl.style.opacity = '1';
-  }, 130);
-  if (isLast){ clearInterval(wordTimer); wordTimer = null; }
+/* pen-tool signature reveal: anchors + bezier handles flash in as
+   construction geometry, the pen nib travels, the path draws itself on,
+   then everything but the inked mark fades and the stroke locks orange.
+   Runs once through, no loop. */
+var sigConstruct = document.getElementById('sigConstruct');
+var sigAnchors = sigConstruct ? Array.prototype.slice.call(sigConstruct.querySelectorAll('.sig__anchor')) : [];
+var sigHandles = sigConstruct ? Array.prototype.slice.call(sigConstruct.querySelectorAll('.sig__handle, .sig__handle-line')) : [];
+var sigTimers = [];
+function sigTimeout(fn, t){ sigTimers.push(setTimeout(fn, t)); }
+function clearSigTimers(){ sigTimers.forEach(clearTimeout); sigTimers = []; }
+
+function runSignature(){
+  if (!sigEl) return;
+  /* anchor points + bezier handles appear briefly, staggered, like a vector
+     tool plotting nodes before the curve commits */
+  sigAnchors.forEach(function(a, i){ sigTimeout(function(){ a.classList.add('is-on'); }, 80 + i * 110); });
+  sigHandles.forEach(function(h, i){ sigTimeout(function(){ h.classList.add('is-on'); }, 260 + i * 130); });
+  /* the pen starts drawing once the geometry has had a beat to register —
+     the progress hairline starts filling at the exact same moment, and
+     both finish together 1.7s later */
+  sigTimeout(function(){
+    sigEl.classList.add('is-drawing');
+    if (barWrap) barWrap.classList.add('is-filling');
+  }, 450);
+  /* lock: construction geometry clears, stroke commits to brand orange */
+  sigTimeout(function(){
+    sigEl.classList.remove('is-drawing');
+    sigEl.classList.add('is-locked');
+  }, 2300);
 }
-if (!fastIntro) wordTimer = setInterval(nextWord, 1000);
+if (!fastIntro) runSignature();
 
-/* "Creative" disappears with a blurred fade-out after word 5 (shows 4s, leaves ~5s) */
-if (!fastIntro) setTimeout(function(){ wordWrap.classList.add('is-out'); }, 3500);
-
-/* status sentence swaps instantly to "Welcome in!" at 4.5s — no transition */
+/* status sentence swaps instantly to "Welcome in!" right as the mark locks */
 var quipTimer = null;
-if (!fastIntro) setTimeout(function(){ quipEl.innerHTML = 'Welcome in!'; }, 3200);
+if (!fastIntro) setTimeout(function(){ quipEl.innerHTML = 'Welcome in!'; }, 2300);
 
 /* easter egg: click the sparkle for escalating replies (full intro only —
    it would just flash and vanish on the fast path) */
@@ -1768,12 +1825,13 @@ document.addEventListener('keydown', function(e){
   }
 });
 
-/* total intro = 6s: words 0–5s, "Welcome in!" 4.5–6s, then curtain lifts.
-   Fast path (reduced motion / repeat visit) lifts almost immediately. */
-setTimeout(revealOnce, fastIntro ? 200 : 4500);
+/* total intro = 4s: geometry + draw 0–2.3s, lock + "Welcome in!" 2.3–4s
+   (a brief hold, not a long static pause), then curtain lifts. Fast path
+   (reduced motion / repeat visit) lifts almost immediately. */
+setTimeout(revealOnce, fastIntro ? 200 : 4000);
 
 function revealHero(){
-  if (wordTimer){ clearInterval(wordTimer); wordTimer = null; }
+  clearSigTimers();
   if (quipTimer){ clearInterval(quipTimer); quipTimer = null; }
   if (skipBtn){ skipBtn.removeEventListener('click', revealOnce); }
 
@@ -1791,10 +1849,17 @@ function revealHero(){
     setTimeout(function(){ if (hint) hint.classList.add('is-in'); kickReveals(); }, 460);
   }
 
-  /* ensure word is on CREATIVE (in case the auto-cycle hasn't reached it yet,
-     or we skipped/fast-pathed before it ever started) */
-  if (wordIdx < loaderWords.length - 1){
-    wordEl = swapText(wordWrap, wordEl, 'CREATI<span class="o">V</span>E', 'loader__word-inner');
+  /* ensure the mark is locked in (in case we skipped/fast-pathed before the
+     draw-on ever finished) — and the hairline snaps to full with it,
+     instantly, rather than replaying its fill animation */
+  if (sigEl && !sigEl.classList.contains('is-locked')){
+    sigEl.classList.remove('is-drawing');
+    sigEl.classList.add('is-locked');
+  }
+  if (barWrap && !barWrap.classList.contains('is-filling')){
+    barWrap.classList.add('is-filling');
+    var barFill = barWrap.querySelector('i');
+    if (barFill){ barFill.style.animation = 'none'; barFill.style.transform = 'scaleX(1)'; }
   }
 
   document.body.classList.remove('is-locked');
@@ -1809,7 +1874,7 @@ function revealHero(){
     return;
   }
 
-  /* "Welcome in!" is already on screen (swapped in at 4.5s) — lift the curtain now */
+  /* "Welcome in!" is already on screen (swapped in as the mark locked) — lift the curtain now */
   loader.classList.add('is-leaving');
   setTimeout(function(){ revealFn(function(){}); }, 350);
   setTimeout(revealCopy, 700);
