@@ -136,7 +136,8 @@
   .loader__egg-reveal{display:inline-block;max-width:0;overflow:hidden;vertical-align:middle;
     white-space:nowrap;font-size:.66rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
     color:var(--ink-soft);transition:max-width .6s var(--ease)}
-  .loader__egg:hover .loader__egg-reveal{max-width:260px}
+  .loader__egg:hover .loader__egg-reveal,
+  .loader__egg.is-revealed .loader__egg-reveal{max-width:260px}
   .loader.is-leaving .loader__egg{opacity:0;transition:opacity .3s var(--ease)}
 
   /* skip control — quiet, corner-anchored, never competes with the kinetic word.
@@ -1731,6 +1732,7 @@ if (eggEl && !fastIntro){
     eggClicks = Math.min(eggClicks + 1, eggMessages.length - 1);
     var rev = eggEl.querySelector('.loader__egg-reveal');
     if (rev) rev.textContent = '\u00a0' + eggMessages[eggClicks];
+    eggEl.classList.add('is-revealed');
   });
 }
 
