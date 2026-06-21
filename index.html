@@ -97,24 +97,58 @@
   /* the V stroke itself — drawn on with dash-offset, then locks solid */
   .sig__path{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;
     stroke-dasharray:1110;stroke-dashoffset:1110;transition:stroke .5s var(--ease)}
-  .loader__sig.is-drawing .sig__path{animation:sigDraw 1.7s var(--ease-io) .15s forwards}
-  @keyframes sigDraw{to{stroke-dashoffset:0}}
+  .loader__sig.is-drawing .sig__path{animation:sigDraw 1.7s linear .15s forwards}
+  /* the pen eases through each corner and accelerates along the straights —
+     stops below aren't evenly spaced in stroke-dashoffset; they were sampled
+     from the mark's actual geometry so more "time" is spent exactly where
+     the line bends, and less where it runs straight. Animation-timing-function
+     stays linear so this built-in pacing isn't re-flattened by an outer ease. */
+  @keyframes sigDraw{
+    0%{stroke-dashoffset:1110}
+    4%{stroke-dashoffset:1076.8}
+    8%{stroke-dashoffset:1050.6}
+    12%{stroke-dashoffset:1015.1}
+    16%{stroke-dashoffset:926.8}
+    20%{stroke-dashoffset:871.3}
+    24%{stroke-dashoffset:845.1}
+    28%{stroke-dashoffset:818.1}
+    32%{stroke-dashoffset:743.6}
+    36%{stroke-dashoffset:664.5}
+    40%{stroke-dashoffset:635}
+    44%{stroke-dashoffset:608.8}
+    48%{stroke-dashoffset:569.8}
+    52%{stroke-dashoffset:496.4}
+    56%{stroke-dashoffset:466.5}
+    60%{stroke-dashoffset:440.4}
+    64%{stroke-dashoffset:408.9}
+    68%{stroke-dashoffset:367.5}
+    72%{stroke-dashoffset:316.1}
+    76%{stroke-dashoffset:266.1}
+    80%{stroke-dashoffset:203.4}
+    84%{stroke-dashoffset:150.3}
+    88%{stroke-dashoffset:119.7}
+    92%{stroke-dashoffset:89.2}
+    96%{stroke-dashoffset:39.7}
+    100%{stroke-dashoffset:0}
+  }
   /* lock: stroke shifts to the brand orange right as the last segment lands */
   .loader__sig.is-locked .sig__path{stroke:var(--orange);stroke-dashoffset:0;animation:none}
 
-  /* construction geometry — anchors + bezier handles, editorial-tool language */
+  /* construction geometry — anchors + bezier handles, editorial-tool language.
+     Kept deliberately quiet: low opacity, small scale-in, so it reads as a
+     faint trace of the tool's logic rather than competing with the ink. */
   .sig__construct{opacity:0;transition:opacity .35s var(--ease)}
   .loader__sig.is-drawing .sig__construct{opacity:1}
   .loader__sig.is-locked .sig__construct{opacity:0;transition:opacity .4s var(--ease)}
-  .sig__handle-line{stroke:var(--ink-soft);stroke-width:1;stroke-dasharray:3 3;opacity:0;
+  .sig__handle-line{stroke:var(--ink-soft);stroke-width:.75;stroke-dasharray:2 3;opacity:0;
     transition:opacity .55s var(--ease)}
-  .sig__handle-line.is-on{opacity:.32}
-  .sig__handle{fill:var(--beige-lt);stroke:var(--ink-soft);stroke-width:1.2;opacity:0;
-    transform-origin:center;transform:scale(.7);transition:opacity .55s var(--ease),transform .55s var(--ease)}
-  .sig__handle.is-on{opacity:.75;transform:scale(1)}
-  .sig__anchor{fill:var(--orange);opacity:0;transform-origin:center;transform:scale(.75);
+  .sig__handle-line.is-on{opacity:.16}
+  .sig__handle{fill:var(--beige-lt);stroke:var(--ink-soft);stroke-width:1;opacity:0;
+    transform-origin:center;transform:scale(.82);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+  .sig__handle.is-on{opacity:.4;transform:scale(1)}
+  .sig__anchor{fill:var(--orange);opacity:0;transform-origin:center;transform:scale(.85);
     transition:opacity .45s var(--ease),transform .45s var(--ease)}
-  .sig__anchor.is-on{opacity:.85;transform:scale(1)}
+  .sig__anchor.is-on{opacity:.5;transform:scale(1)}
   /* pen nib that travels alongside the path, leading the ink */
   .sig__nib{opacity:0;transition:opacity .25s var(--ease)}
   .loader__sig.is-drawing .sig__nib{opacity:1;animation:sigNibFade 1.7s linear .15s forwards}
@@ -456,11 +490,11 @@
     opacity:0;transform:translateY(18px);transition:opacity .7s var(--ease) .8s,transform .7s var(--ease) .8s}
   .proj.is-open .proj__tagline{opacity:1;transform:none}
 
-  .proj__body{max-width:1060px;margin:0 auto;padding:0 var(--pad)}
+  .proj__body{max-width:1060px;margin:0 auto;padding:0 var(--pad);margin-bottom:clamp(40px,7vh,80px)}
 
   /* section base */
   .proj__sec{padding:clamp(60px,10vh,120px) 0}
-  .proj__label{font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.22em;color:var(--orange);margin-bottom:22px}
+  .proj__label{font-size:clamp(1.05rem,1.7vw,1.5rem);font-weight:800;text-transform:uppercase;letter-spacing:.16em;color:var(--orange);margin-bottom:26px}
   .proj__text{font-size:clamp(1.15rem,2.4vw,1.75rem);font-weight:300;line-height:1.42;letter-spacing:-.01em;max-width:38ch}
   .proj__text b{font-weight:700}
 
@@ -567,22 +601,6 @@
   .proj__reflection-accent img{display:block;width:100%;height:100%;object-fit:cover;
     transition:transform 1.4s var(--ease-io)}
   .proj__reflection-accent:hover img{transform:scale(1.03)}
-
-  /* ── APPROACH — flowing text layout (no step cards) ── */
-  .proj__approach-flow{padding:clamp(20px,4vh,50px) 0;display:flex;flex-direction:column;gap:clamp(22px,3vh,36px)}
-  .proj__approach-line{display:flex;align-items:flex-start;gap:clamp(20px,3vw,44px);
-    padding-bottom:clamp(22px,3vh,36px);border-bottom:1px solid var(--line);
-    opacity:0;transform:translateX(-28px);
-    transition:opacity .7s var(--ease),transform .8s var(--ease-io)}
-  .proj__approach-line.is-vis{opacity:1;transform:none}
-  .proj__approach-line:last-child{border-bottom:none;padding-bottom:0}
-  .proj__approach-num{font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:900;letter-spacing:-.05em;
-    color:var(--orange);opacity:.22;line-height:1;flex:0 0 3rem;
-    transition:opacity .3s var(--ease)}
-  .proj__approach-line:hover .proj__approach-num{opacity:1}
-  .proj__approach-content{flex:1}
-  .proj__approach-title{font-weight:800;font-size:1.05rem;letter-spacing:-.01em;margin-bottom:6px}
-  .proj__approach-desc{font-size:.88rem;font-weight:400;color:var(--ink-soft);line-height:1.55}
 
   /* ── WEB mockup (Project 6) — enhanced ── */
   .proj__browser{border-radius:14px;overflow:hidden;border:1px solid var(--line);
@@ -703,7 +721,8 @@
   .proj__testi cite{display:block;margin-top:18px;font-style:normal;font-size:.78rem;font-weight:700;
     text-transform:uppercase;letter-spacing:.18em;color:var(--ink-soft)}
 
-  /* next project strip */
+  /* next project strip (single direction — used only on the very first project,
+     which has nowhere to go "back" to within the case-study flow) */
   .proj__next{display:flex;align-items:center;justify-content:center;gap:clamp(20px,4vw,48px);
     padding:clamp(80px,14vh,160px) var(--pad);cursor:pointer;border-top:1px solid var(--line);
     transition:background .4s var(--ease)}
@@ -714,6 +733,52 @@
   .proj__next:hover .proj__next-title{color:var(--orange)}
   .proj__next-arrow{font-size:2rem;color:var(--orange);transition:transform .4s var(--ease)}
   .proj__next:hover .proj__next-arrow{transform:translateX(8px)}
+
+  /* split prev / next nav — used on every project that HAS a previous one
+     (projects 2–6). Left half walks back, right half moves forward; each
+     half gets its own hover identity so the direction you're about to take
+     is unmistakable before you even click. */
+  .proj__nav{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+  .proj__nav-half{position:relative;display:flex;flex-direction:column;justify-content:center;
+    gap:clamp(10px,1.6vh,16px);padding:clamp(56px,11vh,120px) var(--pad);cursor:pointer;
+    overflow:hidden;transition:background .4s var(--ease)}
+  .proj__nav-prev{align-items:flex-start;text-align:left;border-right:1px solid var(--line)}
+  .proj__nav-next{align-items:flex-end;text-align:right}
+  .proj__nav-half::before{content:"";position:absolute;inset:0;background:var(--orange);
+    opacity:0;transform:scaleX(0);transition:opacity .4s var(--ease),transform .45s var(--ease-io);
+    pointer-events:none}
+  .proj__nav-prev::before{transform-origin:left center}
+  .proj__nav-next::before{transform-origin:right center}
+  .proj__nav-half:hover::before{opacity:.06;transform:scaleX(1)}
+  .proj__nav-half:active::before{opacity:.1}
+  .proj__nav-dir{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.24em;color:var(--ink-soft);position:relative;z-index:1;
+    transition:color .35s var(--ease)}
+  .proj__nav-prev .proj__nav-dir{flex-direction:row}
+  .proj__nav-next .proj__nav-dir{flex-direction:row-reverse}
+  .proj__nav-half:hover .proj__nav-dir{color:var(--orange)}
+  .proj__nav-arrow{font-size:1rem;color:var(--orange);transition:transform .4s var(--ease-io)}
+  .proj__nav-prev:hover .proj__nav-arrow{transform:translateX(-8px)}
+  .proj__nav-next:hover .proj__nav-arrow{transform:translateX(8px)}
+  .proj__nav-title{font-size:clamp(1.6rem,4.2vw,3.2rem);font-weight:900;letter-spacing:-.04em;
+    position:relative;z-index:1;transition:color .35s var(--ease),transform .4s var(--ease-io)}
+  .proj__nav-half:hover .proj__nav-title{color:var(--orange)}
+  .proj__nav-prev:hover .proj__nav-title{transform:translateX(-6px)}
+  .proj__nav-next:hover .proj__nav-title{transform:translateX(6px)}
+  .proj__nav-half.is-end{cursor:default}
+  .proj__nav-half.is-end::before,
+  .proj__nav-half.is-end:hover::before{opacity:0;transform:scaleX(0)}
+  .proj__nav-half.is-end .proj__nav-dir,
+  .proj__nav-half.is-end .proj__nav-title{opacity:.5}
+  .proj__nav-half.is-end:hover .proj__nav-dir,
+  .proj__nav-half.is-end:hover .proj__nav-title{color:inherit;transform:none}
+  @media(max-width:700px){
+    .proj__nav{grid-template-columns:1fr}
+    .proj__nav-prev{border-right:none;border-bottom:1px solid var(--line)}
+    .proj__nav-prev,.proj__nav-next{align-items:flex-start;text-align:left}
+    .proj__nav-next .proj__nav-dir{flex-direction:row}
+    .proj__nav-next:hover .proj__nav-title{transform:translateX(6px)}
+  }
 
   /* closing screen — shown only after the last project, instead of "Next Project" */
   .proj__end{display:flex;flex-direction:column;align-items:center;gap:clamp(28px,5vh,48px);
@@ -726,18 +791,6 @@
     color:var(--ink-soft);padding:10px 4px;border-bottom:1.5px solid var(--line);
     transition:color .35s var(--ease),border-color .35s var(--ease)}
   .proj__end-home:hover{color:var(--ink);border-color:var(--orange)}
-
-  /* tools strip — auto-scrolling marquee */
-  .proj__tools{overflow:hidden;padding:clamp(16px,2.5vh,28px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .proj__tools--spaced{margin-top:clamp(60px,10vh,120px)}
-  .proj__tools-track{display:flex;width:max-content;gap:16px;animation:toolscroll 18s linear infinite}
-  .proj__tools:hover .proj__tools-track{animation-play-state:paused}
-  .proj__tool{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border:1.5px solid var(--line);border-radius:40px;
-    font-size:.84rem;font-weight:700;letter-spacing:.04em;white-space:nowrap;flex:0 0 auto;
-    transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease)}
-  .proj__tool:hover{background:var(--ink);color:var(--beige-lt);border-color:var(--ink)}
-  .proj__tool::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--orange);flex:0 0 auto}
-  @keyframes toolscroll{to{transform:translateX(-50%)}}
 
   /* website mockup (Maynooth Furniture) */
   .proj__mockup{border-radius:14px;overflow:hidden;border:1px solid var(--line);
@@ -790,7 +843,6 @@
   .bento--clip,
   .proj__img--fly,
   .proj__img--fly.from-left,
-  .proj__approach-line,
   .proj__step--domino,
   .proj__print-full,
   .proj__video-reel,
@@ -804,7 +856,6 @@
   .bento--clip.is-vis,
   .proj__img--fly.is-vis,
   .proj__img--fly.from-left.is-vis,
-  .proj__approach-line.is-vis,
   .proj__step--domino.is-vis,
   .proj__print-full.is-vis,
   .proj__video-reel.is-vis,
@@ -843,16 +894,16 @@
             <!-- construction geometry: anchors + bezier handles, drawn first -->
             <g class="sig__construct" id="sigConstruct">
               <line class="sig__handle-line" id="hl1" x1="175.92" y1="2.28" x2="213.76" y2="2.28"></line>
-              <circle class="sig__handle" id="h1" cx="213.76" cy="2.28" r="3.2"></circle>
+              <circle class="sig__handle" id="h1" cx="213.76" cy="2.28" r="2.4"></circle>
               <line class="sig__handle-line" id="hl2" x1="2.14" y1="2.28" x2="45.24" y2="2.28"></line>
-              <circle class="sig__handle" id="h2" cx="45.24" cy="2.28" r="3.2"></circle>
+              <circle class="sig__handle" id="h2" cx="45.24" cy="2.28" r="2.4"></circle>
               <line class="sig__handle-line" id="hl3" x1="109.55" y1="46.71" x2="109.55" y2="34.88"></line>
-              <circle class="sig__handle" id="h3" cx="109.55" cy="34.88" r="3.2"></circle>
-              <circle class="sig__anchor" id="a1" cx="175.92" cy="2.28" r="3.6"></circle>
-              <circle class="sig__anchor" id="a2" cx="109.55" cy="159.94" r="3.6"></circle>
-              <circle class="sig__anchor" id="a3" cx="97.09" cy="159.94" r="3.6"></circle>
-              <circle class="sig__anchor" id="a4" cx="2.14" cy="2.28" r="3.6"></circle>
-              <circle class="sig__anchor" id="a5" cx="109.55" cy="46.71" r="3.6"></circle>
+              <circle class="sig__handle" id="h3" cx="109.55" cy="34.88" r="2.4"></circle>
+              <circle class="sig__anchor" id="a1" cx="175.92" cy="2.28" r="2.6"></circle>
+              <circle class="sig__anchor" id="a2" cx="109.55" cy="159.94" r="2.6"></circle>
+              <circle class="sig__anchor" id="a3" cx="97.09" cy="159.94" r="2.6"></circle>
+              <circle class="sig__anchor" id="a4" cx="2.14" cy="2.28" r="2.6"></circle>
+              <circle class="sig__anchor" id="a5" cx="109.55" cy="46.71" r="2.6"></circle>
             </g>
             <!-- the mark, drawn on by the pen -->
             <path class="sig__path" id="sigPath" d="M162.37,24.56l13.55-22.28h37.84l-85.14,157.67H97.09L2.14,2.28h43.1l59.91,105.46V57.92l0,0
@@ -1881,7 +1932,6 @@ function revealHero(){
   setTimeout(function(){ loader.classList.add('is-gone'); }, 1300);
 }
 
-
   /* --- work cards --- */
   var cardsWrap = document.getElementById('cards');
   /* size variants cycle across 6 cards */
@@ -1971,6 +2021,8 @@ function makeQuote(q){
     var d       = projData[idx];
     var nextIdx = (idx + 1) % projData.length;
     var nextD   = projData[nextIdx];
+    var prevIdx = (idx - 1 + projData.length) % projData.length;
+    var prevD   = projData[prevIdx];
     var slug    = projectSlugs[d.t];
     var I       = function(name){ return projImg(slug, name); };
     var V       = function(name){ return projVid(slug, name); };
@@ -2020,17 +2072,6 @@ function makeQuote(q){
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">03 \u2014 The Approach</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.approach + '</p></div>'
-        + '</div>';
-
-      /* Approach flow lines */
-      html += '<div class="proj__approach-flow">'
-        + d.steps.map(function(s, si){
-            return '<div class="proj__approach-line proj__reveal" data-sd="' + (si % 3) + '">'
-              + '<div class="proj__approach-num">0' + (si+1) + '</div>'
-              + '<div class="proj__approach-content"><div class="proj__approach-title">' + s.t + '</div>'
-              + '<div class="proj__approach-desc">' + s.d + '</div></div>'
-              + '</div>';
-          }).join('')
         + '</div>';
 
       /* Motion stills gallery pair */
@@ -2097,16 +2138,6 @@ function makeQuote(q){
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.approach + '</p></div>'
         + '</div>';
 
-      html += '<div class="proj__approach-flow">'
-        + d.steps.map(function(s, si){
-            return '<div class="proj__approach-line proj__reveal" data-sd="' + (si % 3) + '">'
-              + '<div class="proj__approach-num">0' + (si+1) + '</div>'
-              + '<div class="proj__approach-content"><div class="proj__approach-title">' + s.t + '</div>'
-              + '<div class="proj__approach-desc">' + s.d + '</div></div>'
-              + '</div>';
-          }).join('')
-        + '</div>';
-
       /* Fly-in gallery */
       html += '<div class="proj__gallery">'
         + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('gallery-1') + '" alt="" loading="lazy"></div>'
@@ -2144,86 +2175,63 @@ function makeQuote(q){
         + '</div>';
 
     } else if (idx === 2) {
-      /* PROJECT 3 — Smart Point: UI / kiosk */
+      /* PROJECT 3 — Smart Point: UI / kiosk (layout shuffled) */
 
-      /* Initial bento of stills */
-      html += '<div class="proj__bento proj__bento--3">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
-        + '</div>';
-
-      /* 02 CHALLENGE */
-      html += '<div class="proj__sec">'
-        + '<div class="proj__reveal"><div class="proj__label">02 \u2014 The Challenge</div></div>'
-        + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.challenge + '</p></div>'
-        + '</div>';
-
-      /* Full-bleed hero image */
+      /* Lead full-bleed still */
       html += '<div class="proj__print-full bento--blur" data-zoomable>'
         + '<img src="' + I('outcome-1') + '" alt="" loading="lazy">'
         + '</div>';
 
-      /* 03 APPROACH — text */
-      html += '<div class="proj__sec">'
-        + '<div class="proj__reveal"><div class="proj__label">03 \u2014 The Approach</div></div>'
-        + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.approach + '</p></div>'
-        + '</div>';
-
-      /* Approach: flowing numbered lines */
-      html += '<div class="proj__approach-flow">'
-        + d.steps.map(function(s, si){
-            return '<div class="proj__approach-line proj__reveal" data-sd="' + (si % 3) + '">'
-              + '<div class="proj__approach-num">0' + (si+1) + '</div>'
-              + '<div class="proj__approach-content"><div class="proj__approach-title">' + s.t + '</div>'
-              + '<div class="proj__approach-desc">' + s.d + '</div></div>'
-              + '</div>';
-          }).join('')
-        + '</div>';
-
-      /* Approach: 3 full-width 16:9 images */
-      html += '<div class="proj__gallery" style="gap:clamp(20px,3vh,40px)">'
-        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-1') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '<div class="proj__img proj__img--fly from-left" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-2') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-3') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '</div>';
-
-    } else if (idx === 3) {
-      /* PROJECT 4 — Reverto Winery: packaging */
-
-      /* Initial bento of stills */
-      html += '<div class="proj__bento proj__bento--3">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
-        + '</div>';
-
-      /* 02 CHALLENGE */
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">02 \u2014 The Challenge</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.challenge + '</p></div>'
         + '</div>';
 
-      /* Challenge + Outcome share the same wide visual */
-      html += '<div class="proj__parallax proj__reveal" data-zoomable>'
-        + '<img src="' + I('parallax') + '" alt="" loading="lazy">'
+      /* Two-up spread */
+      html += '<div class="proj__spread">'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
         + '</div>';
 
-      /* 03 APPROACH */
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">03 \u2014 The Approach</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.approach + '</p></div>'
         + '</div>';
 
-      /* Approach: flowing numbered lines */
-      html += '<div class="proj__approach-flow">'
-        + d.steps.map(function(s, si){
-            return '<div class="proj__approach-line proj__reveal" data-sd="' + (si % 3) + '">'
-              + '<div class="proj__approach-num">0' + (si+1) + '</div>'
-              + '<div class="proj__approach-content"><div class="proj__approach-title">' + s.t + '</div>'
-              + '<div class="proj__approach-desc">' + s.d + '</div></div>'
-              + '</div>';
-          }).join('')
+      /* Fly-in pair */
+      html += '<div class="proj__gallery">'
+        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('approach-1') + '" alt="" loading="lazy"></div>'
+        + '</div>';
+
+      /* Two-up spread */
+      html += '<div class="proj__spread">'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('approach-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('approach-3') + '" alt="" loading="lazy"></div>'
+        + '</div>';
+
+    } else if (idx === 3) {
+      /* PROJECT 4 — Reverto Winery: packaging (layout shuffled) */
+
+      /* Lead: two-up spread */
+      html += '<div class="proj__spread">'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
+        + '</div>';
+
+      html += '<div class="proj__sec">'
+        + '<div class="proj__reveal"><div class="proj__label">02 \u2014 The Challenge</div></div>'
+        + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.challenge + '</p></div>'
+        + '</div>';
+
+      /* Full-bleed still */
+      html += '<div class="proj__print-full bento--blur" data-zoomable>'
+        + '<img src="' + I('bento-3') + '" alt="" loading="lazy">'
+        + '</div>';
+
+      html += '<div class="proj__sec">'
+        + '<div class="proj__reveal"><div class="proj__label">03 \u2014 The Approach</div></div>'
+        + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.approach + '</p></div>'
         + '</div>';
 
       /* Packaging row */
@@ -2233,20 +2241,23 @@ function makeQuote(q){
         + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
         + '</div>';
 
-      /* 04 OUTCOME — reuses same wide visual from above (no duplicate image block) */
+      /* Wide parallax */
+      html += '<div class="proj__parallax proj__reveal" data-zoomable>'
+        + '<img src="' + I('parallax') + '" alt="" loading="lazy">'
+        + '</div>';
+
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">04 \u2014 The Outcome</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.outcome + '</p></div>'
         + '</div>';
 
-      /* Outcome bento — challenge-3 now points to challenge.jpg */
+      /* Outcome bento */
       html += '<div class="proj__bento proj__bento--4">'
         + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="" loading="lazy"></div>'
         + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="" loading="lazy"></div>'
         + '<div class="bento bento--clip" data-zoomable><img src="' + I('challenge') + '" alt="" loading="lazy"></div>'
         + '</div>';
 
-      /* 05 REFLECTION */
       html += '<div class="proj__quote">' + makeQuote(d.quote) + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2260,130 +2271,104 @@ function makeQuote(q){
         + '</div>';
 
     } else if (idx === 4) {
-      /* PROJECT 5 — Crea Bakery: brand identity */
+      /* PROJECT 5 — Crea Bakery: brand identity (layout shuffled) */
 
-      /* Initial bento of stills */
-      html += '<div class="proj__bento proj__bento--3">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
+      /* Lead: fly-in pair */
+      html += '<div class="proj__gallery">'
+        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
         + '</div>';
 
-      /* 02 CHALLENGE */
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">02 \u2014 The Challenge</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.challenge + '</p></div>'
         + '</div>';
 
-      /* Full-bleed hero image */
-      html += '<div class="proj__print-full bento--blur" data-zoomable>'
-        + '<img src="' + I('challenge') + '" alt="" loading="lazy">'
+      /* Two-up spread */
+      html += '<div class="proj__spread">'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('challenge') + '" alt="" loading="lazy"></div>'
         + '</div>';
 
-      /* 03 APPROACH */
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">03 \u2014 The Approach</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.approach + '</p></div>'
         + '</div>';
 
-      /* Approach: flowing numbered lines */
-      html += '<div class="proj__approach-flow">'
-        + d.steps.map(function(s, si){
-            return '<div class="proj__approach-line proj__reveal" data-sd="' + (si % 3) + '">'
-              + '<div class="proj__approach-num">0' + (si+1) + '</div>'
-              + '<div class="proj__approach-content"><div class="proj__approach-title">' + s.t + '</div>'
-              + '<div class="proj__approach-desc">' + s.d + '</div></div>'
-              + '</div>';
-          }).join('')
+      /* Full-bleed still */
+      html += '<div class="proj__print-full bento--blur" data-zoomable>'
+        + '<img src="' + I('gallery-1') + '" alt="" loading="lazy">'
         + '</div>';
 
-      /* Editorial spread */
-      html += '<div class="proj__spread">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
-        + '</div>';
-
-      /* 04 OUTCOME — 1:1 image placeholders only, no wide image above */
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">04 \u2014 The Outcome</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.outcome + '</p></div>'
         + '</div>';
 
-      /* Outcome: 1:1 ratio bento cells only */
-      html += '<div class="proj__bento" style="grid-template-columns:repeat(2,1fr)">'
-        + '<div class="bento bento--clip" data-zoomable style="aspect-ratio:1/1"><img src="' + I('outcome-1') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '<div class="bento bento--clip" data-zoomable style="aspect-ratio:1/1"><img src="' + I('outcome-2') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
+      /* Outcome bento */
+      html += '<div class="proj__bento proj__bento--4">'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
         + '</div>';
 
-      /* 05 REFLECTION — completely removed */
+      /* 05 REFLECTION — quote only for this project */
       html += '<div class="proj__quote">' + makeQuote(d.quote) + '</div>';
 
     } else if (idx === 1) {
-      /* PROJECT 2 — My Market: brand identity */
+      /* PROJECT 2 — My Market: brand identity (layout shuffled) */
 
-      /* Initial bento of stills */
-      html += '<div class="proj__bento proj__bento--3">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
-        + '</div>';
-
-      /* 02 CHALLENGE */
-      html += '<div class="proj__sec">'
-        + '<div class="proj__reveal"><div class="proj__label">02 \u2014 The Challenge</div></div>'
-        + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.challenge + '</p></div>'
-        + '</div>';
-
-      /* Full-bleed hero image */
-      html += '<div class="proj__print-full bento--blur" data-zoomable>'
-        + '<img src="' + I('challenge') + '" alt="" loading="lazy">'
-        + '</div>';
-
-      /* 03 APPROACH */
-      html += '<div class="proj__sec">'
-        + '<div class="proj__reveal"><div class="proj__label">03 \u2014 The Approach</div></div>'
-        + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.approach + '</p></div>'
-        + '</div>';
-
-      /* Approach: flowing numbered lines */
-      html += '<div class="proj__approach-flow">'
-        + d.steps.map(function(s, si){
-            return '<div class="proj__approach-line proj__reveal" data-sd="' + (si % 3) + '">'
-              + '<div class="proj__approach-num">0' + (si+1) + '</div>'
-              + '<div class="proj__approach-content"><div class="proj__approach-title">' + s.t + '</div>'
-              + '<div class="proj__approach-desc">' + s.d + '</div></div>'
-              + '</div>';
-          }).join('')
-        + '</div>';
-
-      /* Approach: 4-image custom layout
-         Top-left: 1080x1350 (portrait), Top-right: 1080x1080 (square)
-         Bottom-left: 1080x1080 (square), Bottom-right: 1080x1350 (portrait) */
-      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.5vw,20px);margin:clamp(30px,5vh,60px) 0">'
-        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:1080/1350;overflow:hidden"><img src="' + I('approach-1') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '<div class="proj__img proj__img--fly from-left" data-zoomable style="aspect-ratio:1/1;overflow:hidden"><img src="' + I('approach-2') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '<div class="proj__img proj__img--fly from-left" data-zoomable style="aspect-ratio:1/1;overflow:hidden"><img src="' + I('approach-3') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:1080/1350;overflow:hidden"><img src="' + I('approach-4') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '</div>';
-
-      /* 04 OUTCOME */
+      /* Lead: wide parallax */
       html += '<div class="proj__parallax proj__reveal" data-zoomable>'
         + '<img src="' + I('parallax') + '" alt="" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
+        + '<div class="proj__reveal"><div class="proj__label">02 \u2014 The Challenge</div></div>'
+        + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.challenge + '</p></div>'
+        + '</div>';
+
+      /* Initial bento of stills */
+      html += '<div class="proj__bento proj__bento--3">'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
+        + '</div>';
+
+      /* Full-bleed challenge shot */
+      html += '<div class="proj__print-full bento--blur" data-zoomable>'
+        + '<img src="' + I('challenge') + '" alt="" loading="lazy">'
+        + '</div>';
+
+      html += '<div class="proj__sec">'
+        + '<div class="proj__reveal"><div class="proj__label">03 \u2014 The Approach</div></div>'
+        + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.approach + '</p></div>'
+        + '</div>';
+
+      /* Approach: row of three (16:9) */
+      html += '<div class="proj__gallery" style="gap:clamp(20px,3vh,40px)">'
+        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-1') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
+        + '<div class="proj__img proj__img--fly from-left" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-2') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
+        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-3') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
+        + '</div>';
+
+      /* Full-width approach still */
+      html += '<div class="proj__print-full bento--blur" data-zoomable>'
+        + '<img src="' + I('approach-4') + '" alt="" loading="lazy">'
+        + '</div>';
+
+      html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">04 \u2014 The Outcome</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.outcome + '</p></div>'
         + '</div>';
 
-      /* Outcome bento — bento-extra-1/2/3 (distinct from the full-bleed outcome shot above) */
+      /* Outcome bento — reordered */
       html += '<div class="proj__bento proj__bento--4">'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-3') + '" alt="" loading="lazy"></div>'
         + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-1') + '" alt="" loading="lazy"></div>'
         + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-3') + '" alt="" loading="lazy"></div>'
         + '</div>';
 
-      /* 05 REFLECTION */
       html += '<div class="proj__quote">' + makeQuote(d.quote) + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2391,7 +2376,7 @@ function makeQuote(q){
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.reflection + '</p></div>'
         + '</div>';
 
-      /* Reflection visuals: unique motions — no duplicates */
+      /* Reflection visuals */
       html += '<div class="proj__reflection-visual">'
         + '<div class="bento bento--blur" data-zoomable><img src="' + I('reflection-1') + '" alt="" loading="lazy"></div>'
         + '</div>';
@@ -2421,16 +2406,6 @@ function makeQuote(q){
       html += '<div class="proj__sec">'
         + '<div class="proj__reveal"><div class="proj__label">03 \u2014 The Approach</div></div>'
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.approach + '</p></div>'
-        + '</div>';
-
-      html += '<div class="proj__approach-flow">'
-        + d.steps.map(function(s, si){
-            return '<div class="proj__approach-line proj__reveal" data-sd="' + (si % 3) + '">'
-              + '<div class="proj__approach-num">0' + (si+1) + '</div>'
-              + '<div class="proj__approach-content"><div class="proj__approach-title">' + s.t + '</div>'
-              + '<div class="proj__approach-desc">' + s.d + '</div></div>'
-              + '</div>';
-          }).join('')
         + '</div>';
 
       html += '<div class="proj__spread">'
@@ -2468,19 +2443,26 @@ function makeQuote(q){
         + '</div>';
     }
 
-    /* Tools marquee */
-    var toolsHtml = d.tools.map(function(t){ return '<span class="proj__tool">' + t + '</span>'; }).join('');
-    html += '<div class="proj__tools proj__reveal' + (idx === 0 || idx === 1 ? ' proj__tools--spaced' : '') + '">'
-      + '<div class="proj__tools-track">' + toolsHtml + toolsHtml + '</div>'
-      + '</div>';
-
     html += '</div>'; /* close proj__body */
 
-    /* Closing: every project gets a "Next Project" strip EXCEPT the last one
-       (idx === projData.length - 1), which instead closes the story with a
-       thank-you note and the same contact card used on the homepage —
-       so the journey ends on an invitation, not a loop back to project 1. */
+    /* Closing: project 1 (idx 0) has nowhere to go "back" to within the case
+       studies, so it keeps the original single "Next Project" strip.
+       Projects 2–6 (idx 1.. ) get a previous link added — split into a
+       left/right nav so back and forward are two distinct, equally-visible
+       targets instead of one strip. The very last project still ends the
+       story with the thank-you + contact card, but now leads with its own
+       "Previous Project" link so the back-link isn't lost on the final page. */
     if (idx === projData.length - 1){
+      html += '<div class="proj__nav">'
+        + '<div class="proj__nav-half proj__nav-prev" data-prev="' + prevIdx + '">'
+        +   '<span class="proj__nav-dir"><span class="proj__nav-arrow">←</span>Previous Project</span>'
+        +   '<span class="proj__nav-title">' + prevD.t + '</span>'
+        + '</div>'
+        + '<div class="proj__nav-half proj__nav-next is-end" data-next-end>'
+        +   '<span class="proj__nav-dir">That\u2019s everyone<span class="proj__nav-arrow">\u2193</span></span>'
+        +   '<span class="proj__nav-title">The End</span>'
+        + '</div>'
+        + '</div>';
       html += '<div class="proj__end">'
         + '<p class="proj__end-thanks">Thanks for following the work all the way to the end <span class="o">&hearts;</span></p>'
         + '<div class="contact__card" style="margin:0 auto">'
@@ -2497,11 +2479,22 @@ function makeQuote(q){
         + '</div>'
         + '<button type="button" class="proj__end-home" data-cursor>\u2190 Back to home</button>'
         + '</div>';
-    } else {
+    } else if (idx === 0){
       html += '<div class="proj__next" data-next="' + nextIdx + '">'
         + '<span class="proj__next-label">Next Project</span>'
         + '<span class="proj__next-title">' + nextD.t + '</span>'
         + '<span class="proj__next-arrow">→</span>'
+        + '</div>';
+    } else {
+      html += '<div class="proj__nav">'
+        + '<div class="proj__nav-half proj__nav-prev" data-prev="' + prevIdx + '">'
+        +   '<span class="proj__nav-dir"><span class="proj__nav-arrow">←</span>Previous Project</span>'
+        +   '<span class="proj__nav-title">' + prevD.t + '</span>'
+        + '</div>'
+        + '<div class="proj__nav-half proj__nav-next" data-next="' + nextIdx + '">'
+        +   '<span class="proj__nav-dir">Next Project<span class="proj__nav-arrow">→</span></span>'
+        +   '<span class="proj__nav-title">' + nextD.t + '</span>'
+        + '</div>'
         + '</div>';
     }
 
@@ -2516,7 +2509,7 @@ function makeQuote(q){
 /* scroll-triggered reveals */
 requestAnimationFrame(function(){
   requestAnimationFrame(function(){
-    var els = proj.querySelectorAll('.proj__reveal,.proj__img--fly,.bento--fly,.bento--blur,.bento--clip,.proj__video--clip,.proj__quote-word,.proj__step--domino,.proj__approach-line,.proj__print-full,.proj__video-reel,.proj__reflection-visual,.proj__reflection-accent');
+    var els = proj.querySelectorAll('.proj__reveal,.proj__img--fly,.bento--fly,.bento--blur,.bento--clip,.proj__video--clip,.proj__quote-word,.proj__step--domino,.proj__print-full,.proj__video-reel,.proj__reflection-visual,.proj__reflection-accent');
     if (projIO) projIO.disconnect();
     projIO = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
@@ -2567,7 +2560,6 @@ requestAnimationFrame(function(){
   }); // close second rAF
 }); // close first rAF
 
-
     /* parallax scroll handler */
 function onProjScroll(){
   var scrollTop = proj.scrollTop;
@@ -2604,13 +2596,20 @@ function onProjScroll(){
   /* back button */
   projBack.addEventListener('click', closeProject);
 
-  /* next project strip */
+  /* next / previous project nav */
   proj.addEventListener('click', function(e){
-    var next = e.target.closest('.proj__next');
+    var next = e.target.closest('.proj__next, .proj__nav-next[data-next]');
     if (next){
       var idx = parseInt(next.dataset.next, 10);
       closeProject();
       setTimeout(function(){ openProject(idx); }, 400);
+      return;
+    }
+    var prev = e.target.closest('.proj__nav-prev[data-prev]');
+    if (prev){
+      var pIdx = parseInt(prev.dataset.prev, 10);
+      closeProject();
+      setTimeout(function(){ openProject(pIdx); }, 400);
       return;
     }
     if (e.target.closest('.proj__end-home')){
