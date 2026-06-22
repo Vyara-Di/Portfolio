@@ -335,22 +335,22 @@
   .card:hover .card__t,.card:focus-visible .card__t{color:var(--orange)}
   .card:focus-visible{outline:2px solid var(--orange);outline-offset:6px}
 
-  /* --- studio --- */
-  .studio__grid{max-width:980px;margin:0 auto;display:grid;
+  /* --- about --- */
+  .about__grid{max-width:980px;margin:0 auto;display:grid;
     grid-template-columns:1fr 1.4fr;gap:clamp(36px,5vw,72px);align-items:center}
-  .studio__photo{position:relative;aspect-ratio:4/5;border-radius:6px;overflow:hidden;width:100%;
+  .about__photo{position:relative;aspect-ratio:4/5;border-radius:6px;overflow:hidden;width:100%;
     background:var(--sand);box-shadow:0 30px 60px -34px rgba(34,30,26,.45)}
-  .studio__photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  .about__photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
     justify-content:center;gap:10px;color:var(--ink-soft);
     background:repeating-linear-gradient(135deg,rgba(34,30,26,.05) 0 14px,transparent 14px 28px)}
-  .studio__photo .ph svg{width:46px;height:46px;opacity:.5}
-  .studio__photo .ph span{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em}
-  .studio__photo::after{content:"";position:absolute;inset:0;border:1px solid rgba(255,250,242,.3);
+  .about__photo .ph svg{width:46px;height:46px;opacity:.5}
+  .about__photo .ph span{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em}
+  .about__photo::after{content:"";position:absolute;inset:0;border:1px solid rgba(255,250,242,.3);
     border-radius:6px;pointer-events:none}
-  .studio__text{text-align:left}
-  .studio__lead{font-size:clamp(0.95rem, 2vw, 1.5rem);line-height:1.35;font-weight:300;letter-spacing:-.01em}
-  .studio__lead b{font-weight:700}
-  .studio__lead .o{color:var(--orange);font-weight:700}
+  .about__text{text-align:left}
+  .about__lead{font-size:clamp(0.95rem, 2vw, 1.5rem);line-height:1.35;font-weight:300;letter-spacing:-.01em}
+  .about__lead b{font-weight:700}
+  .about__lead .o{color:var(--orange);font-weight:700}
   .caps{margin-top:clamp(36px,5vh,56px);display:flex;flex-wrap:wrap;gap:10px 12px}
   .caps span{border:1.5px solid var(--line);border-radius:40px;padding:9px 20px;
     font-size:.86rem;font-weight:600;will-change:transform;
@@ -815,8 +815,8 @@
 
   /* --- responsive --- */
   @media(max-width:900px){
-    .studio__grid{grid-template-columns:1fr}
-    .studio__photo{max-width:320px;width:100%;margin:0 auto;aspect-ratio:4/5}
+    .about__grid{grid-template-columns:1fr}
+    .about__photo{max-width:320px;width:100%;margin:0 auto;aspect-ratio:4/5}
     .studio__text{text-align:center}
     .caps{justify-content:center}
     .cards{gap:24px clamp(20px,5vw,40px)}
@@ -930,7 +930,7 @@
     <nav class="nav__links" id="navLinks">
       <a href="#top" data-sec="top" data-cursor>Vyara Dimitrova</a>
       <a href="#work" data-sec="work" data-cursor>Work</a>
-      <a href="#studio" data-sec="studio" data-cursor>About</a>
+      <a href="#about" data-sec="about" data-cursor>About</a>
       <a href="#contact" data-sec="contact" data-cursor>Contact</a>
     </nav>
   </header>
@@ -968,18 +968,18 @@
       <div class="marquee__track" id="marquee"></div>
     </div>
 
-    <!-- STUDIO -->
-    <section class="sec" id="studio">
+    <!-- ABOUT -->
+    <section class="sec" id="about">
       <div class="sec__head reveal">
         <span class="eyebrow"><span class="dot"></span>About</span>
         <h2>Hello<span style="color:var(--orange)">.</span></h2>
       </div>
-      <div class="studio__grid">
-        <div class="studio__photo reveal" data-d="1">
+      <div class="about__grid">
+        <div class="about__photo reveal" data-d="1">
           <img src="images/main/studio-portrait.jpg" alt="Vyara Dimitrova" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="studio__text">
-          <p class="studio__lead reveal" data-d="2">
+          <p class="about__lead reveal" data-d="2">
             Over eight years, I've worked across branding, packaging, motion, 3D, and digital design. I've helped wrap vehicles, fill catalogs, redesign storefronts, and build e-commerce experiences for thousands of customers.
 			I <b>studied Art and Engineering Design,</b> which shaped how I think: equally invested in how something looks and how it actually works. Today I create with <b>Adobe Creative Cloud, Figma, and Blender—building systems </b>  that scale creative work and bring ambitious ideas to life with good people.
 			<b>The best part? </b> When it's finished, it feels <span class="o">effortless.</span> Even if there was a lot of thinking behind the scenes.
@@ -1040,7 +1040,7 @@
             <span class="foot__col-h">Navigate</span>
             <a href="#top" data-cursor>Home</a>
             <a href="#work" data-cursor>Work</a>
-            <a href="#studio" data-cursor>About</a>
+            <a href="#about" data-cursor>About</a>
             <a href="#contact" data-cursor>Contact</a>
           </div>
           <div class="foot__col reveal" data-d="2">
