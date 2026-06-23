@@ -875,6 +875,48 @@
     .hero__word{opacity:1;filter:none;transform:none}
     .cursor{display:none}
   }
+
+  /* ====== ENHANCEMENTS (eight tweaks) ====== */
+  .hero .hero__word .o{pointer-events:auto;cursor:pointer}
+  body.design-mode .hero__word .o{text-decoration:underline dotted;text-underline-offset:6px}
+  .dm-grid{position:fixed;inset:0;z-index:6000;pointer-events:none;opacity:0;
+    transition:opacity .55s var(--ease);
+    background-image:linear-gradient(to right,rgba(229,96,43,.07) 1px,transparent 1px),
+      linear-gradient(to bottom,rgba(229,96,43,.07) 1px,transparent 1px);
+    background-size:clamp(48px,8vw,96px) clamp(48px,8vw,96px)}
+  .dm-grid::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(229,96,43,.16)}
+  body.design-mode .dm-grid{opacity:1}
+  body.design-mode [data-dm]{position:relative;outline:1px dashed rgba(229,96,43,.55);outline-offset:8px}
+  body.design-mode [data-dm]::before{content:"";position:absolute;top:-8px;left:-8px;width:6px;height:6px;
+    background:var(--orange);border-radius:1px;transform:translate(-50%,-50%);z-index:7;pointer-events:none}
+  body.design-mode [data-dm]::after{content:attr(data-dm);position:absolute;left:4px;top:-9px;
+    transform:translateY(-100%);font-size:.52rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--beige-lt);background:var(--orange);padding:3px 7px;border-radius:3px;
+    white-space:nowrap;z-index:7;pointer-events:none;line-height:1}
+  .dm-badge{position:fixed;left:50%;bottom:22px;z-index:6500;transform:translateX(-50%) translateY(8px);
+    display:inline-flex;align-items:center;gap:.6em;padding:8px 15px;border-radius:40px;
+    background:var(--ink);color:var(--beige-lt);font-size:.62rem;font-weight:700;text-transform:uppercase;
+    letter-spacing:.18em;opacity:0;pointer-events:none;
+    transition:opacity .4s var(--ease),transform .4s var(--ease);
+    box-shadow:0 16px 32px -18px rgba(34,30,26,.7)}
+  .dm-badge i{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pulse 2.4s var(--ease) infinite}
+  body.design-mode .dm-badge{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;cursor:pointer}
+  .contact__local{margin-top:clamp(26px,4vh,40px);min-height:1.2em;
+    font-size:.82rem;font-weight:600;letter-spacing:.02em;color:var(--ink-soft)}
+  .contact__local i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--orange);
+    margin-right:.55em;vertical-align:middle;animation:pulse 2.4s var(--ease) infinite}
+  .contact__local b{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+  .about__currently{margin-top:clamp(28px,4vh,42px);max-width:48ch;padding-left:18px;
+    border-left:2px solid var(--orange);font-size:clamp(.92rem,1.2vw,1.02rem);
+    line-height:1.5;color:var(--ink-soft)}
+  .about__currently b{display:block;margin-bottom:7px;font-size:.66rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.2em;color:var(--ink)}
+  .card__verb{position:absolute;z-index:3;left:14px;bottom:14px;display:inline-flex;align-items:center;
+    font-size:.72rem;font-weight:800;letter-spacing:.04em;color:var(--beige-lt);
+    opacity:0;transform:translateY(8px);transition:opacity .35s var(--ease) .28s,transform .35s var(--ease) .28s}
+  .card__verb::after{content:"";width:16px;height:1.5px;background:var(--orange);margin-left:.6em}
+  .card:hover .card__verb,.card:focus-visible .card__verb{opacity:1;transform:none}
+  .contact__mail.is-copied,.foot__mail.is-copied{color:var(--orange);border-color:var(--orange)}
 </style>
 </head>
 <body class="is-locked">
@@ -882,6 +924,8 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="progress" id="progress" aria-hidden="true"></div>
   <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__t"></span></div>
+  <div class="dm-grid" id="dmGrid" aria-hidden="true"></div>
+  <div class="dm-badge" id="dmBadge" aria-hidden="true"><i></i> Design mode — tap to exit</div>
 
   <!-- LOADER -->
   <div class="loader" id="loader" aria-hidden="true">
@@ -942,7 +986,7 @@
       <div class="hero__sculpture" id="heroSculpture" aria-hidden="true"></div>
 
       <span class="hero__top"><span class="dot"></span> Brand &amp; Identity Designer · Frankfurt / Varna</span>
-      <div class="hero__stack">
+      <div class="hero__stack" data-dm="h1 · wordmark">
         <h1 class="hero__word hero__word--left" id="wordLeft"> Design </h1>
         <h1 class="hero__word hero__word--right" id="wordRight"> that <span class="o">moves.</span></h1>
       </div>
@@ -958,7 +1002,7 @@
     <section class="sec work" id="work">
       <div class="sec__head reveal">
         <span class="eyebrow"><span class="dot"></span>Selected Work · 2021—2026</span>
-        <h2>Six things made <span class="lt">with care.</span></h2>
+        <h2 data-dm="h2 · section">Six things made <span class="lt">with care.</span></h2>
       </div>
       <div class="cards reveal" data-d="1" id="cards"></div>
     </section>
@@ -974,7 +1018,7 @@
         <span class="eyebrow"><span class="dot"></span>About</span>
         <h2>Hello<span style="color:var(--orange)">.</span></h2>
       </div>
-      <div class="about__grid">
+      <div class="about__grid" data-dm="grid · 2-col">
         <div class="about__photo reveal" data-d="1">
           <img src="images/main/studio-portrait.jpg" alt="Vyara Dimitrova" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>
@@ -992,6 +1036,10 @@
             <span data-cursor data-magnetic>Editorial</span>
             <span data-cursor data-magnetic>Web Design</span>
           </div>
+          <p class="about__currently reveal" data-d="3">
+            <b>Currently</b>
+            Deep in a variable-font system, scoring it to a lot of jazz, and taking on a couple of select projects for late 2026.
+          </p>
         </div>
       </div>
     </section>
@@ -999,7 +1047,7 @@
     <!-- CONTACT -->
     <section class="sec contact" id="contact">
       <div class="contact__glow" aria-hidden="true"></div>
-      <div class="contact__card reveal">
+      <div class="contact__card reveal" data-dm="card · contact">
         <div class="sec__head" style="margin-bottom:0">
           <span class="eyebrow"><span class="dot"></span>Let's talk</span>
           <h2 style="margin-top:24px"><span class="lt">Let's make something</span><br>that lasts.</h2>
@@ -1010,6 +1058,7 @@
           <a href="https://linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
           <a href="/assets/Vyara-Dimitrova_Resume.pdf" data-cursor target="_blank" rel="noopener">Read.cv</a>
         </div>
+        <p class="contact__local" id="contactLocal" aria-live="polite"></p>
       </div>
     </section>
 
@@ -1031,7 +1080,7 @@
       <div class="foot__top">
         <div class="foot__brand reveal">
           <span class="eyebrow"><span class="dot"></span>Frankfurt / Varna · Open to new work</span>
-          <h2 class="foot__big">Made in<br>two <span class="o">cities.</span></h2>
+          <h2 class="foot__big" data-dm="h2 · footer">Made in<br>two <span class="o">cities.</span></h2>
           <p class="foot__note">Brand &amp; identity design, built to last — wherever good people are making good things. If that sounds like you, I'd love to hear about it.</p>
         </div>
 
@@ -1234,6 +1283,14 @@
     rafId = requestAnimationFrame(frame);
     var dt = Math.min(clock.getDelta(), 0.05);
     if (autoSpin && !dragging) targetRotY += dt * 0.12;
+    if (momentum && !dragging){
+      targetRotY += velY; targetRotX += velX;
+      targetRotX = Math.max(-0.9, Math.min(0.9, targetRotX));
+      velY *= 0.94; velX *= 0.94;
+      if (Math.abs(velY) < 0.0006 && Math.abs(velX) < 0.0006){
+        momentum = false; velY = velX = 0; autoSpin = !reduce;
+      }
+    }
     rotY += (targetRotY - rotY) * 0.06;
     rotX += (targetRotX - rotX) * 0.06;
     group.rotation.y = rotY;
@@ -1268,10 +1325,13 @@
 
   /* drag to rotate */
   var dragging = false, lastX = 0, lastY = 0;
+  var velY = 0, velX = 0, momentum = false;
+  function clampVel(v){ return Math.max(-0.32, Math.min(0.32, v)); }
   /* touch axis lock: decide on first move whether the swipe is a vertical
      scroll (let the page scroll) or a horizontal drag (rotate the model) */
   var tStartX = 0, tStartY = 0, tAxis = null;
   function onDown(e){
+    momentum = false; velY = velX = 0;
     if (e.touches){
       var t = e.touches[0];
       tStartX = lastX = t.clientX;
@@ -1297,17 +1357,23 @@
         }
       }
       if (tAxis !== 'h') return;
-      targetRotY += (t.clientX - lastX) * 0.006;   // horizontal rotation only
+      velY = clampVel((t.clientX - lastX) * 0.006);
+      targetRotY += velY;   // horizontal rotation only
       lastX = t.clientX; lastY = t.clientY;
       return;
     }
     if (!dragging) return;
-    targetRotY += (e.clientX - lastX) * 0.006;
-    targetRotX += (e.clientY - lastY) * 0.006;
+    velY = clampVel((e.clientX - lastX) * 0.006);
+    velX = clampVel((e.clientY - lastY) * 0.006);
+    targetRotY += velY;
+    targetRotX += velX;
     targetRotX = Math.max(-0.9, Math.min(0.9, targetRotX));
     lastX = e.clientX; lastY = e.clientY;
   }
-  function onUp(){ dragging = false; tAxis = null; mount.classList.remove('is-dragging'); }
+  function onUp(){
+    if (dragging && (Math.abs(velY) > 0.0008 || Math.abs(velX) > 0.0008)) momentum = true;
+    dragging = false; tAxis = null; mount.classList.remove('is-dragging');
+  }
 
   /* attach: mouse drags on the mount, touch drags on the mount (with the
      axis-lock above so vertical swipes still scroll the page), and the
@@ -1331,7 +1397,7 @@
   if (window.matchMedia('(pointer:fine)').matches && !reduce){
     var hero = document.querySelector('.hero');
     hero.addEventListener('mousemove', function(e){
-      if (dragging) return;
+      if (dragging || momentum) return;
       var r = hero.getBoundingClientRect();
       targetRotY = 0.55 + ((e.clientX - r.left) / r.width  - 0.5) * 0.7;
       targetRotX = -0.18 - ((e.clientY - r.top)  / r.height - 0.5) * 0.4;
@@ -1841,9 +1907,18 @@ function runSignature(){
 }
 if (!fastIntro) runSignature();
 
-/* status sentence swaps instantly to "Welcome in!" right as the mark locks */
+/* status sentence: time-aware greeting swapped in as the mark locks */
 var quipTimer = null;
-if (!fastIntro) setTimeout(function(){ quipEl.innerHTML = 'Welcome in!'; }, 2300);
+function greeting(){
+  var h = new Date().getHours();
+  if (h < 5)  return 'Still up? Same.';
+  if (h < 12) return 'Good morning.';
+  if (h < 17) return 'Good afternoon.';
+  if (h < 22) return 'Good evening.';
+  return 'Up late? Welcome in.';
+}
+if (!fastIntro) setTimeout(function(){ quipEl.innerHTML = greeting(); }, 2300);
+if (fastIntro && quipEl) quipEl.innerHTML = greeting();
 
 /* easter egg: click the sparkle for escalating replies (full intro only —
    it would just flash and vanish on the fast path) */
@@ -1938,6 +2013,8 @@ function revealHero(){
   var sizeVariants = ['card--port','card--tall','card--square','card--wide','card--port','card--tall'];
   /* fixed tilts: 1 (left), 2 (right), 3 (left), 4 (slight right), 5 (left) */
   var fixedRot = { 0: -4, 1: 5, 2: -5, 3: 3, 4: -4 };
+  var cardVerbs = {'LG Electronics':'Systematised','My Market':'Rebranded','Smart Point':'Named',
+    'Reverto Winery':'Bottled','Crea Bakery':'Branded','Maynooth Furniture':'Shipped'};
 
   projData.forEach(function(p, i){
     var card    = document.createElement('button');
@@ -1968,6 +2045,9 @@ function revealHero(){
     var num = document.createElement('span'); num.className = 'card__num';
     num.textContent = '0' + (i + 1) + ' / 06';
     media.appendChild(num);
+    var verb = document.createElement('span'); verb.className = 'card__verb';
+    verb.textContent = p.verb || cardVerbs[p.t] || 'View';
+    media.appendChild(verb);
 
     var cap = document.createElement('span'); cap.className = 'card__cap'; cap.style.display = 'flex';
     cap.innerHTML = '<span class="card__idx">0' + (i+1) + '</span>'
@@ -2650,7 +2730,7 @@ function onProjScroll(){
 
   /* --- marquee --- */
   var mq = document.getElementById('marquee');
-  var mqWords = ['Identity','Typography','Art Direction','Packaging','Editorial','Web','Naming','Strategy'];
+  var mqWords = ['Identity','Typography','Motion','Packaging','Editorial','Caffeine','3D','Web','Rebrands','Wayfinding','Strategy'];
   function mqSpan(){
     var sp = document.createElement('span');
     mqWords.forEach(function(w){
@@ -2741,6 +2821,71 @@ function onProjScroll(){
     });
     document.addEventListener('mouseleave', function(){ cur.classList.remove('is-on'); on = false; });
   }
+
+  /* --- DESIGN MODE --- */
+  (function(){
+    function toggle(){ document.body.classList.toggle('design-mode'); }
+    var orange = document.querySelector('.hero__word .o');
+    if (orange){
+      orange.setAttribute('role','button'); orange.setAttribute('tabindex','0');
+      orange.setAttribute('aria-label','Toggle design mode'); orange.setAttribute('data-cursor','');
+      orange.addEventListener('click', toggle);
+      orange.addEventListener('keydown', function(e){
+        if (e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+      });
+    }
+    var badge = document.getElementById('dmBadge');
+    if (badge) badge.addEventListener('click', toggle);
+    document.addEventListener('keydown', function(e){
+      if (e.key!=='g'&&e.key!=='G') return;
+      var t=e.target; if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable)) return;
+      toggle();
+    });
+  })();
+
+  /* --- LIVE LOCAL TIME + visitor offset (Contact) --- */
+  (function(){
+    var el = document.getElementById('contactLocal');
+    if (!el) return;
+    var MY_TZ='Europe/Berlin', MY_CITY='Frankfurt', fmt;
+    try { fmt=new Intl.DateTimeFormat('en-GB',{timeZone:MY_TZ,hour:'2-digit',minute:'2-digit',hour12:false}); } catch(e){ fmt=null; }
+    function tzOffsetHours(tz){
+      var now=new Date();
+      var p=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour12:false,year:'numeric',month:'2-digit',
+        day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}).formatToParts(now)
+        .reduce(function(a,x){ a[x.type]=x.value; return a; },{});
+      var asUTC=Date.UTC(p.year,p.month-1,p.day,p.hour==='24'?0:p.hour,p.minute,p.second);
+      return Math.round((asUTC-now.getTime())/3600000);
+    }
+    var rel='';
+    try {
+      var diff=tzOffsetHours(MY_TZ)-(-new Date().getTimezoneOffset()/60);
+      if(diff!==0){ var ah=Math.abs(diff),unit=ah===1?'hour':'hours';
+        rel=' ('+ah+' '+unit+(diff>0?' ahead of you':' behind you')+')'; }
+    } catch(e){}
+    function tick(){
+      var t=''; try{ if(fmt) t=fmt.format(new Date()); } catch(e){}
+      if(!t){ el.textContent=''; return; }
+      el.innerHTML='<i></i> It\u2019s <b>'+t+'</b> in '+MY_CITY+rel+' \u2014 I usually reply within a day.';
+    }
+    tick(); setInterval(tick,30000);
+  })();
+
+  /* --- COPY EMAIL --- */
+  (function(){
+    document.addEventListener('click',function(e){
+      var el=e.target.closest('.contact__mail,.foot__mail');
+      if(!el) return;
+      if(!navigator.clipboard||!navigator.clipboard.writeText) return;
+      if(el.dataset.copying){ e.preventDefault(); return; }
+      var email=(el.textContent||'').trim(); e.preventDefault();
+      navigator.clipboard.writeText(email).then(function(){
+        el.dataset.copying='1'; var orig=el.textContent;
+        el.textContent='Copied \u2713'; el.classList.add('is-copied');
+        setTimeout(function(){ el.textContent=orig; el.classList.remove('is-copied'); delete el.dataset.copying; },1400);
+      }).catch(function(){});
+    });
+  })();
 })();
 </script>
 </body>
