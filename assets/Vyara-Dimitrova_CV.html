@@ -169,12 +169,45 @@ li{ margin:0 0 3px; }
   color:#fff;
 }
 
+/* --- download PDF button --- */
+.cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+.download-pdf{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  width:fit-content;
+  margin-top:12px;
+  padding:6px 18px;
+  border:1.5px solid var(--accent);
+  border-radius:999px;
+  color:#fff;
+  background:var(--accent);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.5px;
+  font-family:inherit;
+  text-decoration:none;
+  cursor:pointer;
+  transition:background 0.2s, color 0.2s;
+}
+.download-pdf:hover{
+  background:transparent;
+  color:var(--accent);
+}
+.download-pdf svg{ width:13px; height:13px; }
+
 /* --- print: one page --- */
 @media print{
   body{ font-size:10.7px; line-height:1.4; }
   .page{ padding:14px 30px 12px; max-width:100%; }
   a{ color:var(--ink) !important; }
   .portfolio-cta{ color:var(--accent) !important; border-color:var(--accent) !important; padding:4px 12px; font-size:10px; margin-top:5px; }
+  .download-pdf{ display:none !important; }
   @page{ margin:8mm; size:A4; }
 
   h1{ font-size:23px; margin:0 0 2px; }
@@ -272,7 +305,15 @@ body::after{
         <a href="https://www.linkedin.com/in/vyara-dmtrv">linkedin.com/in/vyara-dmtrv</a>
         <a href="https://www.behance.net/vyaradimitrova">behance.net/vyaradimitrova</a>
       </p>
-      <a href="https://vyara.design" class="portfolio-cta">Visit Portfolio</a>
+      <div class="cta-row">
+        <a href="https://vyara.design" class="portfolio-cta">Visit Portfolio</a>
+        <button type="button" class="download-pdf" onclick="window.print()" aria-label="Download CV as PDF">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/>
+          </svg>
+          Download PDF
+        </button>
+      </div>
     </div>
   </div>
 
