@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="images/fav-icon.png" type="image/favicon">
 <title>Vyara Dimitrova — Brand &amp; Identity Designer</title>
-<meta name="description" content="Brand designer — identity, digital, packaging, motion, web, print, art direction & typeface design. Frankfurt / Varna. Open to new work.">
+<meta name="description" content="Brand designer — identity, web and motion.">
 <meta property="og:title" content="Vyara Di — Designer">
 <meta property="og:description" content="Brands built to last • Identity, web, motion">
-<meta property="og:image" content="/images/og-preview.jpg"?v=2>
+<meta property="og:image" content="https://vyara.design/images/og-preview.jpg?v=2">
 <meta property="og:url" content="https://vyara.design">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
@@ -1048,7 +1048,7 @@
         <div class="contact__socials">
           <a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>
           <a href="https://linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
-          <a href="/assets/CV.html" data-cursor target="_blank" rel="noopener">Read.cv</a>
+          <a href="/assets/Vyara-Dimitrova_CV.html" data-cursor target="_blank" rel="noopener">Read.cv</a>
         </div>
         <p class="contact__local" id="contactLocal" aria-live="polite"></p>
       </div>
@@ -1088,7 +1088,7 @@
             <span class="foot__col-h">Elsewhere</span>
             <a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>
             <a href="https://linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
-            <a href="/assets/CV.pdf" data-cursor target="_blank" rel="noopener">Read.cv</a>
+            <a href="/assets/Vyara-Dimitrova_Resume.pdf" data-cursor target="_blank" rel="noopener">Read.cv</a>
           </div>
           <div class="foot__col reveal" data-d="3">
             <span class="foot__col-h">Say hello</span>
@@ -1099,7 +1099,7 @@
       </div>
 
       <div class="foot__base">
-        <span class="foot__copy">© 2026 Vyara Di — Designer</span>
+        <span class="foot__copy">© 2026 Vyara Dimitrova</span>
         <span class="foot__made">Built pixel by pixel, then rebuilt a few times.</span>
         <a href="#top" class="foot__totop" data-cursor data-magnetic>
           Back to top
@@ -2656,7 +2656,50 @@ function onProjScroll(){
     if (videoIO){ videoIO.disconnect(); videoIO = null; }
     projParallax = [];
     currentProj = -1;
+    if (location.hash) history.pushState('', document.title, location.pathname + location.search);
   }
+
+  /* slug ↔ index helpers for hash routing */
+  function titleToSlug(t){ return t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+  function slugToIdx(slug){
+    for (var i = 0; i < projData.length; i++){
+      if (titleToSlug(projData[i].t) === slug) return i;
+    }
+    return -1;
+  }
+
+  /* hash routing — update URL when opening/closing */
+  var _origOpen = openProject;
+  openProject = function(idx){
+    _origOpen(idx);
+    var slug = titleToSlug(projData[idx].t);
+    history.pushState({ proj: slug }, projData[idx].t + ' — Vyara Dimitrova', '#' + slug);
+  };
+
+  /* browser back/forward + direct link support */
+  window.addEventListener('popstate', function(){
+    var hash = location.hash.replace('#', '');
+    if (hash){
+      var idx = slugToIdx(hash);
+      if (idx !== -1){ _origOpen(idx); return; }
+    }
+    if (proj.classList.contains('is-open')){
+      proj.classList.remove('is-open');
+      proj.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('proj-open');
+      if (projIO){ projIO.disconnect(); projIO = null; }
+      projParallax = [];
+      currentProj = -1;
+    }
+  });
+
+  /* open on page load if URL already has a project hash */
+  (function(){
+    var hash = location.hash.replace('#', '');
+    if (!hash || hash === 'work' || hash === 'studio' || hash === 'contact' || hash === 'top') return;
+    var idx = slugToIdx(hash);
+    if (idx !== -1) setTimeout(function(){ _origOpen(idx); }, 800); // wait for loader
+  })();
 
   /* card clicks → open project */
   cardsWrap.addEventListener('click', function(e){
