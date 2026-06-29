@@ -1306,7 +1306,7 @@
     var sculptIO = new IntersectionObserver(function(entries){
       isVisible = entries[0].isIntersecting;
       syncLoop();
-    }, { threshold: 0 });
+    }, { threshold: 0, rootMargin: '200px' });
     sculptIO.observe(mount);
   }
   document.addEventListener('visibilitychange', function(){
@@ -1401,8 +1401,9 @@
     });
   }
 
-  /* expose scale-tween for the loader handoff */
+  /* expose scale-tween and loop control for the loader handoff */
   window.__sculpture = {
+    startLoop: function(){ isVisible = true; syncLoop(); },
     reveal: function(onDone){
       if (reduce){ entryScale = FULL_SCALE; if (onDone) onDone(); return; }
       /* explosion: fast overshoot from 0 then settle — scale 0 → 1.22 → 1 */
@@ -1990,7 +1991,7 @@ function revealHero(){
     loader.classList.add('is-leaving');
     revealFn(function(){});
     revealCopy();
-    setTimeout(function(){ loader.classList.add('is-gone'); }, 400);
+    setTimeout(function(){ loader.classList.add('is-gone'); if (window.__openHashProject) window.__openHashProject(); }, 400);
     return;
   }
 
@@ -1998,7 +1999,7 @@ function revealHero(){
   loader.classList.add('is-leaving');
   setTimeout(function(){ revealFn(function(){}); }, 350);
   setTimeout(revealCopy, 700);
-  setTimeout(function(){ loader.classList.add('is-gone'); }, 1300);
+  setTimeout(function(){ loader.classList.add('is-gone'); if (window.__openHashProject) window.__openHashProject(); }, 1300);
 }
 
   /* --- work cards --- */
@@ -2660,6 +2661,8 @@ function onProjScroll(){
     projParallax = [];
     currentProj = -1;
     if (location.hash) history.pushState('', document.title, location.pathname + location.search);
+    /* resume sculpture render loop if it was paused by the overlay */
+    if (window.__sculpture && window.__sculpture.startLoop) window.__sculpture.startLoop();
   }
 
   /* slug ↔ index helpers for hash routing */
@@ -2672,19 +2675,19 @@ function onProjScroll(){
   }
 
   /* hash routing — update URL when opening/closing */
-  var _origOpen = openProject;
-  openProject = function(idx){
-    _origOpen(idx);
+  function openProjectWithHash(idx){
+    openProject(idx);
     var slug = titleToSlug(projData[idx].t);
     history.pushState({ proj: slug }, projData[idx].t + ' — Vyara Dimitrova', '#' + slug);
-  };
+  }
 
-  /* browser back/forward + direct link support */
+  /* browser back/forward */
   window.addEventListener('popstate', function(){
     var hash = location.hash.replace('#', '');
-    if (hash){
+    var navHashes = ['work','studio','contact','top',''];
+    if (hash && navHashes.indexOf(hash) === -1){
       var idx = slugToIdx(hash);
-      if (idx !== -1){ _origOpen(idx); return; }
+      if (idx !== -1){ openProject(idx); return; }
     }
     if (proj.classList.contains('is-open')){
       proj.classList.remove('is-open');
@@ -2696,19 +2699,20 @@ function onProjScroll(){
     }
   });
 
-  /* open on page load if URL already has a project hash */
-  (function(){
+  /* open on direct link — called by loader after it fully finishes */
+  window.__openHashProject = function(){
     var hash = location.hash.replace('#', '');
-    if (!hash || hash === 'work' || hash === 'studio' || hash === 'contact' || hash === 'top') return;
+    var navHashes = ['work','studio','contact','top',''];
+    if (!hash || navHashes.indexOf(hash) !== -1) return;
     var idx = slugToIdx(hash);
-    if (idx !== -1) setTimeout(function(){ _origOpen(idx); }, 800); // wait for loader
-  })();
+    if (idx !== -1) openProject(idx);
+  };
 
-  /* card clicks → open project */
+  /* card clicks → open project + update URL */
   cardsWrap.addEventListener('click', function(e){
     var card = e.target.closest('.card');
     if (!card || card.dataset.projIdx === undefined) return;
-    openProject(parseInt(card.dataset.projIdx, 10));
+    openProjectWithHash(parseInt(card.dataset.projIdx, 10));
   });
 
   /* back button */
@@ -2720,14 +2724,14 @@ function onProjScroll(){
     if (next){
       var idx = parseInt(next.dataset.next, 10);
       closeProject();
-      setTimeout(function(){ openProject(idx); }, 400);
+      setTimeout(function(){ openProjectWithHash(idx); }, 400);
       return;
     }
     var prev = e.target.closest('.proj__nav-prev[data-prev]');
     if (prev){
       var pIdx = parseInt(prev.dataset.prev, 10);
       closeProject();
-      setTimeout(function(){ openProject(pIdx); }, 400);
+      setTimeout(function(){ openProjectWithHash(pIdx); }, 400);
       return;
     }
     if (e.target.closest('.proj__end-home')){
