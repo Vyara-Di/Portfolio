@@ -12,7 +12,9 @@
 <meta property="og:url" content="https://vyara.design">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="image" href="images/lg-electronics/card.jpg">
+  <link rel="preload" as="image" href="images/my-market/card.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -2027,7 +2029,8 @@ function revealHero(){
     var media = document.createElement('span'); media.className = 'card__media'; media.style.display = 'block';
     var im    = document.createElement('img');
     im.src = projImg(projectSlugs[p.t], 'card'); im.alt = p.t + ' — ' + p.c;
-    im.loading = 'lazy';
+    im.loading = i < 2 ? 'eager' : 'lazy';
+    if (i < 2) im.fetchPriority = 'high';
     media.appendChild(im);
 
     var frame = document.createElement('span'); frame.className = 'card__frame';
