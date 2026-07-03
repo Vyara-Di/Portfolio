@@ -1277,7 +1277,7 @@
 
   /* load model */
   var loader = new THREE.GLTFLoader();
-  loader.load('sculpture.glb', function(gltf){
+  loader.load('assets/sculpture.glb', function(gltf){
     var model = gltf.scene;
     var box = new THREE.Box3().setFromObject(model);
     var size = box.getSize(new THREE.Vector3());
