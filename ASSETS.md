@@ -17,7 +17,7 @@ project JSON (e.g. `compora44`) are **legacy and unused** — do not name files 
 
 | Path | Role |
 | --- | --- |
-| `sculpture.glb` | Three.js hero sculpture model (site root, relative path) |
+| `assets/sculpture.glb` | Three.js hero sculpture model (site root, relative path) |
 | `images/fav-icon.png` | Browser favicon |
 | `images/og-preview.jpg` | Open Graph / social share preview (1200x630 recommended) |
 | `images/main/studio-portrait.jpg` | Studio / about section portrait (4:5) |
