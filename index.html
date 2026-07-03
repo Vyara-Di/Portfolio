@@ -155,7 +155,8 @@
   .loader.is-leaving .loader__inner{opacity:0;transform:translateY(-22px)}
 
   /* --- signature reveal: pen-tool draws the V mark --- */
-  .loader__sig{position:relative;width:clamp(108px,16vw,156px);height:auto;overflow:visible}
+  .loader__sig{position:relative;width:clamp(108px,16vw,156px);height:auto;overflow:visible;
+    transform-origin:center center}
   .loader__sig svg{display:block;width:100%;height:auto;overflow:visible}
 
   /* the V stroke itself. The draw is driven from JS (one rAF pass) so a single
@@ -1269,7 +1270,7 @@
 
   /* load model */
   var loader = new THREE.GLTFLoader();
-  loader.load('sculpture.glb', function(gltf){
+  loader.load('assets/sculpture.glb', function(gltf){
     var model = gltf.scene;
     var box = new THREE.Box3().setFromObject(model);
     var size = box.getSize(new THREE.Vector3());
@@ -1860,9 +1861,26 @@ if (sigPath){
   sigPath.style.strokeDashoffset = SIG_LEN;
 }
 
-/* easeInOutCubic — gentle start, honest cruise, soft settle. This single curve
-   is the whole "velocity" story now; tweak here, not in 25 keyframes. */
-function sigEase(t){ return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
+/* Draw velocity. The old easeInOutCubic was nearly flat for the first ~20%
+   (reads as "nothing happening") then whipped through the middle. easeInOutSine
+   is the gentlest standard curve — its slow zones are tiny and its cruise is
+   even — so the pen travels smoothly start to finish with no dead beat or lurch. */
+function sigEase(t){ return -(Math.cos(Math.PI * t) - 1) / 2; }
+/* zoom-out uses a soft ease-out so the big mark shrinks promptly, then settles */
+function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+/* Cinematic scale: the mark starts roughly filling the screen and zooms back to
+   its resting size across the draw, landing at 1 just before the stroke locks.
+   Computed from the real rendered size so it fills sensibly on any viewport. */
+var SIG_START_SCALE = 1;
+function computeStartScale(){
+  if (!sigEl) return 1;
+  var b = sigEl.getBoundingClientRect();
+  if (!b.width || !b.height) return 4;
+  var vw = window.innerWidth || 1200, vh = window.innerHeight || 800;
+  var s = Math.min((vw * 0.86) / b.width, (vh * 0.66) / b.height);
+  return Math.max(1.6, Math.min(s, 8));
+}
 
 var sigRAF = null;
 var sigDrawDone = false;
@@ -1878,18 +1896,28 @@ function sigLock(){
   sigDrawDone = true;
   if (sigRAF){ cancelAnimationFrame(sigRAF); sigRAF = null; }
   if (sigPath) sigPath.style.strokeDashoffset = 0;
+  if (sigEl){ sigEl.style.transform = 'scale(1)'; sigEl.style.willChange = 'auto'; }
+  if (barWrap) barWrap.style.opacity = '';
+  if (quipWrap) quipWrap.style.opacity = '';
   if (barFill){ barFill.style.transition = 'none'; barFill.style.transform = 'scaleX(1)'; }
   if (sigEl){ sigEl.classList.remove('is-drawing'); sigEl.classList.add('is-locked'); }
 }
 
-var SIG_DUR = 1500; /* ms of drawing */
+var SIG_DUR = 1600; /* ms of drawing */
 function runSignature(){
   if (!sigEl || !sigPath){ return; }
+  SIG_START_SCALE = computeStartScale();
+  sigEl.style.willChange = 'transform';
+  sigEl.style.transform = 'scale(' + SIG_START_SCALE.toFixed(3) + ')';
+  /* supporting UI (hairline + status line) starts hidden under the big mark and
+     fades in only as the zoom settles, so nothing clutters the opening frames */
+  if (barWrap)  barWrap.style.opacity = '0';
+  if (quipWrap) quipWrap.style.opacity = '0';
   sigEl.classList.add('is-drawing');
   /* plot anchors + handles just ahead of the pen, staggered like a vector tool
      dropping nodes before the curve commits (cheap CSS transitions, not rAF) */
-  sigAnchors.forEach(function(a, i){ setTimeout(function(){ a.classList.add('is-on'); }, 60 + i * 90); });
-  sigHandles.forEach(function(h, i){ setTimeout(function(){ h.classList.add('is-on'); }, 200 + i * 100); });
+  sigAnchors.forEach(function(a, i){ setTimeout(function(){ a.classList.add('is-on'); }, 60 + i * 80); });
+  sigHandles.forEach(function(h, i){ setTimeout(function(){ h.classList.add('is-on'); }, 180 + i * 90); });
 
   var start = null;
   function frame(now){
@@ -1897,13 +1925,29 @@ function runSignature(){
     if (start === null) start = now;
     var raw = Math.min((now - start) / SIG_DUR, 1);
     var e   = sigEase(raw);
+
+    /* stroke + nib */
     sigPath.style.strokeDashoffset = (SIG_LEN * (1 - e)).toFixed(2);
     placeNib(e * SIG_LEN);
-    if (barFill) barFill.style.transform = 'scaleX(' + e.toFixed(4) + ')';
+
+    /* zoom-out: reach final size by ~92% of the draw, then hold */
+    var zt    = easeOutCubic(Math.min(raw / 0.92, 1));
+    var scale = SIG_START_SCALE + (1 - SIG_START_SCALE) * zt;
+    sigEl.style.transform = 'scale(' + scale.toFixed(3) + ')';
+
+    /* settle the supporting UI in over the back half */
+    var ui = Math.max(0, Math.min((raw - 0.5) / 0.35, 1));
+    if (barWrap)  barWrap.style.opacity  = ui.toFixed(3);
+    if (quipWrap) quipWrap.style.opacity = ui.toFixed(3);
+    if (barFill)  barFill.style.transform = 'scaleX(' + e.toFixed(4) + ')';
+
     if (raw < 1){ sigRAF = requestAnimationFrame(frame); }
     else { sigLock(); }
   }
-  sigRAF = requestAnimationFrame(frame);
+  /* double rAF: let the loader paint one frame first, so the draw's own clock
+     starts on a real presented frame instead of being charged for first-paint
+     latency (which is what made the opening feel like it stalled then jumped) */
+  requestAnimationFrame(function(){ sigRAF = requestAnimationFrame(frame); });
 }
 if (!fastIntro) runSignature();
 else if (sigEl) sigLock(); /* reduced-motion / repeat visit: show the finished mark at once */
