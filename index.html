@@ -3,25 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="images/fav-icon.png" type="image/favicon">
+<link rel="icon" href="images/fav-icon.png" type="image/png">
 <title>Vyara Dimitrova — Brand &amp; Identity Designer</title>
-<meta name="description" content="Brand designer — identity, web and motion.">
-<meta property="og:title" content="Vyara Di — Designer">
+<meta name="description" content="Vyara Dimitrova is a brand &amp; identity designer in Frankfurt with eight years across identity systems, packaging, motion, 3D and web — where an art and engineering design education meets brands built to last.">
+<meta name="theme-color" content="#E9E1D4">
+<link rel="canonical" href="https://vyara.design/">
+<meta property="og:title" content="Vyara Dimitrova — Brand &amp; Identity Designer">
 <meta property="og:description" content="Brands built to last • Identity, web, motion">
 <meta property="og:image" content="https://vyara.design/images/og-preview.jpg?v=2">
-<meta property="og:url" content="https://vyara.design">
+<meta property="og:url" content="https://vyara.design/">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vyara Dimitrova — Brand &amp; Identity Designer">
+<meta name="twitter:description" content="Brands built to last • Identity, web, motion">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Vyara Dimitrova",
+  "jobTitle": "Brand & Identity Designer",
+  "url": "https://vyara.design/",
+  "image": "https://vyara.design/images/og-preview.jpg",
+  "email": "mailto:vyara.dmtrv@gmail.com",
+  "address": [
+    {"@type": "PostalAddress", "addressLocality": "Frankfurt am Main", "addressCountry": "DE"},
+    {"@type": "PostalAddress", "addressLocality": "Varna", "addressCountry": "BG"}
+  ],
+  "sameAs": [
+    "https://www.behance.net/vyaradimitrova",
+    "https://www.linkedin.com/in/vyara-dimitrova"
+  ],
+  "knowsAbout": ["Brand Identity", "Packaging Design", "Motion Design", "3D Design", "Web Design", "Print Design"]
+}
+</script>
 <link rel="preload" as="image" href="images/lg-electronics/card.jpg">
   <link rel="preload" as="image" href="images/my-market/card.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@200..900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --beige:#E9E1D4;--beige-lt:#F3EEE5;--sand:#DCD0BD;--ink:#221E1A;--ink-soft:#6B635A;
+    --beige:#E9E1D4;--beige-lt:#F3EEE5;--sand:#DCD0BD;--ink:#221E1A;--ink-soft:#5F5850;
     --orange:#E5602B;--line:rgba(34,30,26,.14);
     --pad:clamp(20px,5vw,64px);
     --ease:cubic-bezier(.22,.61,.36,1);
@@ -50,8 +75,15 @@
   .grain{position:fixed;inset:0;z-index:9000;pointer-events:none;opacity:.05;mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-  /* --- scroll progress bar --- */
-  .progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--orange);z-index:1200;transition:width .12s linear}
+  /* --- scroll progress bar (transform, not width — no layout work per frame) --- */
+  .progress{position:fixed;top:0;left:0;height:2px;width:100%;background:var(--orange);z-index:1200;
+    transform:scaleX(0);transform-origin:left;transition:transform .12s linear}
+
+  /* --- skip link (visible on keyboard focus only) --- */
+  .skip-link{position:fixed;top:10px;left:10px;z-index:9999;padding:10px 18px;border-radius:40px;
+    background:var(--ink);color:var(--beige-lt);font-size:.78rem;font-weight:700;letter-spacing:.12em;
+    text-transform:uppercase;transform:translateY(-300%);transition:transform .25s var(--ease)}
+  .skip-link:focus{transform:translateY(0)}
 
   /* --- custom cursor --- */
   .cursor{position:fixed;top:0;left:0;z-index:9500;pointer-events:none;width:34px;height:34px;border:1.5px solid var(--ink);
@@ -99,7 +131,7 @@
   /* the V stroke itself — drawn on with dash-offset, then locks solid */
   .sig__path{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;
     stroke-dasharray:1110;stroke-dashoffset:1110;transition:stroke .5s var(--ease)}
-  .loader__sig.is-drawing .sig__path{animation:sigDraw 1.7s linear .15s forwards}
+  .loader__sig.is-drawing .sig__path{animation:sigDraw 1.2s linear .15s forwards}
   /* the pen eases through each corner and accelerates along the straights —
      stops below aren't evenly spaced in stroke-dashoffset; they were sampled
      from the mark's actual geometry so more "time" is spent exactly where
@@ -153,7 +185,7 @@
   .sig__anchor.is-on{opacity:.5;transform:scale(1)}
   /* pen nib that travels alongside the path, leading the ink */
   .sig__nib{opacity:0;transition:opacity .25s var(--ease)}
-  .loader__sig.is-drawing .sig__nib{opacity:1;animation:sigNibFade 1.7s linear .15s forwards}
+  .loader__sig.is-drawing .sig__nib{opacity:1;animation:sigNibFade 1.2s linear .15s forwards}
   .loader__sig.is-locked .sig__nib{opacity:0}
   @keyframes sigNibFade{0%{opacity:1}92%{opacity:1}100%{opacity:0}}
   .sig__nib-dot{fill:var(--orange)}
@@ -178,7 +210,7 @@
     overflow:hidden;margin-top:4px}
   .loader__bar i{position:absolute;inset:0;transform-origin:left;transform:scaleX(0);
     background:var(--orange)}
-  .loader__bar.is-filling i{animation:fill 1.7s var(--ease-io) forwards}
+  .loader__bar.is-filling i{animation:fill 1.2s var(--ease-io) forwards}
   @keyframes fill{to{transform:scaleX(1)}}
 
   /* easter egg — 2× size, vertical float + scale pulse only */
@@ -240,7 +272,7 @@
 
   /* 3D canvas — fullscreen, lives in hero from frame 1, loader covers it */
   .hero__sculpture{position:absolute;inset:0;z-index:0;display:block}
-  .hero__sculpture canvas{display:block;width:110%!important;height:100%!important;touch-action:pan-y;cursor:grab}
+  .hero__sculpture canvas{display:block;width:100%!important;height:100%!important;touch-action:pan-y;cursor:grab}
   .hero__sculpture.is-dragging canvas{cursor:grabbing}
 
   .hero__sculpt-hint{position:absolute;left:50%;bottom:clamp(18px,3vh,30px);transform:translateX(-50%);z-index:4;
@@ -774,6 +806,7 @@
   .proj__nav-half.is-end .proj__nav-title{opacity:.5}
   .proj__nav-half.is-end:hover .proj__nav-dir,
   .proj__nav-half.is-end:hover .proj__nav-title{color:inherit;transform:none}
+  .proj__nav-half:focus-visible,.proj__next:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
   @media(max-width:700px){
     .proj__nav{grid-template-columns:1fr}
     .proj__nav-prev{border-right:none;border-bottom:1px solid var(--line)}
@@ -923,14 +956,25 @@
 </head>
 <body class="is-locked">
 
+  <a class="skip-link" href="#work">Skip to content</a>
+
+  <noscript>
+    <style>
+      .loader,.cursor,.grain,.hero__sculpt-hint{display:none!important}
+      body.is-locked{overflow:auto;height:auto}
+      .reveal,.hero__word,.hero__top,.nav{opacity:1!important;transform:none!important;filter:none!important}
+    </style>
+  </noscript>
+
   <div class="grain" aria-hidden="true"></div>
   <div class="progress" id="progress" aria-hidden="true"></div>
   <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__t"></span></div>
   <div class="dm-grid" id="dmGrid" aria-hidden="true"></div>
   <div class="dm-badge" id="dmBadge" aria-hidden="true"><i></i> Design mode — tap to exit</div>
 
-  <!-- LOADER -->
-  <div class="loader" id="loader" aria-hidden="true">
+  <!-- LOADER (not aria-hidden: it holds the focusable Skip button while visible;
+       .is-gone applies display:none which removes it from the a11y tree anyway) -->
+  <div class="loader" id="loader">
     <div class="loader__panel">
       <div class="loader__frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
@@ -988,10 +1032,10 @@
       <div class="hero__sculpture" id="heroSculpture" aria-hidden="true"></div>
 
       <span class="hero__top"><span class="dot"></span> Brand &amp; Identity Designer · Frankfurt / Varna</span>
-      <div class="hero__stack" data-dm="h1 · wordmark">
-        <h1 class="hero__word hero__word--left" id="wordLeft"> Design </h1>
-        <h1 class="hero__word hero__word--right" id="wordRight"> that <span class="o">moves.</span></h1>
-      </div>
+      <h1 class="hero__stack" data-dm="h1 · wordmark">
+        <span class="hero__word hero__word--left" id="wordLeft"> Design </span>
+        <span class="hero__word hero__word--right" id="wordRight"> that <span class="o">moves.</span></span>
+      </h1>
       <p class="hero__sub reveal" data-d="2">Branding, digital, motion, web & print</p>
       <a href="#work" class="hero__scroll reveal" data-d="3" data-cursor data-magnetic>Selected work<i></i></a>
       <span class="hero__sculpt-hint" id="sculptHint">
@@ -1006,7 +1050,7 @@
         <span class="eyebrow"><span class="dot"></span>Selected Work · 2021—2026</span>
         <h2 data-dm="h2 · section">Six things made <span class="lt">with care.</span></h2>
       </div>
-      <div class="cards reveal" data-d="1" id="cards"></div>
+      <div class="cards reveal" data-d="1" id="cards"><noscript><p style="grid-column:1/-1;text-align:center;color:var(--ink-soft)">This gallery needs JavaScript. In the meantime: <a href="https://www.behance.net/vyaradimitrova" style="text-decoration:underline">see the work on Behance</a> or write to <a href="mailto:vyara.dmtrv@gmail.com" style="text-decoration:underline">vyara.dmtrv@gmail.com</a>.</p></noscript></div>
     </section>
 
     <!-- MARQUEE -->
@@ -1049,10 +1093,10 @@
         <a href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" class="contact__mail" data-cursor data-magnetic>vyara.dmtrv@gmail.com</a>
         <div class="contact__socials">
           <a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>
-          <a href="https://linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
-          <a href="/assets/Vyara-Dimitrova_CV.html" data-cursor target="_blank" rel="noopener">Read.cv</a>
+          <a href="https://www.linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
+          <a href="/assets/Vyara-Dimitrova_CV.html" data-cursor target="_blank" rel="noopener">CV</a>
         </div>
-        <p class="contact__local" id="contactLocal" aria-live="polite"></p>
+        <p class="contact__local" id="contactLocal"></p>
       </div>
     </section>
 
@@ -1089,8 +1133,8 @@
           <div class="foot__col reveal" data-d="2">
             <span class="foot__col-h">Elsewhere</span>
             <a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>
-            <a href="https://linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
-            <a href="/assets/Vyara-Dimitrova_Resume.pdf" data-cursor target="_blank" rel="noopener">Read.cv</a>
+            <a href="https://www.linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
+            <a href="/assets/Vyara-Dimitrova_CV.html" data-cursor target="_blank" rel="noopener">CV</a>
           </div>
           <div class="foot__col reveal" data-d="3">
             <span class="foot__col-h">Say hello</span>
@@ -1153,17 +1197,20 @@
   if (lowPower || !webglOK()) return;
 
   /* ---- load Three.js + GLTFLoader on demand, then init -------------------- */
-  function loadScript(src){
+  function loadScript(src, sri){
     return new Promise(function(resolve, reject){
       var s = document.createElement('script');
       s.src = src; s.async = true;
+      if (sri){ s.integrity = sri; s.crossOrigin = 'anonymous'; }
       s.onload = resolve; s.onerror = reject;
       document.head.appendChild(s);
     });
   }
   var THREE_BASE = 'https://cdn.jsdelivr.net/npm/three@0.128.0';
-  loadScript(THREE_BASE + '/build/three.min.js')
-    .then(function(){ return loadScript(THREE_BASE + '/examples/js/loaders/GLTFLoader.js'); })
+  loadScript(THREE_BASE + '/build/three.min.js',
+      'sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu')
+    .then(function(){ return loadScript(THREE_BASE + '/examples/js/loaders/GLTFLoader.js',
+      'sha384-fljlqkjWlmSFjkESkQvm77heIZpoWmXEOzlCA7kOpGUH+95Zk0yGfQieWM2q136E'); })
     .then(initSculpture)
     .catch(function(err){ console.warn('[sculpture] could not load Three.js', err); });
 
@@ -1406,7 +1453,7 @@
     startLoop: function(){ isVisible = true; syncLoop(); },
     reveal: function(onDone){
       if (reduce){ entryScale = FULL_SCALE; if (onDone) onDone(); return; }
-      /* explosion: fast overshoot from 0 then settle — scale 0 → 1.22 → 1 */
+      /* explosion: fast overshoot from the entry scale (0.17) then settle — 0.17 → ~1.2 → 1 */
       var dur = 1100, t0 = performance.now(), from = entryScale;
       function easeExplosion(t){
         /* very strong overshoot back-ease */
@@ -1437,7 +1484,6 @@
     "t": "LG Electronics",
     "c": "Brand Design",
     "y": "2022–now",
-    "seed": "compora44",
     "tag": "A global campaign system built for scale and emotional precision.",
     "brief": "A multinational appliance manufacturer had established design guidelines, but adoption remained low across distributed teams.",
     "challenge": "Fragmented execution meant inconsistent brand presence across channels—newsletters, video, paid media, and digital assets lacked cohesion. The core issue wasn't the guidelines themselves, but the absence of practical, reusable templates.",
@@ -1457,36 +1503,26 @@
     "steps": [
       {
         "t": "Strategy",
-        "d": "6 market briefs distilled into one visual logic."
+        "d": "Guideline gaps mapped across distributed regional teams."
       },
       {
         "t": "Design",
-        "d": "Campaign toolkit: colour, motion, type, grid."
+        "d": "Modular newsletter template plus channel-specific guidance."
       },
       {
-        "t": "Localisation",
-        "d": "Regional variants without breaking the system."
+        "t": "Motion",
+        "d": "3D concept assets and motion examples teams could reuse."
       },
       {
         "t": "Delivery",
-        "d": "8-week rollout, broadcast to mobile."
+        "d": "Templates rolled straight into live workflows across channels."
       }
-    ],
-    "imgs": [
-      "compora44",
-      "compora21",
-      "compora33",
-      "compora55",
-      "compora11",
-      "compora66",
-      "compora88"
     ]
   },
   {
     "t": "My Market",
     "c": "Brand Identity",
     "y": "2021",
-    "seed": "mymarket21",
     "tag": "Bringing consistency, visibility, and personality to a fast-moving retail brand.",
     "brief": "Over 2.5 years, I helped shape MyMarket's visual presence across catalogs, packaging, outdoor advertising, stationery, and in-store materials. The goal was simple: create a more cohesive brand experience across every customer touchpoint.",
     "challenge": "Retail never stands still. With bi-weekly campaigns, seasonal promotions, and hundreds of assets moving through production, the challenge was keeping everything fresh while maintaining a consistent brand identity.",
@@ -1504,36 +1540,26 @@
     "steps": [
       {
         "t": "Research",
-        "d": "Four cities, forty market signs, one lettering logic."
+        "d": "Audit of every customer touchpoint, catalog to storefront."
       },
       {
-        "t": "Identity",
-        "d": "Logotype, palette, seasonal variation rules."
+        "t": "Framework",
+        "d": "One brand framework flexible enough for constant campaigns."
       },
       {
         "t": "Applications",
-        "d": "Shopfront, packaging, print, digital."
+        "d": "Catalogs, packaging, billboards, fleet, loyalty, in-store."
       },
       {
-        "t": "Rollout",
-        "d": "36 stores, 4 cities, 2 years."
+        "t": "Rhythm",
+        "d": "Bi-weekly campaign cycles sustained over 2.5 years."
       }
-    ],
-    "imgs": [
-      "mymarket21",
-      "mymarket09",
-      "mymarket35",
-      "mymarket48",
-      "mymarket14",
-      "mymarket62",
-      "mymarket77"
     ]
   },
   {
     "t": "Smart Point",
     "c": "Brand Design",
     "y": "2021",
-    "seed": "smartpoint13",
     "tag": "Built to be seen. Designed to be trusted.",
     "brief": "Smart Point needed a visual identity that reflected the reliability and professionalism of its repair services. I created a cohesive branding system spanning storefront graphics, indoor signage, stationery, packaging, and promotional materials.",
     "challenge": "The brand lacked a consistent visual presence across customer touchpoints. The goal was to create a recognizable identity that would stand out on the street while building trust with customers.",
@@ -1551,36 +1577,26 @@
     "steps": [
       {
         "t": "Audit",
-        "d": "34% abandonment mapped to 11 specific friction points."
+        "d": "Every customer-facing touchpoint reviewed, street to counter."
       },
       {
-        "t": "Flow",
-        "d": "Reduced to 3 mandatory taps from 9."
+        "t": "Identity",
+        "d": "Colour, type, shape and visual language unified into one system."
       },
       {
-        "t": "Testing",
-        "d": "Live kiosk testing, 200 users, 3 transit hubs."
+        "t": "Applications",
+        "d": "Storefront banners, indoor graphics, stationery, gift boxes."
       },
       {
         "t": "Delivery",
-        "d": "Component library + handoff spec for 120 units."
+        "d": "Print-ready files and specs for consistent production."
       }
-    ],
-    "imgs": [
-      "smartpoint13",
-      "smartpoint07",
-      "smartpoint22",
-      "smartpoint41",
-      "smartpoint55",
-      "smartpoint19",
-      "smartpoint63"
     ]
   },
   {
     "t": "Reverto Winery",
     "c": "Packaging",
     "y": "2021",
-    "seed": "reverto77",
     "tag": "Crafted to be poured. Designed to be remembered.",
     "brief": "Reverto Winery is a fine wine brand created for international markets. The project covered the development of a complete visual identity, including a custom wordmark and three distinct label collections designed to appeal to different audiences while remaining part of a unified brand family.",
     "challenge": "The brand needed to balance tradition and modernity while standing out in a highly competitive wine market. The identity had to feel premium, memorable, and flexible enough to support multiple product lines without losing consistency.",
@@ -1592,42 +1608,31 @@
       "Procreate",
       "Illustrator",
       "InDesign",
-      "Letterpress",
-      "Uncoated Stock"
+      "Photoshop"
     ],
     "steps": [
       {
-        "t": "Terroir",
-        "d": "Two days in the valley, walking the plots."
+        "t": "Research",
+        "d": "Classical wine labels, typography, and shelf-presence study."
       },
       {
-        "t": "Illustration",
-        "d": "Topographic drawings, one per vineyard."
+        "t": "Identity",
+        "d": "Custom wordmark built on refined Migha letterforms."
       },
       {
-        "t": "Production",
-        "d": "Letterpress blind-deboss, uncoated paper, black ink."
+        "t": "Collections",
+        "d": "Three label lines — Classic, Premium, Summer — one family."
       },
       {
-        "t": "Launch",
-        "d": "5 SKUs, 3 German importers, 2 Austrian chains."
+        "t": "Delivery",
+        "d": "Print-ready packaging system built for future SKUs."
       }
-    ],
-    "imgs": [
-      "reverto77",
-      "reverto15",
-      "reverto33",
-      "reverto60",
-      "reverto44",
-      "reverto82",
-      "reverto91"
     ]
   },
   {
     "t": "Crea Bakery",
     "c": "Brand Identity",
     "y": "2022",
-    "seed": "formtide09",
     "tag": "A warm identity baked for the street, the shelf, and the scroll.",
     "brief": "Crea Bäckerei is a family-owned bakery that needed a friendly, trustworthy identity before opening. The goal was to build awareness quickly on a limited budget while creating a brand that feels welcoming both in-store and online.",
     "challenge": "The brand had to stand out at street level while staying flexible enough for packaging, social media, and small promotional touchpoints. Everything needed to feel cohesive, clear, and instantly recognizable—even at a glance.",
@@ -1645,36 +1650,26 @@
     "steps": [
       {
         "t": "Discovery",
-        "d": "Three days with the founding team in Dublin."
+        "d": "Positioning and tone with the founding family, pre-opening."
       },
       {
         "t": "Identity",
-        "d": "Wordmark, palette, type, graphic language."
+        "d": "Logomark, wordmark, palette, type, photographic direction."
       },
       {
         "t": "System",
-        "d": "12-page guidelines, Canva templates, signage spec."
+        "d": "Signage, packaging, social templates, stickers, invitations."
       },
       {
-        "t": "Franchise",
-        "d": "Rollout kit for 4 new locations."
+        "t": "Rollout",
+        "d": "Vendor-ready files with simple guidelines for launch day."
       }
-    ],
-    "imgs": [
-      "formtide09",
-      "formtide22",
-      "formtide38",
-      "formtide51",
-      "formtide14",
-      "formtide67",
-      "formtide83"
     ]
   },
   {
     "t": "Maynooth Furniture",
     "c": "Web design",
     "y": "2021",
-    "seed": "atlas55",
     "tag": "Web design for an Irish furniture maker entering the international market.",
     "brief": "Maynooth Furniture crafts solid-wood pieces in County Kildare, all to commission. Entering German and Scandinavian markets, they needed photography, editorial direction, and a digital presence that could sit beside established European craft brands.",
     "challenge": "Irish craft has international credibility problems — the market assumes it means folk-adjacent or heritage-nostalgic. Maynooth's work is neither. The art direction had to recontextualise the brand without erasing its origin.",
@@ -1696,7 +1691,7 @@
       },
       {
         "t": "Campaign",
-        "d": "8-day shoot, 4 locations, 3 photographers."
+        "d": "8-day shoot across 4 locations, Ireland and Berlin."
       },
       {
         "t": "Editorial",
@@ -1706,15 +1701,6 @@
         "t": "Digital",
         "d": "Webflow build, gallery-first layout, 40% conversion uplift."
       }
-    ],
-    "imgs": [
-      "atlas55",
-      "atlas12",
-      "atlas34",
-      "atlas47",
-      "atlas61",
-      "atlas28",
-      "atlas73"
     ],
     "isWeb": true
   }
@@ -1788,6 +1774,9 @@
       img.setAttribute('data-enh', '');
       img.decoding = 'async';
       if (!img.hasAttribute('loading')) img.loading = 'lazy';
+      /* a missing file hides itself instead of rendering a broken-image icon;
+         the container keeps its sand background so the grid stays composed */
+      img.addEventListener('error', function(){ img.style.visibility = 'hidden'; }, { once: true });
       var src = img.getAttribute('src');
       if (MEDIA.cdn && src && src.indexOf('http') !== 0){
         img.srcset = MEDIA.widths.map(function(w){
@@ -1854,22 +1843,6 @@ try { sessionStorage.setItem(SEEN_KEY, '1'); } catch (e){}
    sat through the full intro once this session — both skip the same way */
 var fastIntro = reduce || skipIntro;
 
-/* generic slide-swap used by the witty line */
-function swapText(wrap, current, html, cls){
-  var next = document.createElement('span');
-  next.className = cls + ' from-below';
-  next.innerHTML = html;
-  wrap.appendChild(next);
-  requestAnimationFrame(function(){
-    current.classList.remove('is-in');
-    current.classList.add('is-out');
-    next.classList.remove('from-below');
-    next.classList.add('is-in');
-    setTimeout(function(){ if (current.parentNode) current.parentNode.removeChild(current); }, 550);
-  });
-  return next;
-}
-
 /* pen-tool signature reveal: anchors + bezier handles flash in as
    construction geometry, the pen nib travels, the path draws itself on,
    then everything but the inked mark fades and the stroke locks orange.
@@ -1889,21 +1862,20 @@ function runSignature(){
   sigHandles.forEach(function(h, i){ sigTimeout(function(){ h.classList.add('is-on'); }, 260 + i * 130); });
   /* the pen starts drawing once the geometry has had a beat to register —
      the progress hairline starts filling at the exact same moment, and
-     both finish together 1.7s later */
+     both finish together 1.2s later */
   sigTimeout(function(){
     sigEl.classList.add('is-drawing');
     if (barWrap) barWrap.classList.add('is-filling');
-  }, 450);
+  }, 400);
   /* lock: construction geometry clears, stroke commits to brand orange */
   sigTimeout(function(){
     sigEl.classList.remove('is-drawing');
     sigEl.classList.add('is-locked');
-  }, 2300);
+  }, 1750);
 }
 if (!fastIntro) runSignature();
 
 /* status sentence: time-aware greeting swapped in as the mark locks */
-var quipTimer = null;
 function greeting(){
   var h = new Date().getHours();
   if (h < 5)  return 'Still up? Same.';
@@ -1912,13 +1884,13 @@ function greeting(){
   if (h < 22) return 'Good evening.';
   return 'Up late? Welcome in.';
 }
-if (!fastIntro) setTimeout(function(){ quipEl.innerHTML = greeting(); }, 2300);
+if (!fastIntro) setTimeout(function(){ quipEl.innerHTML = greeting(); }, 1750);
 if (fastIntro && quipEl) quipEl.innerHTML = greeting();
 
 /* easter egg: click the sparkle for escalating replies (full intro only —
    it would just flash and vanish on the fast path) */
 if (eggEl && !fastIntro){
-  setTimeout(function(){ eggEl.classList.add('is-visible'); }, 1000);
+  setTimeout(function(){ eggEl.classList.add('is-visible'); }, 800);
   var eggClicks = 0;
   var eggMessages = ['You found me. Hi.', 'Stop clicking.', 'I mean it.', 'Fine. You win. \u2665'];
   eggEl.addEventListener('click', function(){
@@ -1946,14 +1918,13 @@ document.addEventListener('keydown', function(e){
   }
 });
 
-/* total intro = 4s: geometry + draw 0–2.3s, lock + "Welcome in!" 2.3–4s
+/* total intro ≈ 2.6s: geometry + draw 0–1.75s, lock + greeting 1.75–2.6s
    (a brief hold, not a long static pause), then curtain lifts. Fast path
    (reduced motion / repeat visit) lifts almost immediately. */
-setTimeout(revealOnce, fastIntro ? 200 : 4000);
+setTimeout(revealOnce, fastIntro ? 200 : 2600);
 
 function revealHero(){
   clearSigTimers();
-  if (quipTimer){ clearInterval(quipTimer); quipTimer = null; }
   if (skipBtn){ skipBtn.removeEventListener('click', revealOnce); }
 
   var nav       = document.getElementById('nav');
@@ -2012,7 +1983,10 @@ function revealHero(){
     'Reverto Winery':'Bottled','Crea Bakery':'Branded','Maynooth Furniture':'Shipped'};
 
   projData.forEach(function(p, i){
-    var card    = document.createElement('button');
+    /* real links, not buttons: middle-click / open-in-new-tab work, the URL
+       previews on hover, and crawlers see an internal link to each project */
+    var card    = document.createElement('a');
+    card.href   = '#' + titleToSlug(p.t);
     var sizeCls = sizeVariants[i];
     var colCls  = (i % 2 === 1) ? ' card--b' : '';
     card.className = 'card ' + sizeCls + colCls;
@@ -2107,7 +2081,7 @@ function makeQuote(q){
 
     /* ---- HERO ---- */
     html += '<div class="proj__hero">'
-      + '<div class="proj__hero-img"><img src="' + I('hero') + '" alt="' + d.t + '"></div>'
+      + '<div class="proj__hero-img"><img src="' + I('hero') + '" alt="' + d.t + ' — case study hero" loading="eager" fetchpriority="high"></div>'
       + '<div class="proj__hero-content">'
       +   '<div class="proj__cat">' + d.c + ' \u00b7 ' + d.y + '</div>'
       +   '<h2 class="proj__title">' + splitTitle(d.t) + '</h2>'
@@ -2127,7 +2101,7 @@ function makeQuote(q){
     if (idx === 0) {
       /* PROJECT 1 — LG Electronics: motion-first, videos in bento */
       /* Hero video reel — full cinematic strip */
-      html += '<div class="proj__video-reel bento--blur" data-zoomable>'
+      html += '<div class="proj__video-reel bento--blur">'
         + '<video src="' + V('reel') + '" muted loop playsinline preload="none"></video>'
         + '</div>';
 
@@ -2139,9 +2113,9 @@ function makeQuote(q){
 
       /* Video bento grid — autoplay clips */
       html += '<div class="proj__bento proj__bento--video">'
-        + '<div class="bento bento--blur" data-zoomable><video src="' + V('bento-1') + '" muted loop playsinline preload="none"></video></div>'
-        + '<div class="bento bento--blur bento--square-ph" data-zoomable><video src="' + V('bento-2') + '" muted loop playsinline preload="none"></video></div>'
-        + '<div class="bento bento--blur bento--square-ph" data-zoomable><video src="' + V('bento-3') + '" muted loop playsinline preload="none"></video></div>'
+        + '<div class="bento bento--blur"><video src="' + V('bento-1') + '" muted loop playsinline preload="none"></video></div>'
+        + '<div class="bento bento--blur bento--square-ph"><video src="' + V('bento-2') + '" muted loop playsinline preload="none"></video></div>'
+        + '<div class="bento bento--blur bento--square-ph"><video src="' + V('bento-3') + '" muted loop playsinline preload="none"></video></div>'
         + '</div>';
 
       /* 03 APPROACH — flowing text, no cards */
@@ -2327,10 +2301,10 @@ function makeQuote(q){
         + '<div class="proj__reveal" data-sd="1"><p class="proj__text">' + d.outcome + '</p></div>'
         + '</div>';
 
-      /* Outcome bento */
-      html += '<div class="proj__bento proj__bento--4">'
+      /* Outcome spread (outcome-2 already appears in the packaging row above,
+         so the outcome moment shows the two images not yet seen on this page) */
+      html += '<div class="proj__spread">'
         + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="" loading="lazy"></div>'
         + '<div class="bento bento--clip" data-zoomable><img src="' + I('challenge') + '" alt="" loading="lazy"></div>'
         + '</div>';
 
@@ -2530,7 +2504,7 @@ function makeQuote(q){
        "Previous Project" link so the back-link isn't lost on the final page. */
     if (idx === projData.length - 1){
       html += '<div class="proj__nav">'
-        + '<div class="proj__nav-half proj__nav-prev" data-prev="' + prevIdx + '">'
+        + '<div class="proj__nav-half proj__nav-prev" data-prev="' + prevIdx + '" role="button" tabindex="0" aria-label="Previous project: ' + prevD.t + '">'
         +   '<span class="proj__nav-dir"><span class="proj__nav-arrow">←</span>Previous Project</span>'
         +   '<span class="proj__nav-title">' + prevD.t + '</span>'
         + '</div>'
@@ -2549,25 +2523,25 @@ function makeQuote(q){
         +   '<a href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" class="contact__mail" data-cursor data-magnetic>vyara.dmtrv@gmail.com</a>'
         +   '<div class="contact__socials">'
         +     '<a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>'
-        +     '<a href="https://linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>'
-        +     '<a href="/assets/Vyara-Dimitrova_Resume.pdf" data-cursor target="_blank" rel="noopener">Read.cv</a>'
+        +     '<a href="https://www.linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>'
+        +     '<a href="/assets/Vyara-Dimitrova_CV.html" data-cursor target="_blank" rel="noopener">CV</a>'
         +   '</div>'
         + '</div>'
         + '<button type="button" class="proj__end-home" data-cursor>\u2190 Back to home</button>'
         + '</div>';
     } else if (idx === 0){
-      html += '<div class="proj__next" data-next="' + nextIdx + '">'
+      html += '<div class="proj__next" data-next="' + nextIdx + '" role="button" tabindex="0" aria-label="Next project: ' + nextD.t + '">'
         + '<span class="proj__next-label">Next Project</span>'
         + '<span class="proj__next-title">' + nextD.t + '</span>'
         + '<span class="proj__next-arrow">→</span>'
         + '</div>';
     } else {
       html += '<div class="proj__nav">'
-        + '<div class="proj__nav-half proj__nav-prev" data-prev="' + prevIdx + '">'
+        + '<div class="proj__nav-half proj__nav-prev" data-prev="' + prevIdx + '" role="button" tabindex="0" aria-label="Previous project: ' + prevD.t + '">'
         +   '<span class="proj__nav-dir"><span class="proj__nav-arrow">←</span>Previous Project</span>'
         +   '<span class="proj__nav-title">' + prevD.t + '</span>'
         + '</div>'
-        + '<div class="proj__nav-half proj__nav-next" data-next="' + nextIdx + '">'
+        + '<div class="proj__nav-half proj__nav-next" data-next="' + nextIdx + '" role="button" tabindex="0" aria-label="Next project: ' + nextD.t + '">'
         +   '<span class="proj__nav-dir">Next Project<span class="proj__nav-arrow">→</span></span>'
         +   '<span class="proj__nav-title">' + nextD.t + '</span>'
         + '</div>'
@@ -2575,12 +2549,23 @@ function makeQuote(q){
     }
 
     projContent.innerHTML = html;
+    /* give every unlabeled case-study image a contextual alt (hand-written
+       alts in the templates always win — this only fills the blanks) */
+    var altN = 0;
+    projContent.querySelectorAll('img').forEach(function(im){
+      if (!im.getAttribute('alt')) im.alt = d.t + ' \u2014 case study image ' + (++altN);
+    });
     enhanceImages(projContent);
     enhanceVideos(projContent);
     proj.scrollTop = 0;
     proj.classList.add('is-open');
     proj.setAttribute('aria-hidden', 'false');
     document.body.classList.add('proj-open');
+
+    /* tab title follows the case study; focus moves into the dialog */
+    document.title = d.t + ' \u2014 Vyara Dimitrova';
+    if (!prevFocus) prevFocus = document.activeElement;
+    if (projBack.focus) projBack.focus({ preventScroll: true });
 
 /* scroll-triggered reveals */
 requestAnimationFrame(function(){
@@ -2630,29 +2615,34 @@ requestAnimationFrame(function(){
       el.addEventListener('click', function(e){
         var img = el.querySelector('img');
         if (!img) return;
-        openLightbox(img.src);
+        openLightbox(img.src, img.alt);
       });
     });
   }); // close second rAF
 }); // close first rAF
 
-    /* parallax scroll handler */
-function onProjScroll(){
-  var scrollTop = proj.scrollTop;
-  var scrollH   = proj.scrollHeight;
-  projParallax.forEach(function(img){
-    var parent = img.parentElement;
-    var r = parent.getBoundingClientRect();
-    // Use proj's viewport (its clientHeight) as the reference
-    var vh  = proj.clientHeight;
-    var pct = (r.top + r.height / 2 - vh / 2) / vh;
-    img.style.transform = 'translateY(' + (pct * -40).toFixed(1) + 'px)';
-  });
-}
-    proj.addEventListener('scroll', onProjScroll, { passive: true });
   }
 
-  function closeProject(){
+  /* parallax scroll handler — attached ONCE (not per open, which used to
+     stack a new permanent listener every time a project was opened) */
+  function onProjScroll(){
+    projParallax.forEach(function(img){
+      var parent = img.parentElement;
+      var r = parent.getBoundingClientRect();
+      // Use proj's viewport (its clientHeight) as the reference
+      var vh  = proj.clientHeight;
+      var pct = (r.top + r.height / 2 - vh / 2) / vh;
+      img.style.transform = 'translateY(' + (pct * -40).toFixed(1) + 'px)';
+    });
+  }
+  proj.addEventListener('scroll', onProjScroll, { passive: true });
+
+  /* single teardown used by every close path (back button, popstate,
+     next/prev, escape) so cleanup can't drift out of sync again */
+  var BASE_TITLE = document.title;
+  var prevFocus = null;
+  function closeProject(opts){
+    opts = opts || {};
     proj.classList.remove('is-open');
     proj.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('proj-open');
@@ -2660,9 +2650,18 @@ function onProjScroll(){
     if (videoIO){ videoIO.disconnect(); videoIO = null; }
     projParallax = [];
     currentProj = -1;
-    if (location.hash) history.pushState('', document.title, location.pathname + location.search);
+    document.title = BASE_TITLE;
+    /* replaceState (not pushState): pressing Back after closing should NOT
+       reopen the project you just closed */
+    if (!opts.keepHash && location.hash){
+      history.replaceState('', BASE_TITLE, location.pathname + location.search);
+    }
     /* resume sculpture render loop if it was paused by the overlay */
     if (window.__sculpture && window.__sculpture.startLoop) window.__sculpture.startLoop();
+    if (!opts.keepFocus && prevFocus && prevFocus.focus){
+      prevFocus.focus({ preventScroll: true });
+    }
+    if (!opts.keepFocus) prevFocus = null;
   }
 
   /* slug ↔ index helpers for hash routing */
@@ -2674,64 +2673,73 @@ function onProjScroll(){
     return -1;
   }
 
-  /* hash routing — update URL when opening/closing */
-  function openProjectWithHash(idx){
+  /* hash routing — update URL when opening/closing. `replace` swaps the
+     current entry instead of pushing (used by next/prev so one browsing
+     session is one history entry, not a growing stack). */
+  var navHashes = ['work','about','contact','top',''];
+  function openProjectWithHash(idx, replace){
     openProject(idx);
     var slug = titleToSlug(projData[idx].t);
-    history.pushState({ proj: slug }, projData[idx].t + ' — Vyara Dimitrova', '#' + slug);
+    history[replace ? 'replaceState' : 'pushState'](
+      { proj: slug }, document.title, '#' + slug);
   }
 
   /* browser back/forward */
   window.addEventListener('popstate', function(){
     var hash = location.hash.replace('#', '');
-    var navHashes = ['work','studio','contact','top',''];
     if (hash && navHashes.indexOf(hash) === -1){
       var idx = slugToIdx(hash);
-      if (idx !== -1){ openProject(idx); return; }
+      if (idx !== -1){
+        openProject(idx);
+        return;
+      }
     }
     if (proj.classList.contains('is-open')){
-      proj.classList.remove('is-open');
-      proj.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('proj-open');
-      if (projIO){ projIO.disconnect(); projIO = null; }
-      projParallax = [];
-      currentProj = -1;
+      /* the browser already changed the URL — teardown only */
+      closeProject({ keepHash: true });
     }
   });
 
   /* open on direct link — called by loader after it fully finishes */
   window.__openHashProject = function(){
     var hash = location.hash.replace('#', '');
-    var navHashes = ['work','studio','contact','top',''];
     if (!hash || navHashes.indexOf(hash) !== -1) return;
     var idx = slugToIdx(hash);
-    if (idx !== -1) openProject(idx);
+    if (idx !== -1){
+      openProject(idx);
+      history.replaceState({ proj: hash }, document.title, '#' + hash);
+    }
   };
 
-  /* card clicks → open project + update URL */
+  /* card clicks → open project + update URL (plain click only; modified
+     clicks — new tab, new window — keep native anchor behaviour) */
   cardsWrap.addEventListener('click', function(e){
     var card = e.target.closest('.card');
     if (!card || card.dataset.projIdx === undefined) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
     openProjectWithHash(parseInt(card.dataset.projIdx, 10));
   });
 
   /* back button */
   projBack.addEventListener('click', closeProject);
 
-  /* next / previous project nav */
+  /* next / previous project nav — keepHash + replaceState means an entire
+     browsing session (open → next → next …) is one history entry; a single
+     Back from anywhere in the case studies returns home */
   proj.addEventListener('click', function(e){
     var next = e.target.closest('.proj__next, .proj__nav-next[data-next]');
     if (next){
       var idx = parseInt(next.dataset.next, 10);
-      closeProject();
-      setTimeout(function(){ openProjectWithHash(idx); }, 400);
+      closeProject({ keepHash: true, keepFocus: true });
+      setTimeout(function(){ openProjectWithHash(idx, true); }, 400);
       return;
     }
     var prev = e.target.closest('.proj__nav-prev[data-prev]');
     if (prev){
       var pIdx = parseInt(prev.dataset.prev, 10);
-      closeProject();
-      setTimeout(function(){ openProjectWithHash(pIdx); }, 400);
+      closeProject({ keepHash: true, keepFocus: true });
+      setTimeout(function(){ openProjectWithHash(pIdx, true); }, 400);
       return;
     }
     if (e.target.closest('.proj__end-home')){
@@ -2739,23 +2747,57 @@ function onProjScroll(){
     }
   });
 
+  /* Enter / Space activate the role="button" prev/next navs */
+  proj.addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var btn = e.target.closest('[role="button"][data-next], [role="button"][data-prev]');
+    if (!btn) return;
+    e.preventDefault();
+    btn.click();
+  });
+
   /* --- lightbox (fullscreen image viewer) --- */
   var lightbox    = document.getElementById('lightbox');
   var lightboxImg = document.getElementById('lightboxImg');
   var lightboxClose = lightbox.querySelector('.lightbox__close');
 
-  function openLightbox(src){
+  var lbPrevFocus = null;
+  function openLightbox(src, alt){
     lightboxImg.src = src;
+    lightboxImg.alt = alt || 'Enlarged case study image';
     lightbox.setAttribute('aria-hidden', 'false');
+    lbPrevFocus = document.activeElement;
     requestAnimationFrame(function(){
       lightbox.classList.add('is-open');
+      lightboxClose.focus({ preventScroll: true });
     });
   }
   function closeLightbox(){
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
     setTimeout(function(){ lightboxImg.src = ''; }, 500);
+    if (lbPrevFocus && lbPrevFocus.focus) lbPrevFocus.focus({ preventScroll: true });
+    lbPrevFocus = null;
   }
+
+  /* focus trap: while the lightbox or the project dialog is open, Tab
+     cycles inside it instead of escaping to the page underneath */
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Tab') return;
+    var container = lightbox.classList.contains('is-open') ? lightbox
+                  : (proj.classList.contains('is-open') ? proj : null);
+    if (!container) return;
+    var f = Array.prototype.slice.call(
+      container.querySelectorAll('a[href], button, [tabindex]:not([tabindex="-1"])')
+    ).filter(function(el){ return el.getClientRects().length > 0; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (!container.contains(document.activeElement)){
+      e.preventDefault(); first.focus(); return;
+    }
+    if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  });
   lightbox.addEventListener('click', function(e){
     if (e.target === lightbox || e.target === lightboxClose || e.target.closest('.lightbox__close')){
       closeLightbox();
@@ -2787,11 +2829,12 @@ function onProjScroll(){
   var nav      = document.getElementById('nav');
   var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navLinks a'));
 
+  var progressEl = document.getElementById('progress');
   function onScroll(){
     var y = window.scrollY;
     if (y > 40) nav.classList.add('is-stuck'); else nav.classList.remove('is-stuck');
     var h = document.documentElement.scrollHeight - window.innerHeight;
-    document.getElementById('progress').style.width = (h > 0 ? (y / h * 100) : 0) + '%';
+    progressEl.style.transform = 'scaleX(' + (h > 0 ? (y / h) : 0).toFixed(4) + ')';
     var mid = y + window.innerHeight * 0.42;
     var cur = navLinks[0];
     navLinks.forEach(function(l){
@@ -2867,21 +2910,23 @@ function onProjScroll(){
   /* --- DESIGN MODE --- */
   (function(){
     function toggle(){ document.body.classList.toggle('design-mode'); }
+    /* the orange word stays a mouse/touch easter egg, but no longer claims
+       button semantics inside the h1 (keyboard users have the hotkey) */
     var orange = document.querySelector('.hero__word .o');
     if (orange){
-      orange.setAttribute('role','button'); orange.setAttribute('tabindex','0');
-      orange.setAttribute('aria-label','Toggle design mode'); orange.setAttribute('data-cursor','');
+      orange.setAttribute('data-cursor','');
       orange.addEventListener('click', toggle);
-      orange.addEventListener('keydown', function(e){
-        if (e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
-      });
     }
     var badge = document.getElementById('dmBadge');
     if (badge) badge.addEventListener('click', toggle);
+    /* double-press "g" within 450ms — a single stray keystroke can no
+       longer summon the grid overlay mid-read */
+    var lastG = 0;
     document.addEventListener('keydown', function(e){
       if (e.key!=='g'&&e.key!=='G') return;
       var t=e.target; if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable)) return;
-      toggle();
+      var now = Date.now();
+      if (now - lastG < 450){ toggle(); lastG = 0; } else { lastG = now; }
     });
   })();
 
@@ -2915,12 +2960,14 @@ function onProjScroll(){
 
   /* --- COPY EMAIL --- */
   (function(){
+    /* copy is a bonus, not a hijack: the mailto still opens the visitor's
+       mail client (mailto doesn't navigate away, so both can happen) */
     document.addEventListener('click',function(e){
       var el=e.target.closest('.contact__mail,.foot__mail');
       if(!el) return;
       if(!navigator.clipboard||!navigator.clipboard.writeText) return;
-      if(el.dataset.copying){ e.preventDefault(); return; }
-      var email=(el.textContent||'').trim(); e.preventDefault();
+      if(el.dataset.copying) return;
+      var email='vyara.dmtrv@gmail.com';
       navigator.clipboard.writeText(email).then(function(){
         el.dataset.copying='1'; var orig=el.textContent;
         el.textContent='Copied \u2713'; el.classList.add('is-copied');
