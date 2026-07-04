@@ -88,83 +88,94 @@
   /* --- custom cursor --- */
   .cursor{position:fixed;top:0;left:0;z-index:9500;pointer-events:none;width:34px;height:34px;border:1.5px solid var(--ink);
     border-radius:50%;transform:translate(-50%,-50%);opacity:0;display:flex;align-items:center;justify-content:center;
-    transition:width .3s var(--ease),height .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease),opacity .3s var(--ease)}
+    transition:width .3s var(--ease),height .3s var(--ease),padding .3s var(--ease),border-radius .3s var(--ease),
+      background .3s var(--ease),border-color .3s var(--ease),opacity .3s var(--ease)}
   .cursor.is-on{opacity:1}
   .cursor.is-hover{width:54px;height:54px;background:var(--orange);border-color:var(--orange)}
   .cursor.is-view{width:80px;height:80px;background:var(--orange);border-color:var(--orange)}
+  /* pill variant — sized to its text rather than a fixed circle, for hints
+     longer than one word (e.g. "Design mode") */
+  .cursor.is-hint{width:auto;height:40px;padding:0 18px;border-radius:999px;
+    background:var(--orange);border-color:var(--orange);white-space:nowrap}
   .cursor__t{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--beige-lt);opacity:0;transition:opacity .25s var(--ease)}
-  .cursor.is-view .cursor__t{opacity:1}
+  .cursor.is-view .cursor__t,.cursor.is-hint .cursor__t{opacity:1}
 
-  /* --- loader (lightweight: one static gradient, one filling mark) --- */
+  /* --- loader: a page from a print monograph — warm paper, a mark sketched by
+     an invisible pen with a settling orange accent, and a two-line colophon --- */
   .loader{position:fixed;inset:0;z-index:8000;overflow:hidden;color:var(--ink)}
   .loader.is-gone{display:none}
 
-  /* beige curtain with a single soft gradient wash — no blobs, no grid, nothing
-     animated in the background. Lifts away on handoff, led by an orange seam. */
+  /* paper curtain: light beige field with two soft ambient washes in the darker
+     beige, breathing quietly. Lifts away on handoff, led by an orange seam. */
   .loader__panel{position:absolute;inset:0;
     background:
-      radial-gradient(120% 90% at 50% 8%,rgba(229,96,43,.10),transparent 60%),
-      var(--beige);
+      radial-gradient(75% 75% at 50% 50%,rgba(229,96,43,0) 55%,rgba(229,96,43,.09) 100%),
+      radial-gradient(90% 72% at 16% 10%,#E9E1D4 0%,rgba(233,225,212,0) 58%),
+      radial-gradient(84% 66% at 86% 90%,#E9E1D4 0%,rgba(233,225,212,0) 60%),
+      #F3EEE5;
     display:flex;align-items:center;justify-content:center;overflow:hidden;
     will-change:transform;transition:transform 1.05s cubic-bezier(.76,0,.24,1)}
+  /* extremely subtle paper tooth — one static SVG turbulence tile, multiplied */
+  .loader__panel::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    opacity:.03;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E")}
   .loader__panel::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:2px;
     background:var(--orange);opacity:0;z-index:5}
   .loader.is-leaving .loader__panel{transform:translateY(-100.4%)}
   .loader.is-leaving .loader__panel::after{opacity:1}
 
-  /* faint grid, borrowed from the hidden designer-mode overlay — pure CSS
-     background-image (repeating linear-gradients), no extra paint cost */
-  .loader__grid{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
-    background-image:linear-gradient(to right,rgba(229,96,43,.07) 1px,transparent 1px),
-      linear-gradient(to bottom,rgba(229,96,43,.07) 1px,transparent 1px);
-    background-size:clamp(48px,8vw,96px) clamp(48px,8vw,96px)}
-
-  /* corner frame — a single static element, purely decorative */
-  .loader__frame{position:absolute;inset:clamp(16px,2.4vw,30px);z-index:1;pointer-events:none;
-    opacity:0;animation:loaderFrameIn .9s var(--ease) .15s forwards}
-  @keyframes loaderFrameIn{to{opacity:1}}
-  .loader__frame i{position:absolute;width:16px;height:16px;border:1.5px solid var(--line)}
-  .loader__frame i:nth-child(1){top:0;left:0;border-right:none;border-bottom:none}
-  .loader__frame i:nth-child(2){top:0;right:0;border-left:none;border-bottom:none}
-  .loader__frame i:nth-child(3){bottom:0;left:0;border-right:none;border-top:none}
-  .loader__frame i:nth-child(4){bottom:0;right:0;border-left:none;border-top:none}
-
-  /* centered content — fades/lifts just before the curtain */
+  /* centered composition — fades/lifts just before the curtain */
   .loader__inner{position:relative;z-index:2;display:flex;flex-direction:column;
     align-items:center;text-align:center;padding:0 24px;
     transition:opacity .4s var(--ease),transform .55s var(--ease)}
   .loader.is-leaving .loader__inner{opacity:0;transform:translateY(-22px)}
 
-  /* --- the mark: thin base outline (frame 1) + a thick round-cap stroke that
-     draws itself over it as the loading animation (scaled down to 1x, no
-     filter/glow — kept deliberately cheap) --- */
-  .loader__sig{position:relative;width:clamp(108px,16vw,156px);height:auto;
+  /* parallax layers: mark and typography drift at opposing, unequal depths.
+     --px/--py are lerped from JS each frame — no CSS transition needed here. */
+  .loader__sigLayer{transform:translate3d(calc(var(--px,0)*7px),calc(var(--py,0)*6px),0)}
+  .loader__typeLayer{display:flex;flex-direction:column;align-items:center;
+    transform:translate3d(calc(var(--px,0)*-3px),calc(var(--py,0)*-2.5px),0)}
+
+  /* --- the mark: one continuous ink line, sketched by an invisible pen.
+     Layer 1 (sig__pen): the ink itself, revealed by dash-offset. Layer 2
+     (sig__accent): a short lit orange segment that chases the pen tip along
+     the same path, then settles and dissolves into the finished mark. --- */
+  .loader__sig{position:relative;width:clamp(112px,16vw,160px);height:auto;
     transform-origin:center center}
-  .loader__sig svg{display:block;width:100%;height:auto}
+  .loader__sig svg{display:block;width:100%;height:auto;overflow:visible}
 
-  /* Base layer: thin orange outline, no fill. Always visible from the first
-     frame so there's an instant, crisp mark on screen — untouched by JS. */
-  .sig__outline{fill:none;stroke:#5F5850;stroke-width:2;
-    stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+  .sig__pen{fill:none;stroke:var(--ink);stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round;
+    transition:stroke-dashoffset 1.9s var(--ease-io),stroke-width .9s var(--ease-io)}
+  .sig__accent{fill:none;stroke:var(--orange);stroke-width:2.6;
+    stroke-linecap:round;stroke-linejoin:round;opacity:0}
 
-  /* Progress layer: same V, drawn as a thicker round-cap/round-join orange
-     stroke on top of the grey base outline. Its stroke-dashoffset transitions
-     from the path's full length down to 0 — same duration + easing as the
-     hero__scroll indicator just below (1.9s, var(--ease-io)), so the two
-     loading cues in the page share one velocity. */
-  .sig__progress{fill:none;stroke:var(--orange);stroke-width:2.1;
-    stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;
-    transition:stroke-dashoffset 1.9s var(--ease-io)}
+  /* locked: the line gains its full print weight (outline → solid) with a
+     whisper of emboss — paper lit from above — and a slow breathing movement */
+  .loader__sig.is-locked .sig__pen{stroke-width:4}
+  .loader__sig.is-locked{
+    filter:drop-shadow(0 -1px 0 rgba(255,255,255,.55)) drop-shadow(0 1.5px 1.5px rgba(34,30,26,.16));
+    animation:sigBreathe 5.6s var(--ease-io) infinite}
+  @keyframes sigBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
+  @media (prefers-reduced-motion:reduce){.loader__sig.is-locked{animation:none}}
 
+  /* colophon: Urbanist medium, generous tracking. Enters by rising out of a
+     soft blur; leaves by dissolving upward the same way — print, not digital. */
+  .loader__phrase{position:relative;margin-top:clamp(26px,4.5vh,42px);min-height:1.6em;
+    max-width:min(90vw,480px);display:flex;align-items:center;justify-content:center;
+    font-size:clamp(.8rem,1.35vw,.95rem);font-weight:500;letter-spacing:.34em;text-indent:.34em;
+    text-transform:uppercase;line-height:1.6;color:var(--ink-soft)}
+  @media (max-width:600px){.loader__phrase{min-height:3.2em}}
+  .loader__phrase-inner{display:block;opacity:0;transform:translateY(14px);filter:blur(6px);
+    transition:opacity .85s var(--ease-io),transform .85s var(--ease-io),filter .85s var(--ease-io)}
+  .loader__phrase-inner.is-in{opacity:1;transform:translateY(0);filter:blur(0)}
+  .loader__phrase-inner.is-out{opacity:0;transform:translateY(-10px);filter:blur(5px)}
 
-  /* witty status sentence (kept) */
-  .loader__quip{position:relative;min-height:1.4em;overflow:hidden;min-width:min(90vw,420px);max-width:min(90vw,420px);
-    margin-top:clamp(20px,3.5vh,34px);
-    font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--ink-soft)}
-  .loader__quip-inner{display:block;white-space:normal;text-align:center;line-height:1.45;transition:transform .45s var(--ease),opacity .35s var(--ease)}
-  .loader__quip-inner.is-out{transform:translateY(-120%);opacity:0}
-  .loader__quip-inner.is-in{transform:translateY(0);opacity:1}
-  .loader__quip-inner.from-below{transform:translateY(120%);opacity:0}
+  /* hairline beneath the phrase — unfolds from the centre outward */
+  .loader__rule{width:min(46vw,300px);height:1px;background:rgba(34,30,26,.14);
+    margin-top:clamp(16px,2.8vh,26px);
+    transform:scaleX(0);transform-origin:center;transition:transform 1.4s var(--ease-io)}
+  .loader__rule.is-in{transform:scaleX(1)}
 
   /* skip control — quiet, corner-anchored, never competes with the kinetic word.
      Fades in slightly after the loader starts so it doesn't flash on instant
@@ -911,27 +922,28 @@
        .is-gone applies display:none which removes it from the a11y tree anyway) -->
   <div class="loader" id="loader">
     <div class="loader__panel">
-      <div class="loader__grid" aria-hidden="true"></div>
-      <div class="loader__frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-
-      <div class="loader__inner">
-        <div class="loader__sig" id="loaderSig">
-          <svg viewBox="0 0 219.38 162.22" aria-hidden="true">
-            <defs>
-              <!-- the V shape, reused as both stroke and fill -->
-              <path id="sigShape" d="M162.37,24.56l13.55-22.28h37.84l-85.14,157.67H97.09L2.14,2.28h43.1l59.91,105.46V57.92l0,0
-                c-4.68-1.57-8.06-5.99-8.06-11.21c0-6.53,5.29-11.83,11.82-11.83c6.53,0,11.83,5.3,11.83,11.83c0,4.88-2.96,9.06-7.18,10.87l0,0
-                v94.66l56.05-104.06c0,0-14.01-3.15-18.91-22.42c-4.91-19.27-3.51-23.48-3.51-23.48H72.21c0,0-0.7,4.56-3.5,12.27
-                c-2.8,7.7-3.16,6.71-3.16,6.71"></path>
-            </defs>
-            <!-- base: thin orange outline, visible from the first frame -->
-            <use class="sig__outline" href="#sigShape" xlink:href="#sigShape"></use>
-            <!-- loading animation: a thicker, round-cap/round-join orange stroke that
-                 draws itself over the thin base outline (dash-offset technique) -->
-            <use class="sig__progress" id="sigProgress" href="#sigShape" xlink:href="#sigShape"></use>
-          </svg>
+      <div class="loader__inner" id="loaderInner">
+        <div class="loader__sigLayer">
+          <div class="loader__sig" id="loaderSig">
+            <svg viewBox="0 0 219.38 162.22" aria-hidden="true">
+              <defs>
+                <!-- the V mark, one continuous line, reused by both layers -->
+                <path id="sigShape" d="M162.37,24.56l13.55-22.28h37.84l-85.14,157.67H97.09L2.14,2.28h43.1l59.91,105.46V57.92l0,0
+                  c-4.68-1.57-8.06-5.99-8.06-11.21c0-6.53,5.29-11.83,11.82-11.83c6.53,0,11.83,5.3,11.83,11.83c0,4.88-2.96,9.06-7.18,10.87l0,0
+                  v94.66l56.05-104.06c0,0-14.01-3.15-18.91-22.42c-4.91-19.27-3.51-23.48-3.51-23.48H72.21c0,0-0.7,4.56-3.5,12.27
+                  c-2.8,7.7-3.16,6.71-3.16,6.71"></path>
+              </defs>
+              <!-- the ink: sketched in by dash-offset, thickens to full weight on lock -->
+              <use class="sig__pen" id="sigPen" href="#sigShape" xlink:href="#sigShape"></use>
+              <!-- the accent: a short orange segment chasing the pen tip, then settling -->
+              <use class="sig__accent" id="sigAccent" href="#sigShape" xlink:href="#sigShape"></use>
+            </svg>
+          </div>
         </div>
-        <div class="loader__quip" id="loaderQuip"><span class="loader__quip-inner is-in" id="loaderQuipText">Prototyping a warm welcome&hellip;</span></div>
+        <div class="loader__typeLayer">
+          <p class="loader__phrase" aria-live="polite"><span class="loader__phrase-inner" id="loaderPhraseText">Prototyping warm welcome&hellip;</span></p>
+          <div class="loader__rule" id="loaderRule" aria-hidden="true"></div>
+        </div>
       </div>
     </div>
     <button type="button" class="loader__skip" id="loaderSkip">Skip</button>
@@ -1743,12 +1755,25 @@
     });
   }
 
-/* --- loader: outline → orange pour reveal + witty sentence + easter egg --- */
+/* --- loader: sketched mark + settling accent + two-phrase colophon --- */
 var loader     = document.getElementById('loader');
-var quipEl     = document.getElementById('loaderQuipText');
-var quipWrap   = document.getElementById('loaderQuip');
+var phraseEl   = document.getElementById('loaderPhraseText');
+var ruleEl     = document.getElementById('loaderRule');
+var innerEl    = document.getElementById('loaderInner');
 var sigEl      = document.getElementById('loaderSig');
 var skipBtn    = document.getElementById('loaderSkip');
+
+var PHRASE_ONE = 'Prototyping warm welcome\u2026';
+
+/* time-aware greeting — the phrase the mark settles into once drawn */
+function greeting(){
+  var h = new Date().getHours();
+  if (h < 5)  return 'Still up? Same.';
+  if (h < 12) return 'Good morning.';
+  if (h < 17) return 'Good afternoon.';
+  if (h < 22) return 'Good evening.';
+  return 'Up late? Welcome in.';
+}
 
 /* Seen the full intro already this session? Skip straight to the fast
    (reduced-motion-style) reveal — same path used for prefers-reduced-motion,
@@ -1764,29 +1789,35 @@ try { sessionStorage.setItem(SEEN_KEY, '1'); } catch (e){}
 var fastIntro = reduce || skipIntro;
 
 /* ---------------------------------------------------------------------------
-   Mark reveal — driven by a CSS transition, not a JS clock.
+   Mark reveal — the invisible pen.
 
-   Frame 1: only the thin grey base outline is visible (already painted by
-   CSS, zero JS cost, untouched from here on). The thicker round-cap orange
-   stroke starts fully hidden via stroke-dashoffset (primed from the path's
-   real length, getTotalLength) and is revealed by flipping that offset to 0 —
-   the transition itself (1.9s, var(--ease-io), declared in CSS) does the
-   easing, so it shares the exact same velocity as the hero__scroll indicator
-   below. No rAF loop, no filters — one property flip, then the browser
-   handles the rest.
+   Frame 1: blank paper. The ink line (sig__pen) is primed fully hidden via
+   stroke-dashoffset (from the path's real length, getTotalLength) and sketches
+   itself in with one CSS transition (1.9s, var(--ease-io)). A short orange
+   segment (sig__accent, dasharray = [tip, rest-of-path]) chases the pen along
+   the same path, then settles and dissolves into the finished mark. On lock,
+   the line thickens to its full print weight (outline → solid, CSS transition
+   on stroke-width) and the wrapper gains the emboss + breathing class.
+   No rAF loop, no per-frame JS — property flips, the browser does the rest.
 --------------------------------------------------------------------------- */
-var sigShapeEl  = document.getElementById('sigShape');
-var sigProgress = document.getElementById('sigProgress');
+var sigShapeEl = document.getElementById('sigShape');
+var sigPen     = document.getElementById('sigPen');
+var sigAccent  = document.getElementById('sigAccent');
 var SIG_LEN = 0;
 if (sigShapeEl){
   try { SIG_LEN = sigShapeEl.getTotalLength(); } catch (e){ SIG_LEN = 1101; }
 }
-if (sigProgress){
-  /* prime the dash so the thick stroke starts fully hidden under the thin one,
-     with no transition yet — this first paint must be instant, not eased */
-  sigProgress.style.transition = 'none';
-  sigProgress.style.strokeDasharray  = SIG_LEN;
-  sigProgress.style.strokeDashoffset = SIG_LEN;
+var ACC_SEG = Math.max(60, SIG_LEN * 0.08); /* length of the lit orange tip */
+
+if (sigPen){
+  /* prime the ink fully hidden, no transition — first paint must be instant */
+  sigPen.style.transition = 'none';
+  sigPen.style.strokeDasharray  = SIG_LEN;
+  sigPen.style.strokeDashoffset = SIG_LEN;
+}
+if (sigAccent){
+  sigAccent.style.strokeDasharray  = ACC_SEG + ' ' + SIG_LEN;
+  sigAccent.style.strokeDashoffset = ACC_SEG; /* parked just before the path start */
 }
 
 var SIG_DUR = 1900; /* ms — matches hero__scroll's scrolldown duration */
@@ -1794,50 +1825,106 @@ var sigDrawDone = false;
 
 function sigLock(){
   sigDrawDone = true;
-  if (sigProgress){ sigProgress.style.transition = 'none'; sigProgress.style.strokeDashoffset = 0; }
-  if (quipWrap) quipWrap.style.opacity = '';
+  if (sigPen){
+    sigPen.style.transition = 'stroke-width .9s var(--ease-io)';
+    sigPen.style.strokeDashoffset = 0;
+  }
+  if (sigAccent){
+    sigAccent.style.transition = 'opacity .7s var(--ease)';
+    sigAccent.style.opacity = '0';
+  }
   if (sigEl){ sigEl.classList.remove('is-drawing'); sigEl.classList.add('is-locked'); }
 }
 
 function runSignature(){
-  if (!sigEl || !sigProgress){ return; }
-  if (quipWrap) quipWrap.style.opacity = '0';
+  if (!sigEl || !sigPen){ return; }
   sigEl.classList.add('is-drawing');
 
-  /* settle the status line in as the stroke nears completion */
-  setTimeout(function(){
-    if (sigDrawDone || !quipWrap) return;
-    quipWrap.style.transition = 'opacity .6s var(--ease)';
-    quipWrap.style.opacity = '1';
-  }, SIG_DUR * 0.55);
-
-  /* double rAF: let the loader paint the fully-hidden state first, so the
-     transition to 0 starts on a real presented frame instead of collapsing
-     into the priming write above */
+  /* double rAF: let the hidden state actually paint before easing to 0 */
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){
-      if (sigDrawDone || !sigProgress) return;
-      sigProgress.style.transition = 'stroke-dashoffset ' + SIG_DUR + 'ms var(--ease-io)';
-      sigProgress.style.strokeDashoffset = 0;
+      if (sigDrawDone) return;
+      sigPen.style.transition = 'stroke-dashoffset ' + SIG_DUR + 'ms var(--ease-io)';
+      sigPen.style.strokeDashoffset = 0;
+      if (sigAccent){
+        /* the accent chases the pen tip, arriving on the final stretch */
+        sigAccent.style.opacity = '.9';
+        sigAccent.style.transition = 'stroke-dashoffset ' + SIG_DUR + 'ms var(--ease-io), opacity .4s var(--ease)';
+        sigAccent.style.strokeDashoffset = -(SIG_LEN - ACC_SEG);
+      }
     });
   });
 
   setTimeout(function(){ if (!sigDrawDone) sigLock(); }, SIG_DUR);
 }
-if (!fastIntro) runSignature();
-else if (sigEl) sigLock(); /* reduced-motion / repeat visit: show the finished mark at once */
 
-/* status sentence: time-aware greeting swapped in as the mark locks */
-function greeting(){
-  var h = new Date().getHours();
-  if (h < 5)  return 'Still up? Same.';
-  if (h < 12) return 'Good morning.';
-  if (h < 17) return 'Good afternoon.';
-  if (h < 22) return 'Good evening.';
-  return 'Up late? Welcome in.';
+/* occasional highlight sweep: the same orange segment re-runs the path once,
+   quietly, after the mark has settled */
+function sigSweep(){
+  if (!sigAccent || reduce) return;
+  sigAccent.style.transition = 'none';
+  sigAccent.style.strokeDashoffset = ACC_SEG;
+  sigAccent.style.opacity = '0';
+  void sigAccent.getBoundingClientRect(); /* flush */
+  sigAccent.style.transition = 'stroke-dashoffset 1.3s var(--ease-io), opacity .45s var(--ease)';
+  sigAccent.style.opacity = '.55';
+  sigAccent.style.strokeDashoffset = -(SIG_LEN - ACC_SEG);
+  setTimeout(function(){ if (sigAccent) sigAccent.style.opacity = '0'; }, 950);
 }
-if (!fastIntro) setTimeout(function(){ quipEl.innerHTML = greeting(); }, 1650);
-if (fastIntro && quipEl) quipEl.innerHTML = greeting();
+var sweepTimer = null;
+
+/* colophon choreography */
+function phraseIn(){ if (phraseEl) phraseEl.classList.add('is-in'); }
+function ruleIn(){ if (ruleEl) ruleEl.classList.add('is-in'); }
+function phraseSwap(){
+  if (!phraseEl) return;
+  phraseEl.classList.remove('is-in');
+  phraseEl.classList.add('is-out');
+  setTimeout(function(){
+    phraseEl.textContent = greeting();
+    phraseEl.classList.remove('is-out');
+    /* force the from-below start state to paint before easing back in */
+    void phraseEl.getBoundingClientRect();
+    phraseEl.classList.add('is-in');
+  }, 500);
+}
+
+if (!fastIntro){
+  runSignature();
+  setTimeout(phraseIn, 550);            /* first phrase rises out of the blur   */
+  setTimeout(ruleIn,   900);            /* hairline unfolds beneath it          */
+  setTimeout(phraseSwap, SIG_DUR + 500);/* first phrase dissolves, second rises */
+  setTimeout(sigSweep, SIG_DUR + 1050); /* one quiet highlight sweep as phrase two settles */
+  sweepTimer = setInterval(sigSweep, 4600); /* recurs only if the curtain is ever held */
+} else if (sigEl){
+  /* reduced-motion / repeat visit: the finished spread, at once */
+  sigLock();
+  if (phraseEl){ phraseEl.textContent = greeting(); phraseEl.classList.add('is-in'); }
+  ruleIn();
+}
+
+/* pointer parallax: the mark and the typography sit at opposing depths.
+   Lerped in rAF, written as CSS custom props; skipped for touch + reduced motion. */
+(function(){
+  if (reduce || !innerEl || !window.matchMedia || !matchMedia('(pointer:fine)').matches) return;
+  var tx = 0, ty = 0, cx = 0, cy = 0, running = false, dead = false;
+  function tick(){
+    if (dead) return;
+    cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06;
+    innerEl.style.setProperty('--px', cx.toFixed(4));
+    innerEl.style.setProperty('--py', cy.toFixed(4));
+    if (Math.abs(tx - cx) > .001 || Math.abs(ty - cy) > .001){ requestAnimationFrame(tick); }
+    else { running = false; }
+  }
+  function onMove(e){
+    if (dead) return;
+    tx = (e.clientX / window.innerWidth  - .5) * 2;
+    ty = (e.clientY / window.innerHeight - .5) * 2;
+    if (!running){ running = true; requestAnimationFrame(tick); }
+  }
+  loader.addEventListener('pointermove', onMove);
+  window.__loaderParallaxStop = function(){ dead = true; loader.removeEventListener('pointermove', onMove); };
+})();
 
 
 /* skip control — only meaningful during the full intro; on the fast path
@@ -1857,13 +1944,16 @@ document.addEventListener('keydown', function(e){
   }
 });
 
-/* total intro ≈ 2.4s: anchors + fluid draw 0–1.5s, lock + greeting settle
-   1.5–2.4s (a brief hold, not a dead pause), then the curtain lifts. Fast path
+/* total intro ≈ 3.6s: pen sketch + accent chase 0–1.9s (phrase one and the
+   hairline settle in under it), lock + thicken + accent dissolve 1.9–2.4s,
+   phrase two rises 2.4–3.2s, brief hold, then the curtain lifts. Fast path
    (reduced motion / repeat visit) lifts almost immediately. */
-setTimeout(revealOnce, fastIntro ? 200 : 2400);
+setTimeout(revealOnce, fastIntro ? 200 : 3600);
 
 function revealHero(){
   if (skipBtn){ skipBtn.removeEventListener('click', revealOnce); }
+  if (sweepTimer){ clearInterval(sweepTimer); sweepTimer = null; }
+  if (window.__loaderParallaxStop) window.__loaderParallaxStop();
 
   var nav       = document.getElementById('nav');
   var heroTop   = document.querySelector('.hero__top');
@@ -2828,10 +2918,14 @@ requestAnimationFrame(function(){
       if (e.target.closest('[data-cursor="look"]')){
         cur.classList.add('is-view'); cur.classList.remove('is-hover'); ct.textContent = 'View'; return;
       }
+      if (e.target.closest('[data-cursor="mode"]')){
+        cur.classList.add('is-hint'); cur.classList.remove('is-hover'); ct.textContent = 'Design mode'; return;
+      }
       if (e.target.closest('[data-cursor],a,button')) cur.classList.add('is-hover');
     });
     document.addEventListener('mouseout', function(e){
       if (e.target.closest('[data-cursor="look"]')){ cur.classList.remove('is-view'); ct.textContent = ''; }
+      else if (e.target.closest('[data-cursor="mode"]')){ cur.classList.remove('is-hint'); ct.textContent = ''; }
       else if (e.target.closest('[data-cursor],a,button')) cur.classList.remove('is-hover');
     });
     document.addEventListener('mouseleave', function(){ cur.classList.remove('is-on'); on = false; });
@@ -2844,7 +2938,7 @@ requestAnimationFrame(function(){
        button semantics inside the h1 (keyboard users have the hotkey) */
     var orange = document.querySelector('.hero__word .o');
     if (orange){
-      orange.setAttribute('data-cursor','');
+      orange.setAttribute('data-cursor','mode');
       orange.addEventListener('click', toggle);
     }
     var badge = document.getElementById('dmBadge');
