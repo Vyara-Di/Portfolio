@@ -990,7 +990,102 @@
         <span class="eyebrow"><span class="dot"></span>Selected Work · 2021—2026</span>
         <h2 data-dm="h2 · section">Six things made <span class="lt">with care.</span></h2>
       </div>
-      <div class="cards reveal" data-d="1" id="cards"><noscript><p style="grid-column:1/-1;text-align:center;color:var(--ink-soft)">This gallery needs JavaScript. In the meantime: <a href="https://www.behance.net/vyaradimitrova" style="text-decoration:underline">see the work on Behance</a> or write to <a href="mailto:vyara.dmtrv@gmail.com" style="text-decoration:underline">vyara.dmtrv@gmail.com</a>.</p></noscript></div>
+      <div class="cards reveal" data-d="1" id="cards">
+        <!-- Static baseline markup — real content for bots, screen readers, and no-JS visitors.
+             On JS-enabled visits this is cleared and rebuilt with the enhanced interactive
+             version (see cardsWrap.innerHTML = '' right before the forEach in the script below).
+             Keep this in sync with projData-json above if you add/remove/reorder projects. -->
+        <a href="#lg-electronics" class="card card--port" data-cursor="look" aria-label="LG Electronics — Brand Design, 2022–now">
+          <span class="card__inner">
+            <span class="card__media" style="display:block">
+              <img src="images/lg-electronics/card.jpg" alt="LG Electronics — Brand Design" loading="eager" fetchpriority="high">
+              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
+              <span class="card__num">01 / 06</span>
+              <span class="card__verb">Systematised</span>
+            </span>
+            <span class="card__cap" style="display:flex">
+              <span class="card__idx">01</span>
+              <span class="card__t">LG Electronics</span>
+              <span class="card__m">Brand Design · 2022–now</span>
+            </span>
+          </span>
+        </a>
+        <a href="#my-market" class="card card--tall card--b" data-cursor="look" aria-label="My Market — Brand Identity, 2021">
+          <span class="card__inner">
+            <span class="card__media" style="display:block">
+              <img src="images/my-market/card.jpg" alt="My Market — Brand Identity" loading="eager" fetchpriority="high">
+              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
+              <span class="card__num">02 / 06</span>
+              <span class="card__verb">Rebranded</span>
+            </span>
+            <span class="card__cap" style="display:flex">
+              <span class="card__idx">02</span>
+              <span class="card__t">My Market</span>
+              <span class="card__m">Brand Identity · 2021</span>
+            </span>
+          </span>
+        </a>
+        <a href="#smart-point" class="card card--square" data-cursor="look" aria-label="Smart Point — Brand Design, 2021">
+          <span class="card__inner">
+            <span class="card__media" style="display:block">
+              <img src="images/smart-point/card.jpg" alt="Smart Point — Brand Design" loading="lazy">
+              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
+              <span class="card__num">03 / 06</span>
+              <span class="card__verb">Named</span>
+            </span>
+            <span class="card__cap" style="display:flex">
+              <span class="card__idx">03</span>
+              <span class="card__t">Smart Point</span>
+              <span class="card__m">Brand Design · 2021</span>
+            </span>
+          </span>
+        </a>
+        <a href="#reverto-winery" class="card card--wide card--b" data-cursor="look" aria-label="Reverto Winery — Packaging, 2021">
+          <span class="card__inner">
+            <span class="card__media" style="display:block">
+              <img src="images/reverto-winery/card.jpg" alt="Reverto Winery — Packaging" loading="lazy">
+              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
+              <span class="card__num">04 / 06</span>
+              <span class="card__verb">Bottled</span>
+            </span>
+            <span class="card__cap" style="display:flex">
+              <span class="card__idx">04</span>
+              <span class="card__t">Reverto Winery</span>
+              <span class="card__m">Packaging · 2021</span>
+            </span>
+          </span>
+        </a>
+        <a href="#crea-bakery" class="card card--port" data-cursor="look" aria-label="Crea Bakery — Brand Identity, 2022">
+          <span class="card__inner">
+            <span class="card__media" style="display:block">
+              <img src="images/crea-bakery/card.jpg" alt="Crea Bakery — Brand Identity" loading="lazy">
+              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
+              <span class="card__num">05 / 06</span>
+              <span class="card__verb">Branded</span>
+            </span>
+            <span class="card__cap" style="display:flex">
+              <span class="card__idx">05</span>
+              <span class="card__t">Crea Bakery</span>
+              <span class="card__m">Brand Identity · 2022</span>
+            </span>
+          </span>
+        </a>
+        <a href="#maynooth-furniture" class="card card--tall card--b" data-cursor="look" aria-label="Maynooth Furniture — Web design, 2021">
+          <span class="card__inner">
+            <span class="card__media" style="display:block">
+              <img src="images/maynooth-furniture/card.jpg" alt="Maynooth Furniture — Web design" loading="lazy">
+              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
+              <span class="card__num">06 / 06</span>
+              <span class="card__verb">Shipped</span>
+            </span>
+            <span class="card__cap" style="display:flex">
+              <span class="card__idx">06</span>
+              <span class="card__t">Maynooth Furniture</span>
+              <span class="card__m">Web design · 2021</span>
+            </span>
+          </span>
+        </a>
+      </div>
     </section>
 
     <!-- MARQUEE -->
@@ -2047,6 +2142,11 @@ function revealHero(){
 
   /* --- work cards --- */
   var cardsWrap = document.getElementById('cards');
+  /* Clear the static baseline markup (real content for bots/screen readers/no-JS)
+     before rebuilding the enhanced interactive version below. This runs once,
+     synchronously, before any card is appended, so JS-enabled visitors never
+     see the static version and never get duplicates. */
+  cardsWrap.innerHTML = '';
   /* size variants cycle across 6 cards */
   var sizeVariants = ['card--port','card--tall','card--square','card--wide','card--port','card--tall'];
   /* fixed tilts: 1 (left), 2 (right), 3 (left), 4 (slight right), 5 (left) */
