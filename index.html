@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="images/fav-icon.png" type="image/png">
+<link rel="apple-touch-icon" href="images/fav-icon.png">
 <title>Vyara Dimitrova — Visual Designer</title>
 <meta name="description" content="Vyara Dimitrova is a visual designer in Frankfurt with eight years across identity systems, packaging, motion, 3D and web — where an art and engineering design education meets brands built to last.">
 <meta name="theme-color" content="#E9E1D4">
@@ -11,12 +12,16 @@
 <meta property="og:title" content="Vyara Dimitrova — Visual Designer">
 <meta property="og:description" content="Brands built to last • Identity, web, motion">
 <meta property="og:image" content="https://vyara.design/images/og-preview.jpg?v=2">
+<meta property="og:image:alt" content="Vyara Dimitrova — visual designer portfolio preview">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://vyara.design/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Vyara Dimitrova — Visual Designer">
 <meta name="twitter:description" content="Brands built to last • Identity, web, motion">
+<meta name="twitter:image" content="https://vyara.design/images/og-preview.jpg?v=2">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -24,7 +29,7 @@
   "name": "Vyara Dimitrova",
   "jobTitle": "Visual Designer",
   "url": "https://vyara.design/",
-  "image": "https://vyara.design/images/og-preview.jpg",
+  "image": "https://vyara.design/images/og-preview.jpg?v=2",
   "email": "mailto:vyara.dmtrv@gmail.com",
   "address": [
     {"@type": "PostalAddress", "addressLocality": "Frankfurt am Main", "addressCountry": "DE"},
@@ -51,6 +56,7 @@
     --pad:clamp(20px,5vw,64px);
     --ease:cubic-bezier(.22,.61,.36,1);
     --ease-io:cubic-bezier(.65,.05,.36,1);
+    --sig-draw-ms:1900; /* logo pen-draw duration (unitless ms) — read by JS via getComputedStyle so CSS stays the single source of truth */
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -146,7 +152,7 @@
 
   .sig__pen{fill:none;stroke:var(--ink);stroke-width:2;
     stroke-linecap:round;stroke-linejoin:round;
-    transition:stroke-dashoffset 1.9s var(--ease-io),stroke-width .9s var(--ease-io)}
+    transition:stroke-dashoffset calc(var(--sig-draw-ms) * 1ms) var(--ease-io),stroke-width .9s var(--ease-io)}
   .sig__accent{fill:none;stroke:var(--orange);stroke-width:2.6;
     stroke-linecap:round;stroke-linejoin:round;opacity:0}
 
@@ -239,8 +245,8 @@
   .hero__top .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2.4s var(--ease) infinite}
 
   .hero__stack{position:relative;display:flex;flex-direction:column;align-items:center;
-    gap:clamp(4px,1vw,16px);perspective:1100px;z-index:1}
-  .hero__word{font-weight:700;line-height:.8;letter-spacing:-.05em;font-size:clamp(3.4rem,17vw,12rem);
+    gap:clamp(10px,2.2vw,28px);perspective:1100px;z-index:1}
+  .hero__word{font-weight:700;line-height:.8;letter-spacing:-.05em;font-size:clamp(2.6rem,12vw,8rem);
     position:relative;z-index:2;pointer-events:none;color:var(--ink);
     opacity:0;filter:blur(14px);transform:translateY(40px) scale(.92)}
   .hero__word.is-in{opacity:1;filter:blur(0);transform:none;
@@ -347,6 +353,7 @@
   .marquee__track span b:hover{color:var(--orange)}
   .marquee__track span i{width:9px;height:9px;border-radius:50%;background:var(--orange);margin:0 34px;flex:0 0 auto}
   @keyframes scrollx{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
 
   /* --- contact (glassmorphic card) --- */
   .contact{text-align:center;background:var(--beige-lt);position:relative;overflow:hidden}
@@ -951,7 +958,7 @@
   <!-- NAV -->
   <header class="nav" id="nav">
     <nav class="nav__links" id="navLinks">
-      <a href="#top" data-sec="top" data-cursor>Vyara Dimitrova</a>
+      <a href="#top" data-sec="top" data-cursor>Vyara</a>
       <a href="#work" data-sec="work" data-cursor>Work</a>
       <a href="#about" data-sec="about" data-cursor>About</a>
       <a href="#contact" data-sec="contact" data-cursor>Contact</a>
@@ -964,12 +971,12 @@
     <section class="hero">
       <div class="hero__sculpture" id="heroSculpture" aria-hidden="true"></div>
 
-      <span class="hero__top"><span class="dot"></span> Visual Designer · Frankfurt / Varna</span>
+      <span class="hero__top"><span class="dot"></span> Visual Designer · Frankfurt</span>
       <h1 class="hero__stack" data-dm="h1 · wordmark">
-        <span class="hero__word hero__word--left" id="wordLeft"> Design </span>
-        <span class="hero__word hero__word--right" id="wordRight"> that <span class="o">moves.</span></span>
+        <span class="hero__word hero__word--left" id="wordLeft"> Making </span>
+        <span class="hero__word hero__word--right" id="wordRight"> ideas <span class="o">tangible.</span></span>
       </h1>
-      <p class="hero__sub reveal" data-d="2">Branding, digital, motion, web & print</p>
+      <p class="hero__sub reveal" data-d="2">Working across identity, packaging, motion, 3D and digital design to create experiences that feel considered, cohesive and built to last.</p>
       <a href="#work" class="hero__scroll reveal" data-d="3" data-cursor data-magnetic>Selected work<i></i></a>
       <span class="hero__sculpt-hint" id="sculptHint">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
@@ -1004,8 +1011,8 @@
         <div class="studio__text">
           <p class="about__lead reveal" data-d="2">
             Over eight years, I've worked across branding, packaging, motion, 3D, and digital design. I've helped wrap vehicles, fill catalogs, redesign storefronts, and build e-commerce experiences for thousands of customers.
-			I <b>studied Art and Engineering Design,</b> which shaped how I think: equally invested in how something looks and how it actually works. Today I create with <b>Adobe Creative Cloud, Figma, and Blender—building systems </b>  that scale creative work and bring ambitious ideas to life with good people.
-			<b>The best part? </b> When it's finished, it feels <span class="o">effortless.</span> Even if there was a lot of thinking behind the scenes.
+            I <b>studied Art and Engineering Design,</b> which shaped how I think: equally invested in how something looks and how it actually works. Today I create with <b>Adobe Creative Cloud, Figma, and Blender—building systems</b> that scale creative work and bring ambitious ideas to life with good people.
+            <b>The best part?</b> When it's finished, it feels <span class="o">effortless.</span> Even if there was a lot of thinking behind the scenes.
           </p>
           <p class="about__currently reveal" data-d="3">
             <b>Currently</b>
@@ -1078,7 +1085,7 @@
       </div>
 
       <div class="foot__base">
-        <span class="foot__copy">© 2026 Vyara Dimitrova</span>
+        <span class="foot__copy">© <span id="copyYear">2026</span> Vyara Dimitrova</span>
         <span class="foot__made">Built pixel by pixel, then rebuilt a few times.</span>
         <a href="#top" class="foot__totop" data-cursor data-magnetic>
           Back to top
@@ -1145,7 +1152,10 @@
      (mobile) connections this was the main cause of the sculpture appearing
      noticeably later than on desktop — three sequential round-trips instead
      of two happening at once. */
-  var glbPromise = fetch('assets/sculpture.glb').then(function(r){ return r.arrayBuffer(); });
+  var glbPromise = fetch('assets/sculpture.glb').then(function(r){
+    if (!r.ok) throw new Error('sculpture.glb responded ' + r.status);
+    return r.arrayBuffer();
+  });
   loadScript(THREE_BASE + '/build/three.min.js',
       'sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu')
     .then(function(){ return loadScript(THREE_BASE + '/examples/js/loaders/GLTFLoader.js',
@@ -1200,7 +1210,9 @@
   var rL = new THREE.DirectionalLight(0xE5602B, 1.0); rL.position.set(-5, -2, 4); scene.add(rL);
   var fL = new THREE.DirectionalLight(0xC98A7D, 0.7); fL.position.set(0, -4, -5); scene.add(fL);
 
-  /* mobile flag — drives a smaller sculpture and disables touch drag-to-rotate */
+  /* mobile flag — drives a smaller sculpture and disables touch drag-to-rotate.
+     Re-checked on resize (see below) so rotating a tablet across the 768px
+     breakpoint updates the scale instead of freezing it at load time. */
   var isMobile = window.matchMedia('(max-width: 768px)').matches;
 
   /* group + scale tween state */
@@ -1244,7 +1256,10 @@
     loader.parse(buffer, '', onModelReady, function(err){ console.warn('[sculpture] load failed', err); });
   }).catch(function(err){ console.warn('[sculpture] load failed', err); });
 
-  /* resize */
+  /* resize — rAF-throttled so a raw flood of resize events (window drag,
+     mobile browser chrome show/hide) doesn't resize the renderer and
+     recompute the projection matrix on every single one */
+  var resizePending = false;
   function resize(){
     var w = mount.clientWidth || window.innerWidth;
     var h = mount.clientHeight || window.innerHeight;
@@ -1252,8 +1267,19 @@
     renderer.setSize(w, h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
+    /* re-check the breakpoint: a tablet rotated across 768px (or a desktop
+       window resized past it) should pick up the correct target scale */
+    var nowMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (nowMobile !== isMobile){
+      isMobile = nowMobile;
+      FULL_SCALE = isMobile ? 0.55 : 1;
+    }
   }
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize', function(){
+    if (resizePending) return;
+    resizePending = true;
+    requestAnimationFrame(function(){ resizePending = false; resize(); });
+  });
 
   /* render loop — only runs while the sculpture is actually visible AND the
      tab is active. Scrolling past the hero or switching tabs fully stops
@@ -1682,6 +1708,19 @@
   function projVid(slug, name){ return 'images/' + slug + '/' + name + '.mp4'; }
   function rnd(a, b){ return a + Math.random() * (b - a); }
 
+  /* human-readable alt text for the otherwise-decorative case-study images,
+     e.g. altFor('gallery-2', 'My Market') -> "My Market — detail view 2" */
+  var ALT_LABELS = {
+    gallery: 'detail view', outcome: 'outcome shot', bento: 'project detail',
+    approach: 'process detail', parallax: 'full-bleed detail', reflection: 'reflection detail'
+  };
+  function altFor(key, title){
+    var m = key.match(/^([a-z]+)-?(\d*)$/i);
+    var base = m ? (ALT_LABELS[m[1]] || m[1].replace(/-/g, ' ')) : key.replace(/-/g, ' ');
+    var num  = m && m[2] ? ' ' + m[2] : '';
+    return (title ? title + ' — ' : '') + base + num;
+  }
+
   /* ---------------------------------------------------------------------------
      MEDIA OPTIMISATION (one place, reused everywhere)
 
@@ -1831,7 +1870,7 @@ if (sigAccent){
   sigAccent.style.strokeDashoffset = ACC_SEG; /* parked just before the path start */
 }
 
-var SIG_DUR = 1900; /* ms — matches hero__scroll's scrolldown duration */
+var SIG_DUR = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sig-draw-ms')) || 1900; /* ms — matches hero__scroll's scrolldown duration; sourced from CSS so the two never drift apart */
 var sigDrawDone = false;
 
 function sigLock(){
@@ -2159,13 +2198,13 @@ function makeQuote(q){
 
       /* Motion stills gallery pair */
       html += '<div class="proj__gallery">'
-        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('gallery-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('gallery-1') + '" alt="' + altFor('gallery-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('gallery-2') + '" alt="' + altFor('gallery-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* 04 OUTCOME */
       html += '<div class="proj__parallax proj__reveal" data-zoomable>'
-        + '<img src="' + I('parallax') + '" alt="" loading="lazy">'
+        + '<img src="' + I('parallax') + '" alt="' + altFor('parallax', d.t) + '" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2176,10 +2215,10 @@ function makeQuote(q){
       /* Outcome bento with scrollable image + stills */
       html += '<div class="proj__bento proj__bento--4">'
         + '<div class="bento bento--clip bento--scroll-ph" data-zoomable>'
-        +   '<div class="bento__scroll-inner"><img src="' + I('outcome-1') + '" alt="" loading="lazy"></div>'
+        +   '<div class="bento__scroll-inner"><img src="' + I('outcome-1') + '" alt="' + altFor('outcome-1', d.t) + '" loading="lazy"></div>'
         + '</div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-3') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="' + altFor('outcome-2', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-3') + '" alt="' + altFor('outcome-3', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* 05 REFLECTION */
@@ -2191,7 +2230,7 @@ function makeQuote(q){
 
       /* Reflection: static image accent */
       html += '<div class="proj__reflection-accent bento--blur" data-zoomable>'
-        + '<img src="' + I('reflection') + '" alt="" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover">'
+        + '<img src="' + I('reflection') + '" alt="' + altFor('reflection', d.t) + '" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover">'
         + '</div>';
 
     } else if (d.isWeb) {
@@ -2199,9 +2238,9 @@ function makeQuote(q){
 
       /* First bento — print stills */
       html += '<div class="proj__bento proj__bento--3">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="' + altFor('bento-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="' + altFor('bento-2', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="' + altFor('bento-3', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* 02 CHALLENGE */
@@ -2212,7 +2251,7 @@ function makeQuote(q){
 
       /* Full-bleed print shot */
       html += '<div class="proj__print-full proj__reveal" data-zoomable>'
-        + '<img src="' + I('parallax') + '" alt="" loading="lazy">'
+        + '<img src="' + I('parallax') + '" alt="' + altFor('parallax', d.t) + '" loading="lazy">'
         + '</div>';
 
       /* 03 APPROACH — flowing lines */
@@ -2223,8 +2262,8 @@ function makeQuote(q){
 
       /* Fly-in gallery */
       html += '<div class="proj__gallery">'
-        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('gallery-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('gallery-1') + '" alt="' + altFor('gallery-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('gallery-2') + '" alt="' + altFor('gallery-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* 04 OUTCOME */
@@ -2235,9 +2274,9 @@ function makeQuote(q){
 
       /* Outcome bento */
       html += '<div class="proj__bento proj__bento--4">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-3') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="' + altFor('outcome-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="' + altFor('outcome-2', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-3') + '" alt="' + altFor('outcome-3', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* Live site browser mockup */
@@ -2262,7 +2301,7 @@ function makeQuote(q){
 
       /* Lead full-bleed still */
       html += '<div class="proj__print-full bento--blur" data-zoomable>'
-        + '<img src="' + I('outcome-1') + '" alt="" loading="lazy">'
+        + '<img src="' + I('outcome-1') + '" alt="' + altFor('outcome-1', d.t) + '" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2272,8 +2311,8 @@ function makeQuote(q){
 
       /* Two-up spread */
       html += '<div class="proj__spread">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-1') + '" alt="' + altFor('bento-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-2') + '" alt="' + altFor('bento-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2283,14 +2322,14 @@ function makeQuote(q){
 
       /* Fly-in pair */
       html += '<div class="proj__gallery">'
-        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
-        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('approach-1') + '" alt="" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('bento-3') + '" alt="' + altFor('bento-3', d.t) + '" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('approach-1') + '" alt="' + altFor('approach-1', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* Two-up spread */
       html += '<div class="proj__spread">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('approach-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('approach-3') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('approach-2') + '" alt="' + altFor('approach-2', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('approach-3') + '" alt="' + altFor('approach-3', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
     } else if (idx === 3) {
@@ -2298,8 +2337,8 @@ function makeQuote(q){
 
       /* Lead: two-up spread */
       html += '<div class="proj__spread">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-1') + '" alt="' + altFor('bento-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-2') + '" alt="' + altFor('bento-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2309,7 +2348,7 @@ function makeQuote(q){
 
       /* Full-bleed still */
       html += '<div class="proj__print-full bento--blur" data-zoomable>'
-        + '<img src="' + I('bento-3') + '" alt="" loading="lazy">'
+        + '<img src="' + I('bento-3') + '" alt="' + altFor('bento-3', d.t) + '" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2319,14 +2358,14 @@ function makeQuote(q){
 
       /* Packaging row */
       html += '<div class="proj__pkg-row">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-1') + '" alt="' + altFor('gallery-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="' + altFor('outcome-2', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-2') + '" alt="' + altFor('gallery-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* Wide parallax */
       html += '<div class="proj__parallax proj__reveal" data-zoomable>'
-        + '<img src="' + I('parallax') + '" alt="" loading="lazy">'
+        + '<img src="' + I('parallax') + '" alt="' + altFor('parallax', d.t) + '" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2337,8 +2376,8 @@ function makeQuote(q){
       /* Outcome spread (outcome-2 already appears in the packaging row above,
          so the outcome moment shows the two images not yet seen on this page) */
       html += '<div class="proj__spread">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('challenge') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="' + altFor('outcome-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('challenge') + '" alt="' + altFor('challenge', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       html += '<div class="proj__quote">' + makeQuote(d.quote) + '</div>';
@@ -2350,7 +2389,7 @@ function makeQuote(q){
 
       /* Reflection: single 1:1 image */
       html += '<div class="proj__reflection-accent bento--blur" data-zoomable style="aspect-ratio:1/1;max-width:680px;margin:0 auto clamp(40px,7vh,80px)">'
-        + '<img src="' + I('reflection') + '" alt="" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover">'
+        + '<img src="' + I('reflection') + '" alt="' + altFor('reflection', d.t) + '" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover">'
         + '</div>';
 
     } else if (idx === 4) {
@@ -2358,8 +2397,8 @@ function makeQuote(q){
 
       /* Lead: fly-in pair */
       html += '<div class="proj__gallery">'
-        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly" data-zoomable><img src="' + I('bento-1') + '" alt="' + altFor('bento-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="proj__img proj__img--fly from-left" data-zoomable><img src="' + I('bento-2') + '" alt="' + altFor('bento-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2369,8 +2408,8 @@ function makeQuote(q){
 
       /* Two-up spread */
       html += '<div class="proj__spread">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('challenge') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-3') + '" alt="' + altFor('bento-3', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('challenge') + '" alt="' + altFor('challenge', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2380,7 +2419,7 @@ function makeQuote(q){
 
       /* Full-bleed still */
       html += '<div class="proj__print-full bento--blur" data-zoomable>'
-        + '<img src="' + I('gallery-1') + '" alt="" loading="lazy">'
+        + '<img src="' + I('gallery-1') + '" alt="' + altFor('gallery-1', d.t) + '" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2390,9 +2429,9 @@ function makeQuote(q){
 
       /* Outcome bento */
       html += '<div class="proj__bento proj__bento--4">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="' + altFor('outcome-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="' + altFor('outcome-2', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-2') + '" alt="' + altFor('gallery-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* 05 REFLECTION — quote only for this project */
@@ -2403,7 +2442,7 @@ function makeQuote(q){
 
       /* Lead: wide parallax */
       html += '<div class="proj__parallax proj__reveal" data-zoomable>'
-        + '<img src="' + I('parallax') + '" alt="" loading="lazy">'
+        + '<img src="' + I('parallax') + '" alt="' + altFor('parallax', d.t) + '" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2413,14 +2452,14 @@ function makeQuote(q){
 
       /* Initial bento of stills */
       html += '<div class="proj__bento proj__bento--3">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="' + altFor('bento-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="' + altFor('bento-2', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="' + altFor('bento-3', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* Full-bleed challenge shot */
       html += '<div class="proj__print-full bento--blur" data-zoomable>'
-        + '<img src="' + I('challenge') + '" alt="" loading="lazy">'
+        + '<img src="' + I('challenge') + '" alt="' + altFor('challenge', d.t) + '" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2430,14 +2469,14 @@ function makeQuote(q){
 
       /* Approach: row of three (16:9) */
       html += '<div class="proj__gallery" style="gap:clamp(20px,3vh,40px)">'
-        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-1') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '<div class="proj__img proj__img--fly from-left" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-2') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
-        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-3') + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
+        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-1') + '" alt="' + altFor('approach-1', d.t) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
+        + '<div class="proj__img proj__img--fly from-left" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-2') + '" alt="' + altFor('approach-2', d.t) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
+        + '<div class="proj__img proj__img--fly" data-zoomable style="aspect-ratio:16/9;overflow:hidden"><img src="' + I('approach-3') + '" alt="' + altFor('approach-3', d.t) + '" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>'
         + '</div>';
 
       /* Full-width approach still */
       html += '<div class="proj__print-full bento--blur" data-zoomable>'
-        + '<img src="' + I('approach-4') + '" alt="" loading="lazy">'
+        + '<img src="' + I('approach-4') + '" alt="' + altFor('approach-4', d.t) + '" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2447,9 +2486,9 @@ function makeQuote(q){
 
       /* Outcome bento — reordered */
       html += '<div class="proj__bento proj__bento--4">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-3') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-3') + '" alt="' + altFor('bento-extra-3', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-1') + '" alt="' + altFor('bento-extra-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('bento-extra-2') + '" alt="' + altFor('bento-extra-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       html += '<div class="proj__quote">' + makeQuote(d.quote) + '</div>';
@@ -2461,7 +2500,7 @@ function makeQuote(q){
 
       /* Reflection visuals */
       html += '<div class="proj__reflection-visual">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('reflection-1') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('reflection-1') + '" alt="' + altFor('reflection-1', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
     } else {
@@ -2469,9 +2508,9 @@ function makeQuote(q){
 
       /* Initial bento of stills */
       html += '<div class="proj__bento proj__bento--3">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-1') + '" alt="' + altFor('bento-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-2') + '" alt="' + altFor('bento-2', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('bento-3') + '" alt="' + altFor('bento-3', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* 02 CHALLENGE */
@@ -2482,7 +2521,7 @@ function makeQuote(q){
 
       /* Full-bleed hero image */
       html += '<div class="proj__print-full bento--blur" data-zoomable>'
-        + '<img src="' + I('outcome-1') + '" alt="" loading="lazy">'
+        + '<img src="' + I('outcome-1') + '" alt="' + altFor('outcome-1', d.t) + '" loading="lazy">'
         + '</div>';
 
       /* 03 APPROACH */
@@ -2492,13 +2531,13 @@ function makeQuote(q){
         + '</div>';
 
       html += '<div class="proj__spread">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-1') + '" alt="' + altFor('gallery-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('gallery-2') + '" alt="' + altFor('gallery-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* 04 OUTCOME */
       html += '<div class="proj__parallax proj__reveal" data-zoomable>'
-        + '<img src="' + I('parallax') + '" alt="" loading="lazy">'
+        + '<img src="' + I('parallax') + '" alt="' + altFor('parallax', d.t) + '" loading="lazy">'
         + '</div>';
 
       html += '<div class="proj__sec">'
@@ -2507,9 +2546,9 @@ function makeQuote(q){
         + '</div>';
 
       html += '<div class="proj__bento proj__bento--4">'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-3') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-1') + '" alt="' + altFor('outcome-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-2') + '" alt="' + altFor('outcome-2', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--clip" data-zoomable><img src="' + I('outcome-3') + '" alt="' + altFor('outcome-3', d.t) + '" loading="lazy"></div>'
         + '</div>';
 
       /* 05 REFLECTION */
@@ -2521,8 +2560,8 @@ function makeQuote(q){
         + '</div>';
 
       html += '<div class="proj__reflection-visual">'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('gallery-1') + '" alt="" loading="lazy"></div>'
-        + '<div class="bento bento--blur" data-zoomable><img src="' + I('gallery-2') + '" alt="" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('gallery-1') + '" alt="' + altFor('gallery-1', d.t) + '" loading="lazy"></div>'
+        + '<div class="bento bento--blur" data-zoomable><img src="' + I('gallery-2') + '" alt="' + altFor('gallery-2', d.t) + '" loading="lazy"></div>'
         + '</div>';
     }
 
@@ -2755,7 +2794,7 @@ requestAnimationFrame(function(){
   });
 
   /* back button */
-  projBack.addEventListener('click', closeProject);
+  projBack.addEventListener('click', function(){ closeProject(); });
 
   /* next / previous project nav — keepHash + replaceState means an entire
      browsing session (open → next → next …) is one history entry; a single
@@ -2808,7 +2847,7 @@ requestAnimationFrame(function(){
   function closeLightbox(){
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
-    setTimeout(function(){ lightboxImg.src = ''; }, 500);
+    setTimeout(function(){ lightboxImg.removeAttribute('src'); }, 500);
     if (lbPrevFocus && lbPrevFocus.focus) lbPrevFocus.focus({ preventScroll: true });
     lbPrevFocus = null;
   }
@@ -2858,32 +2897,52 @@ requestAnimationFrame(function(){
   }
   mq.appendChild(mqSpan()); mq.appendChild(mqSpan());
 
+  /* --- evergreen copyright year --- */
+  var copyYearEl = document.getElementById('copyYear');
+  if (copyYearEl) copyYearEl.textContent = new Date().getFullYear();
+
   /* --- nav active state + scroll progress --- */
   var nav      = document.getElementById('nav');
   var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navLinks a'));
 
   var progressEl = document.getElementById('progress');
+
+  /* section offsets are read once (and refreshed on resize), not on every
+     scroll frame — offsetTop is a layout read, and doing it 60x/sec for
+     every nav link was needless forced-reflow risk */
+  var navSecOffsets = [];
+  function refreshNavOffsets(){
+    navSecOffsets = navLinks.map(function(l){
+      var sec = l.dataset.sec === 'top' ? 'top' : l.dataset.sec;
+      var el  = document.getElementById(sec);
+      return { link: l, top: el ? el.offsetTop : 0 };
+    });
+  }
   function onScroll(){
     var y = window.scrollY;
     if (y > 40) nav.classList.add('is-stuck'); else nav.classList.remove('is-stuck');
     var h = document.documentElement.scrollHeight - window.innerHeight;
     progressEl.style.transform = 'scaleX(' + (h > 0 ? (y / h) : 0).toFixed(4) + ')';
     var mid = y + window.innerHeight * 0.42;
-    var cur = navLinks[0];
-    navLinks.forEach(function(l){
-      var sec = l.dataset.sec === 'top' ? 'top' : l.dataset.sec;
-      var el  = document.getElementById(sec);
-      if (el && mid >= el.offsetTop) cur = l;
-    });
+    var cur = navSecOffsets[0] ? navSecOffsets[0].link : navLinks[0];
+    navSecOffsets.forEach(function(s){ if (mid >= s.top) cur = s.link; });
     navLinks.forEach(function(l){ l.classList.toggle('is-cur', l === cur); });
   }
+  var scrollPending = false;
   window.addEventListener('scroll', function(){
     if (scrollPending) return;
     scrollPending = true;
     requestAnimationFrame(function(){ scrollPending = false; onScroll(); });
   }, { passive: true });
-  var scrollPending = false;
+  var navResizePending = false;
+  window.addEventListener('resize', function(){
+    if (navResizePending) return;
+    navResizePending = true;
+    requestAnimationFrame(function(){ navResizePending = false; refreshNavOffsets(); });
+  }, { passive: true });
+  refreshNavOffsets();
   onScroll();
+  window.addEventListener('load', refreshNavOffsets);
 
   /* --- scroll reveal (IntersectionObserver) --- */
   var io = null;
@@ -2918,15 +2977,21 @@ requestAnimationFrame(function(){
     var cur = document.getElementById('cursor');
     var ct  = cur.querySelector('.cursor__t');
     var cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy, on = false;
+    var curRunning = false, curRafId = null;
+    function curTick(){
+      cx += (tx - cx) * 0.2; cy += (ty - cy) * 0.2;
+      cur.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)';
+      if (Math.abs(tx - cx) > .05 || Math.abs(ty - cy) > .05){
+        curRafId = requestAnimationFrame(curTick);
+      } else {
+        curRunning = false; curRafId = null;
+      }
+    }
     window.addEventListener('mousemove', function(e){
       tx = e.clientX; ty = e.clientY;
       if (!on){ on = true; cur.classList.add('is-on'); }
+      if (!curRunning){ curRunning = true; curRafId = requestAnimationFrame(curTick); }
     });
-    (function loop(){
-      cx += (tx - cx) * 0.2; cy += (ty - cy) * 0.2;
-      cur.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)';
-      requestAnimationFrame(loop);
-    })();
     document.addEventListener('mouseover', function(e){
       if (e.target.closest('[data-cursor="look"]')){
         cur.classList.add('is-view'); cur.classList.remove('is-hover'); ct.textContent = 'View'; return;
@@ -2941,7 +3006,12 @@ requestAnimationFrame(function(){
       else if (e.target.closest('[data-cursor="mode"]')){ cur.classList.remove('is-hint'); ct.textContent = ''; }
       else if (e.target.closest('[data-cursor],a,button')) cur.classList.remove('is-hover');
     });
-    document.addEventListener('mouseleave', function(){ cur.classList.remove('is-on'); on = false; });
+    /* documentElement (not document) mouseleave fires reliably across
+       browsers when the pointer actually exits the viewport, so the cursor
+       can't get stranded on screen */
+    document.documentElement.addEventListener('mouseleave', function(){
+      cur.classList.remove('is-on'); on = false;
+    });
   }
 
   /* --- DESIGN MODE --- */
