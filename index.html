@@ -897,7 +897,6 @@
     opacity:0;transform:translateY(8px);transition:opacity .35s var(--ease) .28s,transform .35s var(--ease) .28s}
   .card__verb::after{content:"";width:16px;height:1.5px;background:var(--orange);margin-left:.6em}
   .card:hover .card__verb,.card:focus-visible .card__verb{opacity:1;transform:none}
-  .contact__mail.is-copied,.foot__mail.is-copied{color:var(--orange);border-color:var(--orange)}
 </style>
 </head>
 <body class="is-locked">
@@ -1141,11 +1140,17 @@
     });
   }
   var THREE_BASE = 'https://cdn.jsdelivr.net/npm/three@0.128.0';
+  /* Kick the model download off immediately, in parallel with the two library
+     scripts, instead of waiting for both scripts to load first. On slower
+     (mobile) connections this was the main cause of the sculpture appearing
+     noticeably later than on desktop — three sequential round-trips instead
+     of two happening at once. */
+  var glbPromise = fetch('assets/sculpture.glb').then(function(r){ return r.arrayBuffer(); });
   loadScript(THREE_BASE + '/build/three.min.js',
       'sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu')
     .then(function(){ return loadScript(THREE_BASE + '/examples/js/loaders/GLTFLoader.js',
       'sha384-fljlqkjWlmSFjkESkQvm77heIZpoWmXEOzlCA7kOpGUH+95Zk0yGfQieWM2q136E'); })
-    .then(initSculpture)
+    .then(function(){ initSculpture(); })
     .catch(function(err){ console.warn('[sculpture] could not load Three.js', err); });
 
   function initSculpture(){
@@ -1211,7 +1216,7 @@
 
   /* load model */
   var loader = new THREE.GLTFLoader();
-  loader.load('assets/sculpture.glb', function(gltf){
+  function onModelReady(gltf){
     var model = gltf.scene;
     var box = new THREE.Box3().setFromObject(model);
     var size = box.getSize(new THREE.Vector3());
@@ -1231,7 +1236,13 @@
     });
     group.add(model);
     if (hint) hint.classList.add('is-in');
-  }, undefined, function(err){ console.warn('[sculpture] load failed', err); });
+  }
+  /* by the time we get here the GLB fetch kicked off earlier has usually
+     already resolved (or is very close to it) since it ran alongside the
+     library script loads rather than after them */
+  glbPromise.then(function(buffer){
+    loader.parse(buffer, '', onModelReady, function(err){ console.warn('[sculpture] load failed', err); });
+  }).catch(function(err){ console.warn('[sculpture] load failed', err); });
 
   /* resize */
   function resize(){
@@ -1889,13 +1900,15 @@ function phraseSwap(){
   }, 500);
 }
 
+var LOGO_START_DELAY = 500; /* pen waits half a beat on blank paper before it starts sketching */
+
 if (!fastIntro){
-  runSignature();
-  setTimeout(phraseIn, 550);            /* first phrase rises out of the blur   */
-  setTimeout(ruleIn,   900);            /* hairline unfolds beneath it          */
-  setTimeout(phraseSwap, SIG_DUR + 500);/* first phrase dissolves, second rises */
-  setTimeout(sigSweep, SIG_DUR + 1050); /* one quiet highlight sweep as phrase two settles */
-  sweepTimer = setInterval(sigSweep, 4600); /* recurs only if the curtain is ever held */
+  setTimeout(runSignature, LOGO_START_DELAY);
+  setTimeout(phraseIn, LOGO_START_DELAY + 550);            /* first phrase rises out of the blur   */
+  setTimeout(ruleIn,   LOGO_START_DELAY + 900);            /* hairline unfolds beneath it          */
+  setTimeout(phraseSwap, LOGO_START_DELAY + SIG_DUR + 500);/* first phrase dissolves, second rises */
+  setTimeout(sigSweep, LOGO_START_DELAY + SIG_DUR + 1050); /* one quiet highlight sweep as phrase two settles */
+  setTimeout(function(){ sweepTimer = setInterval(sigSweep, 4600); }, LOGO_START_DELAY); /* recurs only if the curtain is ever held */
 } else if (sigEl){
   /* reduced-motion / repeat visit: the finished spread, at once */
   sigLock();
@@ -1948,7 +1961,7 @@ document.addEventListener('keydown', function(e){
    hairline settle in under it), lock + thicken + accent dissolve 1.9–2.4s,
    phrase two rises 2.4–3.2s, brief hold, then the curtain lifts. Fast path
    (reduced motion / repeat visit) lifts almost immediately. */
-setTimeout(revealOnce, fastIntro ? 200 : 3600);
+setTimeout(revealOnce, fastIntro ? 200 : LOGO_START_DELAY + 3600);
 
 function revealHero(){
   if (skipBtn){ skipBtn.removeEventListener('click', revealOnce); }
@@ -2982,23 +2995,6 @@ requestAnimationFrame(function(){
     tick(); setInterval(tick,30000);
   })();
 
-  /* --- COPY EMAIL --- */
-  (function(){
-    /* copy is a bonus, not a hijack: the mailto still opens the visitor's
-       mail client (mailto doesn't navigate away, so both can happen) */
-    document.addEventListener('click',function(e){
-      var el=e.target.closest('.contact__mail,.foot__mail');
-      if(!el) return;
-      if(!navigator.clipboard||!navigator.clipboard.writeText) return;
-      if(el.dataset.copying) return;
-      var email='vyara.dmtrv@gmail.com';
-      navigator.clipboard.writeText(email).then(function(){
-        el.dataset.copying='1'; var orig=el.textContent;
-        el.textContent='Copied \u2713'; el.classList.add('is-copied');
-        setTimeout(function(){ el.textContent=orig; el.classList.remove('is-copied'); delete el.dataset.copying; },1400);
-      }).catch(function(){});
-    });
-  })();
 })();
 </script>
 </body>
