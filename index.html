@@ -154,6 +154,7 @@
     --beige:#E9E1D4;--beige-lt:#F3EEE5;--sand:#DCD0BD;--ink:#221E1A;--ink-soft:#5F5850;
     --orange:#E5602B;--line:rgba(34,30,26,.14);
     --pad:clamp(20px,5vw,64px);
+    --s1:8px;--s2:16px;--s3:24px;--s4:48px;--s5:96px; /* the only spacing steps */
     --ease:cubic-bezier(.22,.61,.36,1);
     --ease-io:cubic-bezier(.65,.05,.36,1);
     --sig-draw-ms:1900; /* logo pen-draw duration (unitless ms) — read by JS via getComputedStyle so CSS stays the single source of truth */
@@ -171,7 +172,8 @@
   .eyebrow{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.24em;color:var(--ink-soft)}
   .eyebrow .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--orange);margin-right:.6em;vertical-align:middle;animation:pulse 2.4s var(--ease) infinite}
   @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
-  .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  /* one entrance direction for the whole page: from the left, quick */
+  .reveal{opacity:0;transform:translateX(-24px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
   .reveal.in{opacity:1;transform:none}
   .reveal[data-d="1"]{transition-delay:.08s}
   .reveal[data-d="2"]{transition-delay:.16s}
@@ -297,75 +299,74 @@
   .loader__skip:hover::after{transform:scaleX(1)}
   .loader.is-leaving .loader__skip{opacity:0!important;pointer-events:none;animation:none;transition:opacity .25s var(--ease)}
 
-  /* --- nav (centered, minimal) --- */
-  .nav{position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:1000;
-    opacity:0;transition:top .4s var(--ease),opacity .8s var(--ease)}
-  .nav.is-in{opacity:1}
-  .nav.is-stuck{top:16px}
-  .nav__links{position:relative;display:flex;gap:clamp(20px,3vw,40px);align-items:center}
-  .nav__links a{position:relative;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
-    padding:6px 2px;color:var(--ink-soft);transition:color .35s var(--ease)}
-  .nav__links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1.5px;
-    background:var(--orange);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease)}
+  /* --- nav: a folio bar, not a floating pill --- */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:1000;opacity:0;pointer-events:none;
+    transition:opacity .8s var(--ease)}
+  .nav.is-in{opacity:1;pointer-events:auto}
+  .nav__links{display:flex;align-items:baseline;gap:clamp(18px,3vw,40px);
+    padding:var(--s2) var(--pad);border-bottom:1px solid transparent;
+    transition:background .2s linear,border-color .2s linear}
+  .nav.is-stuck .nav__links{background:rgba(233,225,212,.94);border-color:var(--line)}
+  .nav__links a{position:relative;font-size:.72rem;font-weight:600;letter-spacing:.18em;
+    text-transform:uppercase;padding:4px 0;color:var(--ink-soft);transition:color .15s linear}
+  .nav__links a:first-child{margin-right:auto;font-size:.86rem;letter-spacing:.02em;
+    text-transform:none;color:var(--ink)}
+  .nav__links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+    background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .15s linear}
+  .nav__links a:first-child::after{display:none}
   .nav__links a:hover{color:var(--ink)}
-  .nav__links a:hover::after,.nav__links a.is-cur::after{transform:scaleX(1);transform-origin:left}
+  .nav__links a:hover::after,.nav__links a.is-cur::after{transform:scaleX(1)}
   .nav__links a.is-cur{color:var(--ink)}
-  .nav.is-stuck .nav__links{padding:8px 18px;border-radius:40px;background:rgba(243,238,229,.72);
-    backdrop-filter:blur(12px);box-shadow:0 10px 28px -18px rgba(34,30,26,.4)}
 
-  /* --- hero --- */
-  .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:132px var(--pad) 76px;position:relative;overflow:hidden}
-  .hero::before{content:"";position:absolute;top:50%;left:50%;width:min(76vw,680px);aspect-ratio:1;
-    transform:translate(-50%,-50%);border-radius:50%;
-    background:radial-gradient(circle,rgba(229,96,43,.18),transparent 62%);
-    filter:blur(8px);z-index:0;animation:blobpulse 9s ease-in-out infinite}
-  @keyframes blobpulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.12)}}
+  /* --- hero: type bottom-left, meta top-right, sculpture floating between --- */
+  .hero{min-height:100vh;min-height:100svh;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;padding:0 var(--pad)}
 
   /* 3D canvas — fullscreen, lives in hero from frame 1, loader covers it */
   .hero__sculpture{position:absolute;inset:0;z-index:0;display:block}
   .hero__sculpture canvas{display:block;width:100%!important;height:100%!important;touch-action:pan-y;cursor:grab}
   .hero__sculpture.is-dragging canvas{cursor:grabbing}
 
-  .hero__sculpt-hint{position:absolute;left:50%;bottom:clamp(18px,3vh,30px);transform:translateX(-50%);z-index:4;
-    font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.22em;color:var(--ink-soft);
-    display:inline-flex;align-items:center;gap:.6em;
+  /* meta block — appears with NO transition: an intentional hard cut against
+     the drawn loader and the sliding headline */
+  .hero__top{position:relative;z-index:2;align-self:flex-end;text-align:right;
+    margin:calc(56px + var(--s3)) 0 auto;
+    font-size:.78rem;font-weight:600;letter-spacing:.06em;line-height:1.8;color:var(--ink-soft);
+    opacity:0}
+  .hero__top.is-in{opacity:1}
+  .hero__top .o{color:var(--orange)}
+
+  .hero__stack{position:relative;z-index:2;pointer-events:none;
+    margin-bottom:var(--s3)}
+  .hero__word{display:block;font-weight:600;line-height:.92;letter-spacing:-.045em;
+    font-size:clamp(3rem,11.5vw,9.5rem);color:var(--ink);
+    opacity:0;transform:translateX(-48px)}
+  /* the second line steps in — a deliberate misalignment, not a centered stack */
+  .hero__word--right{margin-left:clamp(28px,9vw,150px)}
+  .hero__word.is-in{opacity:1;transform:none;
+    transition:opacity .8s var(--ease-io),transform .9s var(--ease-io)}
+  .hero__word--right.is-in{transition-delay:.12s}
+  .hero__word .o{color:var(--orange);display:inline-block}
+
+  .hero__sub{position:relative;z-index:2;max-width:40ch;
+    font-size:clamp(.98rem,1.3vw,1.1rem);color:var(--ink-soft)}
+
+  /* folio line — the hero's baseline: index link left, drag hint right */
+  .hero__base{position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:baseline;
+    justify-content:space-between;gap:var(--s2) var(--s3);
+    border-top:1px solid var(--line);margin-top:var(--s4);
+    padding:var(--s2) 0 var(--s4);
+    font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--ink-soft)}
+  .hero__index{color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:2px;
+    transition:border-color .15s linear}
+  .hero__index:hover{border-color:var(--orange)}
+  .hero__base-year{letter-spacing:.1em;font-weight:400}
+
+  .hero__sculpt-hint{display:inline-flex;align-items:center;gap:.6em;
     opacity:0;transition:opacity .8s var(--ease) .8s;pointer-events:none}
   .hero__sculpt-hint.is-in{opacity:.8}
   .hero__sculpt-hint svg{width:14px;height:14px}
-  /* no drag-to-rotate on mobile, so hide the hint there */
   @media(max-width:768px){.hero__sculpt-hint{display:none!important}}
-
-  .hero__top{position:relative;z-index:4;display:inline-flex;align-items:center;gap:.5em;
-    border:1.5px solid var(--line);border-radius:40px;padding:7px 16px;
-    font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--ink-soft);
-    margin-bottom:clamp(18px,3vh,30px);
-    opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-  .hero__top.is-in{opacity:1;transform:none}
-  .hero__top .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2.4s var(--ease) infinite}
-
-  .hero__stack{position:relative;display:flex;flex-direction:column;align-items:center;
-    gap:clamp(10px,2.2vw,28px);perspective:1100px;z-index:1}
-  .hero__word{font-weight:700;line-height:.8;letter-spacing:-.05em;font-size:clamp(2.6rem,12vw,8rem);
-    position:relative;z-index:2;pointer-events:none;color:var(--ink);
-    opacity:0;filter:blur(14px);transform:translateY(40px) scale(.92)}
-  .hero__word.is-in{opacity:1;filter:blur(0);transform:none;
-    transition:opacity .9s var(--ease-io),filter .9s var(--ease-io),transform 1s var(--ease-io)}
-  .hero__word--left.is-in{transition-delay:.05s}
-  .hero__word--right.is-in{transition-delay:.22s}
-  .hero__word .o{color:var(--orange);display:inline-block}
-  .hero__word--right.is-in .o{animation:opop .6s var(--ease-io) .75s both}
-  @keyframes opop{0%{transform:scale(1)}45%{transform:scale(1.08)}100%{transform:scale(1)}}
-
-  .hero__sub{position:relative;z-index:3;margin-top:clamp(30px,4.4vh,48px);
-    max-width:44ch;font-size:clamp(1rem,1.5vw,1.16rem);color:var(--ink-soft)}
-  .hero__scroll{position:relative;z-index:3;margin-top:clamp(26px,3.5vh,40px);
-    display:inline-flex;flex-direction:column;align-items:center;gap:12px;
-    font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.24em;color:var(--ink-soft)}
-  .hero__scroll i{display:block;width:1.5px;height:44px;background:var(--line);position:relative;overflow:hidden}
-  .hero__scroll i::after{content:"";position:absolute;left:0;top:-50%;width:100%;height:50%;
-    background:var(--orange);animation:scrolldown 1.9s var(--ease-io) infinite}
-  @keyframes scrolldown{0%{top:-55%}60%,100%{top:105%}}
 
   /* --- section wrapper --- */
   .sec{padding:clamp(80px,12vh,150px) var(--pad)}
@@ -374,169 +375,122 @@
   .sec__head h2 .lt{font-weight:300}
   .sec__head .hint{margin-top:18px;font-size:.78rem;font-weight:600;text-transform:uppercase;
     letter-spacing:.18em;color:var(--ink-soft)}
-  .sec__head .hint::before{content:"↑ ";color:var(--orange)}
 
-  /* --- work cards --- */
-  .work{background:var(--beige-lt)}
-  .cards{max-width:1040px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);
-    align-items:start;gap:clamp(28px,4vw,56px) clamp(40px,6vw,96px)}
-  .card{position:relative;display:block;width:100%;text-align:left;
-    transform:rotate(var(--rot,0deg)) translate(var(--ox,0px),var(--oy,0px)) scale(var(--sc,1));
-    transition:transform .35s var(--ease),opacity .45s var(--ease)}
-  .card:hover,.card:focus-visible{transform:rotate(0deg) translate(0,-6px) scale(1.03)}
-  /* size variants */
-  .card--port .card__media{aspect-ratio:4/5}
-  .card--tall .card__media{aspect-ratio:3/4}
-  .card--square .card__media{aspect-ratio:1/1}
-  .card--wide .card__media{aspect-ratio:5/4}
-  /* second column staggered down */
-  .card--b{margin-top:clamp(36px,7vw,84px)}
-  .card__inner{display:block}
-  /* media */
-  .card__media{position:relative;overflow:hidden;background:var(--ink);
-    border-radius:22px 8px 22px 8px;box-shadow:0 18px 40px -28px rgba(34,30,26,.5);
-    transition:box-shadow .35s var(--ease)}
-  .card:hover .card__media{box-shadow:0 30px 50px -28px rgba(34,30,26,.55)}
-  .card__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-    filter:saturate(.96);transition:filter .35s var(--ease)}
-  .card:hover .card__media img{filter:saturate(1.04)}
-  /* corner bracket */
-  .card__frame{position:absolute;inset:10px;z-index:3;pointer-events:none;
-    opacity:0;transition:opacity .3s var(--ease) .3s}
-  .card:hover .card__frame{opacity:1}
-  .card__frame i{position:absolute;width:22px;height:22px;border:1.5px solid var(--beige-lt)}
-  .card__frame i:nth-child(1){top:0;left:0;border-right:none;border-bottom:none}
-  .card__frame i:nth-child(2){top:0;right:0;border-left:none;border-bottom:none}
-  .card__frame i:nth-child(3){bottom:0;left:0;border-right:none;border-top:none}
-  .card__frame i:nth-child(4){bottom:0;right:0;border-left:none;border-top:none}
-  /* index number */
-  .card__num{position:absolute;z-index:3;top:14px;left:14px;font-size:.72rem;font-weight:800;
-    letter-spacing:.1em;color:var(--beige-lt);
-    opacity:0;transform:translateY(-6px);transition:opacity .35s var(--ease) .25s,transform .35s var(--ease) .25s}
-  .card:hover .card__num{opacity:1;transform:none}
-  .card__cap{display:flex;align-items:baseline;gap:12px;padding:16px 2px 0}
-  .card__idx{font-size:.72rem;font-weight:600;color:var(--ink-soft);letter-spacing:.1em}
-  .card__t{font-size:clamp(1.05rem,1.5vw,1.35rem);font-weight:700;letter-spacing:-.02em;transition:color .35s var(--ease)}
-  .card__m{margin-left:auto;font-size:.72rem;font-weight:600;color:var(--ink-soft);letter-spacing:.05em;text-align:right}
-  .card:hover .card__t,.card:focus-visible .card__t{color:var(--orange)}
-  .card:focus-visible{outline:2px solid var(--orange);outline-offset:6px}
+  /* --- section strip: a small-caps header on a hairline, never centered --- */
+  .strip{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3);
+    border-top:1px solid var(--line);padding-top:var(--s2);margin-bottom:var(--s4)}
+  .strip h2{font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.24em;color:var(--ink)}
+  .strip h2 i{font-style:normal;color:var(--orange);margin-right:1em}
+  .strip span{font-size:.78rem;font-weight:400;letter-spacing:.06em;color:var(--ink-soft);text-align:right}
 
-  /* --- about --- */
-  .about__grid{max-width:980px;margin:0 auto;display:grid;
-    grid-template-columns:1fr 1.4fr;gap:clamp(36px,5vw,72px);align-items:center}
-  .about__photo{position:relative;aspect-ratio:4/5;border-radius:6px;overflow:hidden;width:100%;
-    background:var(--sand);box-shadow:0 30px 60px -34px rgba(34,30,26,.45)}
+  /* --- work: an index, not a card grid. Six rows read like a table of
+     contents; one large plate to the right previews the hovered entry,
+     bleeding past the page edge and over the section's top rule. --- */
+  .work{background:var(--beige-lt);position:relative}
+  .work .strip{width:min(58%,720px)} /* the plate owns the right side */
+  .cards{position:relative;display:block}
+  .card{position:relative;display:grid;grid-template-columns:3.5ch 0 1fr;align-items:start;
+    gap:var(--s3);width:min(58%,720px);padding:var(--s3) 0;border-top:1px solid var(--line);
+    text-align:left}
+  .card:last-child{border-bottom:1px solid var(--line)}
+  .card__idx{font-size:.78rem;font-weight:600;color:var(--ink-soft);padding-top:.5em;
+    transition:color .15s linear}
+  .card__thumb{display:none;width:100%;aspect-ratio:1;object-fit:cover;background:var(--sand)}
+  .card__body{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .card__t{font-size:clamp(1.5rem,3.2vw,2.5rem);font-weight:600;letter-spacing:-.025em;line-height:1.05;
+    transition:transform .15s var(--ease)}
+  .card__m{font-size:.78rem;font-weight:400;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase}
+  .card:hover .card__idx,.card:focus-visible .card__idx{color:var(--orange)}
+  .card:hover .card__t{transform:translateX(var(--s1))}
+  .card:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
+
+  /* the plate — deliberately off-grid: overlaps the strip rule above and
+     runs off the right edge of the page. Crossfade only; nothing slides. */
+  .index__plate{position:absolute;z-index:2;top:calc(-1 * var(--s3));
+    right:calc(-.4 * var(--pad));width:min(36vw,480px);aspect-ratio:4/5;
+    background:var(--sand);pointer-events:none}
+  .index__plate img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    opacity:0;transition:opacity .25s linear}
+  .index__plate img.is-on{opacity:1}
+  .index__cap{position:absolute;left:0;top:calc(100% + var(--s2));
+    font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+
+  /* --- about: 12-column split — portrait left, pulled up across the
+     section boundary; text starts at column 7, lower. --- */
+  .about{padding-top:0}
+  .about__grid{display:grid;grid-template-columns:repeat(12,1fr);
+    gap:var(--s3);align-items:start}
+  .about__side{grid-column:1/6;margin-top:calc(-1 * var(--s5))}
+  .about__photo{position:relative;aspect-ratio:4/5;overflow:hidden;width:100%;
+    background:var(--sand);border:1px solid var(--line)}
   .about__photo .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
     justify-content:center;gap:10px;color:var(--ink-soft);
     background:repeating-linear-gradient(135deg,rgba(34,30,26,.05) 0 14px,transparent 14px 28px)}
   .about__photo .ph svg{width:46px;height:46px;opacity:.5}
-  .about__photo .ph span{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em}
-  .about__photo::after{content:"";position:absolute;inset:0;border:1px solid rgba(255,250,242,.3);
-    border-radius:6px;pointer-events:none}
-  .about__text{text-align:left}
-  .about__lead{font-size:clamp(0.95rem, 2vw, 1.5rem);line-height:1.35;font-weight:300;letter-spacing:-.01em}
-  .about__lead b{font-weight:700}
-  .about__lead .o{color:var(--orange);font-weight:700}
-  .caps{margin-top:clamp(36px,5vh,56px);display:flex;flex-wrap:wrap;gap:10px 12px}
-  .caps span{border:1.5px solid var(--line);border-radius:40px;padding:9px 20px;
-    font-size:.86rem;font-weight:600;will-change:transform;
-    transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),transform .25s var(--ease)}
-  .caps span:hover{background:var(--ink);color:var(--beige-lt);border-color:var(--ink)}
+  .about__photo .ph span{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.2em}
+  .studio__text{grid-column:7/13;padding-top:0;max-width:56ch;text-align:left}
+  .about__lead{font-size:clamp(1.02rem,1.55vw,1.3rem);line-height:1.5;font-weight:400}
+  .about__lead b{font-weight:600}
+  .about__lead .o{color:var(--orange);font-weight:600}
 
-  /* --- marquee --- */
-  .marquee{padding:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:var(--beige)}
-  .marquee__track{display:flex;width:max-content;animation:scrollx 32s linear infinite}
-  .marquee:hover .marquee__track{animation-play-state:paused}
-  .marquee__track span{font-size:clamp(1.6rem,4vw,3.2rem);font-weight:800;letter-spacing:-.02em;
-    padding:26px 0;color:var(--ink);white-space:nowrap;display:flex;align-items:center}
-  .marquee__track span b{font-weight:800;transition:color .3s var(--ease)}
-  .marquee__track span b:hover{color:var(--orange)}
-  .marquee__track span i{width:9px;height:9px;border-radius:50%;background:var(--orange);margin:0 34px;flex:0 0 auto}
-  @keyframes scrollx{to{transform:translateX(-50%)}}
-  @media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
+  /* --- contact: one full-bleed ink block — the page's single hard
+     contrast break. No card, no glow; type does the work. --- */
+  .contact{background:var(--ink);color:var(--beige-lt);
+    padding:clamp(88px,15vh,170px) var(--pad) clamp(64px,10vh,120px)}
+  .contact ::selection{background:var(--orange);color:var(--ink)}
+  .contact .strip{border-color:rgba(243,238,229,.16)}
+  .contact .strip h2{color:var(--beige-lt)}
+  .contact .strip span{color:rgba(243,238,229,.55)}
+  .hello{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s4) var(--s5);align-items:end}
+  .hello__h{font-size:clamp(2.8rem,8vw,6.5rem);font-weight:600;letter-spacing:-.035em;line-height:.96}
+  .hello__h .o{color:var(--orange)}
+  .hello__mail{display:inline-block;margin-top:var(--s4);
+    font-size:clamp(1.25rem,2.8vw,2rem);font-weight:600;letter-spacing:-.01em;
+    border-bottom:1px solid rgba(243,238,229,.3);padding-bottom:6px;
+    transition:color .15s linear,border-color .15s linear}
+  .hello__mail:hover{color:var(--orange);border-color:var(--orange)}
+  .hello__meta{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+  .hello__meta a{display:block;width:100%;padding:var(--s2) 0;
+    border-top:1px solid rgba(243,238,229,.16);
+    font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.18em;
+    color:rgba(243,238,229,.65);transition:color .15s linear,padding-left .15s var(--ease)}
+  .hello__meta a:hover{color:var(--beige-lt);padding-left:var(--s1)}
+  .hello__meta a:last-of-type{border-bottom:1px solid rgba(243,238,229,.16)}
+  .hello__avail{margin-top:var(--s3);font-size:.8rem;font-weight:600;letter-spacing:.02em;
+    color:rgba(243,238,229,.65)}
+  .hello__avail i{display:inline-block;width:6px;height:6px;background:var(--orange);
+    margin-right:.55em;vertical-align:middle;font-style:normal}
 
-  /* --- contact (glassmorphic card) --- */
-  .contact{text-align:center;background:var(--beige-lt);position:relative;overflow:hidden}
-  .contact__glow{position:absolute;top:38%;left:50%;width:min(70vw,640px);aspect-ratio:1;
-    transform:translate(-50%,-50%);z-index:0;pointer-events:none;
-    background:radial-gradient(circle at 50% 50%,rgba(229,96,43,.28),transparent 60%),
-               radial-gradient(circle at 60% 60%,rgba(201,138,125,.26),transparent 65%);
-    filter:blur(10px)}
+  /* these four rules stay for the case-study closing card (built in JS) */
   .contact__card{position:relative;z-index:1;max-width:840px;margin:0 auto;
-    padding:clamp(40px,7vw,84px) clamp(24px,6vw,72px);border-radius:28px;
-    background:rgba(255,252,247,.38);border:1px solid rgba(255,255,255,.5);
-    backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);
-    box-shadow:0 30px 80px -40px rgba(34,30,26,.35),inset 0 1px 0 rgba(255,255,255,.6)}
-  .contact h2{font-size:clamp(2.2rem,6.6vw,5.4rem);line-height:1.02;letter-spacing:-.035em;font-weight:300;max-width:16ch;margin:0 auto}
-  .contact h2 b{font-weight:800}
+    padding:clamp(40px,7vw,84px) clamp(24px,6vw,72px);
+    background:var(--beige-lt);border:1px solid var(--line);text-align:center}
+  .contact__card h2{font-size:clamp(2rem,5.6vw,4.2rem);line-height:1.02;letter-spacing:-.03em;font-weight:600;max-width:16ch;margin:0 auto}
+  .contact__card h2 .lt,.contact__card h2 b{font-weight:600}
   .contact__mail{display:inline-block;margin-top:clamp(34px,5vh,54px);
-    font-size:clamp(1.4rem,3.6vw,2.6rem);font-weight:700;letter-spacing:-.01em;
-    border-bottom:2px solid var(--line);padding-bottom:6px;will-change:transform;
-    transition:border-color .4s var(--ease),color .4s var(--ease),transform .25s var(--ease)}
+    font-size:clamp(1.3rem,3.2vw,2.2rem);font-weight:600;letter-spacing:-.01em;
+    border-bottom:1px solid var(--line);padding-bottom:6px;
+    transition:border-color .15s linear,color .15s linear}
   .contact__mail:hover{color:var(--orange);border-color:var(--orange)}
   .contact__socials{margin-top:40px;display:flex;gap:26px;justify-content:center;flex-wrap:wrap}
   .contact__socials a{font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.16em;
-    color:var(--ink-soft);position:relative;padding-bottom:3px}
-  .contact__socials a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1.5px;
-    background:var(--orange);transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease)}
-  .contact__socials a:hover::after{transform:scaleX(1);transform-origin:left}
+    color:var(--ink-soft);position:relative;padding-bottom:3px;transition:color .15s linear}
+  .contact__socials a:hover{color:var(--ink)}
 
-  /* --- footer --- */
-  .foot{position:relative;overflow:hidden;background:var(--beige);
-    border-top:1px solid var(--line);
-    padding:clamp(64px,12vh,140px) var(--pad) clamp(28px,5vh,46px)}
-  .foot__glow{position:absolute;top:-12%;right:-6%;width:min(60vw,560px);aspect-ratio:1;
-    z-index:0;pointer-events:none;
-    background:radial-gradient(circle at 60% 40%,rgba(229,96,43,.18),transparent 62%),
-               radial-gradient(circle at 40% 60%,rgba(201,138,125,.16),transparent 66%);
-    filter:blur(10px)}
-  .foot__inner{position:relative;z-index:1;max-width:1100px;margin:0 auto}
-  .foot__top{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(40px,7vw,96px);
-    align-items:start;padding-bottom:clamp(46px,8vh,88px);border-bottom:1px solid var(--line)}
-  .foot__brand{max-width:46ch}
-  .foot__big{margin-top:20px;font-size:clamp(2.4rem,7vw,5.4rem);font-weight:800;
-    line-height:.96;letter-spacing:-.04em;color:var(--ink)}
-  .foot__big .o{color:var(--orange)}
-  .foot__note{margin-top:clamp(20px,3vh,30px);max-width:42ch;
-    font-size:clamp(.95rem,1.3vw,1.08rem);font-weight:400;color:var(--ink-soft);line-height:1.55}
-
-  .foot__cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(22px,3vw,40px)}
-  .foot__col{display:flex;flex-direction:column;align-items:flex-start;gap:13px}
-  .foot__col-h{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;
-    color:var(--ink);margin-bottom:4px}
-  .foot__col a{position:relative;font-size:.96rem;font-weight:600;color:var(--ink-soft);
-    padding-bottom:2px;transition:color .35s var(--ease)}
-  .foot__col a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1.5px;
-    background:var(--orange);transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease)}
-  .foot__col a:hover{color:var(--ink)}
-  .foot__col a:hover::after{transform:scaleX(1);transform-origin:left}
-  .foot__mail{word-break:break-word}
-  .foot__avail{display:inline-flex;align-items:center;gap:.6em;margin-top:2px;
-    font-size:.78rem;font-weight:600;color:var(--ink-soft);letter-spacing:.02em}
-  .foot__avail i{width:7px;height:7px;border-radius:50%;background:var(--orange);
-    flex:0 0 auto;animation:pulse 2.4s var(--ease) infinite}
-
-  .foot__base{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;
-    padding-top:clamp(24px,4vh,36px);
-    font-size:.76rem;font-weight:500;letter-spacing:.04em;color:var(--ink-soft)}
-  .foot__copy{color:var(--ink)}
-  .foot__totop{margin-left:auto;display:inline-flex;align-items:center;gap:.6em;
-    font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--ink);
-    border:1.5px solid var(--line);border-radius:40px;padding:9px 18px;will-change:transform;
-    transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),transform .25s var(--ease)}
-  .foot__totop:hover{background:var(--ink);color:var(--beige-lt);border-color:var(--ink)}
-  .foot__totop svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;
-    stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease)}
-  .foot__totop:hover svg{transform:translateY(-3px)}
-
-  @media(max-width:820px){
-    .foot__top{grid-template-columns:1fr;gap:clamp(34px,6vh,54px)}
-  }
-  @media(max-width:540px){
-    .foot__cols{grid-template-columns:1fr 1fr;gap:26px 22px}
-    .foot__base{gap:10px 18px}
-    .foot__totop{margin-left:0;margin-top:4px}
-  }
+  /* --- footer: a single folio line closing the ink block --- */
+  .foot{background:var(--ink);color:rgba(243,238,229,.55);padding:0 var(--pad) var(--s3)}
+  .foot ::selection{background:var(--orange);color:var(--ink)}
+  .foot__base{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s1) var(--s3);
+    border-top:1px solid rgba(243,238,229,.16);padding-top:var(--s3);
+    font-size:.74rem;font-weight:400;letter-spacing:.04em}
+  .foot__copy{color:var(--beige-lt);font-weight:600}
+  .foot__totop{margin-left:auto;display:inline-flex;align-items:baseline;gap:.6em;
+    font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.16em;
+    color:var(--beige-lt);border-bottom:1px solid rgba(243,238,229,.3);padding-bottom:2px;
+    transition:border-color .15s linear,color .15s linear}
+  .foot__totop:hover{color:var(--orange);border-color:var(--orange)}
+  .foot__totop svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round;align-self:center}
 
   /* --- project detail overlay --- */
   .proj{position:fixed;inset:0;z-index:7000;background:var(--beige);overflow-y:auto;overflow-x:hidden;
@@ -902,19 +856,26 @@
   }
 
   /* --- responsive --- */
+  @media(max-width:1100px){
+    .index__plate{display:none}
+    .work .strip{width:100%}
+    .card{grid-template-columns:3ch 1fr 88px;width:100%}
+    .card__thumb{display:block;order:3}
+  }
   @media(max-width:900px){
-    .about__grid{grid-template-columns:1fr}
-    .about__photo{max-width:320px;width:100%;margin:0 auto;aspect-ratio:4/5}
-    .studio__text{text-align:center}
-    .caps{justify-content:center}
-    .cards{gap:24px clamp(20px,5vw,40px)}
+    .about__grid{grid-template-columns:1fr;gap:var(--s4)}
+    .about__side{grid-column:auto;margin-top:0;order:2;
+      display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:var(--s3);align-items:end}
+    .studio__text{grid-column:auto;order:1;max-width:60ch}
+    .hello{grid-template-columns:1fr;align-items:start}
   }
   @media(max-width:620px){
     .nav__links{gap:14px}
-    .nav__links a{font-size:.66rem}
-    .cards{grid-template-columns:1fr;max-width:380px;gap:36px}
-    .card{transform:none!important}
-    .card--b{margin-top:0}
+    .nav__links a{font-size:.62rem}
+    .nav__links a:first-child{font-size:.8rem}
+    .hero__word--right{margin-left:clamp(20px,7vw,60px)}
+    .card{grid-template-columns:2.5ch 1fr 64px;gap:var(--s2)}
+    .about__side{grid-template-columns:1fr;margin-top:0}
   }
   /* ───────────────────────────────────────────────────────────
      UNIFIED SCROLLYTELLING
@@ -989,23 +950,17 @@
     box-shadow:0 16px 32px -18px rgba(34,30,26,.7)}
   .dm-badge i{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pulse 2.4s var(--ease) infinite}
   body.design-mode .dm-badge{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;cursor:pointer}
-  .contact__local{margin-top:clamp(26px,4vh,40px);min-height:1.2em;
-    font-size:.82rem;font-weight:600;letter-spacing:.02em;color:var(--ink-soft)}
-  .contact__local i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--orange);
-    margin-right:.55em;vertical-align:middle;animation:pulse 2.4s var(--ease) infinite}
-  .contact__local b{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
-  .about__currently{margin-top:clamp(28px,4vh,42px);max-width:48ch;padding-left:18px;
-    border-left:2px solid var(--orange);font-size:clamp(.92rem,1.2vw,1.02rem);
-    line-height:1.5;color:var(--ink-soft)}
-  .about__currently b{display:block;margin-bottom:7px;font-size:.66rem;font-weight:700;
+  .contact__local{margin-top:var(--s2);min-height:1.2em;
+    font-size:.8rem;font-weight:400;letter-spacing:.02em;color:rgba(243,238,229,.55)}
+  .contact__local i{display:inline-block;width:6px;height:6px;background:var(--orange);
+    margin-right:.55em;vertical-align:middle}
+  .contact__local b{font-weight:600;color:var(--beige-lt);font-variant-numeric:tabular-nums}
+  .about__currently{margin-top:var(--s3);max-width:44ch;padding-left:var(--s2);
+    border-left:2px solid var(--orange);font-size:.9rem;
+    line-height:1.55;color:var(--ink-soft)}
+  .about__currently b{display:block;margin-bottom:7px;font-size:.66rem;font-weight:600;
     text-transform:uppercase;letter-spacing:.2em;color:var(--ink)}
-  .card__verb{position:absolute;z-index:3;left:14px;bottom:14px;display:inline-flex;align-items:center;
-    font-size:.72rem;font-weight:800;letter-spacing:.04em;color:var(--beige-lt);
-    opacity:0;transform:translateY(8px);transition:opacity .35s var(--ease) .28s,transform .35s var(--ease) .28s}
-  .card__verb::after{content:"";width:16px;height:1.5px;background:var(--orange);margin-left:.6em}
-  .card:hover .card__verb,.card:focus-visible .card__verb{opacity:1;transform:none}
-</style>
-</head>
+</style></head>
 <body class="is-locked">
 
   <a class="skip-link" href="#work">Skip to content</a>
@@ -1058,7 +1013,7 @@
   <!-- NAV -->
   <header class="nav" id="nav">
     <nav class="nav__links" id="navLinks">
-      <a href="#top" data-sec="top" data-cursor>Vyara</a>
+      <a href="#top" data-sec="top" data-cursor>Vyara Dimitrova</a>
       <a href="#work" data-sec="work" data-cursor>Work</a>
       <a href="#about" data-sec="about" data-cursor>About</a>
       <a href="#contact" data-sec="contact" data-cursor>Contact</a>
@@ -1071,147 +1026,116 @@
     <section class="hero">
       <div class="hero__sculpture" id="heroSculpture" aria-hidden="true"></div>
 
-      <span class="hero__top"><span class="dot"></span> Visual Designer · Frankfurt</span>
+      <p class="hero__top">Visual designer<br>Frankfurt · Varna<br><span class="o">Open to new work</span></p>
+
       <h1 class="hero__stack" data-dm="h1 · wordmark">
-        <span class="hero__word hero__word--left" id="wordLeft"> Making </span>
-        <span class="hero__word hero__word--right" id="wordRight"> ideas <span class="o">tangible.</span></span>
+        <span class="hero__word hero__word--left" id="wordLeft">Making</span>
+        <span class="hero__word hero__word--right" id="wordRight">ideas <span class="o">tangible.</span></span>
       </h1>
-      <p class="hero__sub reveal" data-d="2">Working across identity, packaging, motion, 3D and digital design to create experiences that feel considered, cohesive and built to last.</p>
-      <a href="#work" class="hero__scroll reveal" data-d="3" data-cursor data-magnetic>Selected work<i></i></a>
-      <span class="hero__sculpt-hint" id="sculptHint">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-        Drag to rotate
-      </span>
+      <p class="hero__sub reveal" data-d="2">Eight years across identity, packaging, motion and web — from LG's global campaigns to a family bakery's first sign.</p>
+
+      <div class="hero__base">
+        <a href="#work" class="hero__index reveal" data-d="3" data-cursor>Index — six projects ↓</a>
+        <span class="hero__base-year">2021—2026</span>
+        <span class="hero__sculpt-hint" id="sculptHint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+          Drag to rotate
+        </span>
+      </div>
     </section>
 
-    <!-- WORK -->
+    <!-- WORK — the index -->
     <section class="sec work" id="work">
-      <div class="sec__head reveal">
-        <span class="eyebrow"><span class="dot"></span>Selected Work · 2021—2026</span>
-        <h2 data-dm="h2 · section">Six things made <span class="lt">with care.</span></h2>
+      <div class="strip reveal">
+        <h2 data-dm="h2 · section"><i>01</i>Index</h2>
+        <span>Six projects, 2021—2026</span>
       </div>
-      <div class="cards reveal" data-d="1" id="cards">
+      <figure class="index__plate" id="indexPlate" aria-hidden="true" data-dm="figure · plate">
+        <img class="plate__img is-on" src="images/lg-electronics/card.jpg" alt="" loading="eager" fetchpriority="high">
+        <img class="plate__img" src="images/my-market/card.jpg" alt="" loading="eager">
+        <img class="plate__img" src="images/smart-point/card.jpg" alt="" loading="lazy">
+        <img class="plate__img" src="images/reverto-winery/card.jpg" alt="" loading="lazy">
+        <img class="plate__img" src="images/crea-bakery/card.jpg" alt="" loading="lazy">
+        <img class="plate__img" src="images/maynooth-furniture/card.jpg" alt="" loading="lazy">
+        <figcaption class="index__cap" id="plateCap">01 — LG Electronics</figcaption>
+      </figure>
+      <div class="cards" id="cards">
         <!-- Static baseline markup — real content for bots, screen readers, and no-JS visitors.
              On JS-enabled visits this is cleared and rebuilt with the enhanced interactive
-             version (see cardsWrap.innerHTML = '' right before the forEach in the script below).
-             Keep this in sync with projData-json above if you add/remove/reorder projects. -->
-        <a href="#lg-electronics" class="card card--port" data-cursor="look" aria-label="LG Electronics — Brand Design, 2022–now">
-          <span class="card__inner">
-            <span class="card__media" style="display:block">
-              <img src="images/lg-electronics/card.jpg" alt="LG Electronics — Brand Design" loading="eager" fetchpriority="high">
-              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
-              <span class="card__num">01 / 06</span>
-              <span class="card__verb">Systematised</span>
-            </span>
-            <span class="card__cap" style="display:flex">
-              <span class="card__idx">01</span>
-              <span class="card__t">LG Electronics</span>
-              <span class="card__m">Brand Design · 2022–now</span>
-            </span>
+             version (see cardsWrap.innerHTML = '' in the script below).
+             Keep this in sync with projData-json if you add/remove/reorder projects. -->
+        <a href="#lg-electronics" class="card" data-cursor="look" aria-label="LG Electronics — Brand Design, 2022–now">
+          <span class="card__idx">01</span>
+          <img class="card__thumb" src="images/lg-electronics/card.jpg" alt="" loading="lazy">
+          <span class="card__body">
+            <span class="card__t">LG Electronics</span>
+            <span class="card__m">Brand Design · 2022–now</span>
           </span>
         </a>
-        <a href="#my-market" class="card card--tall card--b" data-cursor="look" aria-label="My Market — Brand Identity, 2021">
-          <span class="card__inner">
-            <span class="card__media" style="display:block">
-              <img src="images/my-market/card.jpg" alt="My Market — Brand Identity" loading="eager" fetchpriority="high">
-              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
-              <span class="card__num">02 / 06</span>
-              <span class="card__verb">Rebranded</span>
-            </span>
-            <span class="card__cap" style="display:flex">
-              <span class="card__idx">02</span>
-              <span class="card__t">My Market</span>
-              <span class="card__m">Brand Identity · 2021</span>
-            </span>
+        <a href="#my-market" class="card" data-cursor="look" aria-label="My Market — Brand Identity, 2021">
+          <span class="card__idx">02</span>
+          <img class="card__thumb" src="images/my-market/card.jpg" alt="" loading="lazy">
+          <span class="card__body">
+            <span class="card__t">My Market</span>
+            <span class="card__m">Brand Identity · 2021</span>
           </span>
         </a>
-        <a href="#smart-point" class="card card--square" data-cursor="look" aria-label="Smart Point — Brand Design, 2021">
-          <span class="card__inner">
-            <span class="card__media" style="display:block">
-              <img src="images/smart-point/card.jpg" alt="Smart Point — Brand Design" loading="lazy">
-              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
-              <span class="card__num">03 / 06</span>
-              <span class="card__verb">Named</span>
-            </span>
-            <span class="card__cap" style="display:flex">
-              <span class="card__idx">03</span>
-              <span class="card__t">Smart Point</span>
-              <span class="card__m">Brand Design · 2021</span>
-            </span>
+        <a href="#smart-point" class="card" data-cursor="look" aria-label="Smart Point — Brand Design, 2021">
+          <span class="card__idx">03</span>
+          <img class="card__thumb" src="images/smart-point/card.jpg" alt="" loading="lazy">
+          <span class="card__body">
+            <span class="card__t">Smart Point</span>
+            <span class="card__m">Brand Design · 2021</span>
           </span>
         </a>
-        <a href="#reverto-winery" class="card card--wide card--b" data-cursor="look" aria-label="Reverto Winery — Packaging, 2021">
-          <span class="card__inner">
-            <span class="card__media" style="display:block">
-              <img src="images/reverto-winery/card.jpg" alt="Reverto Winery — Packaging" loading="lazy">
-              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
-              <span class="card__num">04 / 06</span>
-              <span class="card__verb">Bottled</span>
-            </span>
-            <span class="card__cap" style="display:flex">
-              <span class="card__idx">04</span>
-              <span class="card__t">Reverto Winery</span>
-              <span class="card__m">Packaging · 2021</span>
-            </span>
+        <a href="#reverto-winery" class="card" data-cursor="look" aria-label="Reverto Winery — Packaging, 2021">
+          <span class="card__idx">04</span>
+          <img class="card__thumb" src="images/reverto-winery/card.jpg" alt="" loading="lazy">
+          <span class="card__body">
+            <span class="card__t">Reverto Winery</span>
+            <span class="card__m">Packaging · 2021</span>
           </span>
         </a>
-        <a href="#crea-bakery" class="card card--port" data-cursor="look" aria-label="Crea Bakery — Brand Identity, 2022">
-          <span class="card__inner">
-            <span class="card__media" style="display:block">
-              <img src="images/crea-bakery/card.jpg" alt="Crea Bakery — Brand Identity" loading="lazy">
-              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
-              <span class="card__num">05 / 06</span>
-              <span class="card__verb">Branded</span>
-            </span>
-            <span class="card__cap" style="display:flex">
-              <span class="card__idx">05</span>
-              <span class="card__t">Crea Bakery</span>
-              <span class="card__m">Brand Identity · 2022</span>
-            </span>
+        <a href="#crea-bakery" class="card" data-cursor="look" aria-label="Crea Bakery — Brand Identity, 2022">
+          <span class="card__idx">05</span>
+          <img class="card__thumb" src="images/crea-bakery/card.jpg" alt="" loading="lazy">
+          <span class="card__body">
+            <span class="card__t">Crea Bakery</span>
+            <span class="card__m">Brand Identity · 2022</span>
           </span>
         </a>
-        <a href="#maynooth-furniture" class="card card--tall card--b" data-cursor="look" aria-label="Maynooth Furniture — Web design, 2021">
-          <span class="card__inner">
-            <span class="card__media" style="display:block">
-              <img src="images/maynooth-furniture/card.jpg" alt="Maynooth Furniture — Web design" loading="lazy">
-              <span class="card__frame"><i></i><i></i><i></i><i></i></span>
-              <span class="card__num">06 / 06</span>
-              <span class="card__verb">Shipped</span>
-            </span>
-            <span class="card__cap" style="display:flex">
-              <span class="card__idx">06</span>
-              <span class="card__t">Maynooth Furniture</span>
-              <span class="card__m">Web design · 2021</span>
-            </span>
+        <a href="#maynooth-furniture" class="card" data-cursor="look" aria-label="Maynooth Furniture — Web design, 2021">
+          <span class="card__idx">06</span>
+          <img class="card__thumb" src="images/maynooth-furniture/card.jpg" alt="" loading="lazy">
+          <span class="card__body">
+            <span class="card__t">Maynooth Furniture</span>
+            <span class="card__m">Web design · 2021</span>
           </span>
         </a>
       </div>
     </section>
 
-    <!-- MARQUEE -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track" id="marquee"></div>
-    </div>
-
     <!-- ABOUT -->
-    <section class="sec" id="about">
-      <div class="sec__head reveal">
-        <span class="eyebrow"><span class="dot"></span>About</span>
-        <h2>Hello<span style="color:var(--orange)">.</span></h2>
-      </div>
-      <div class="about__grid" data-dm="grid · 2-col">
-        <div class="about__photo reveal" data-d="1">
-          <img src="images/main/studio-portrait.jpg" alt="Vyara Dimitrova" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-        </div>
-        <div class="studio__text">
-          <p class="about__lead reveal" data-d="2">
-            Over eight years, I've worked across branding, packaging, motion, 3D, and digital design. I've helped wrap vehicles, fill catalogs, redesign storefronts, and build e-commerce experiences for thousands of customers.
-            I <b>studied Art and Engineering Design,</b> which shaped how I think: equally invested in how something looks and how it actually works. Today I create with <b>Adobe Creative Cloud, Figma, and Blender—building systems</b> that scale creative work and bring ambitious ideas to life with good people.
-            <b>The best part?</b> When it's finished, it feels <span class="o">effortless.</span> Even if there was a lot of thinking behind the scenes.
-          </p>
-          <p class="about__currently reveal" data-d="3">
+    <section class="sec about" id="about">
+      <div class="about__grid" data-dm="grid · 12-col">
+        <div class="about__side">
+          <div class="about__photo">
+            <img src="images/main/studio-portrait.jpg" alt="Vyara Dimitrova" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          </div>
+          <p class="about__currently">
             <b>Currently</b>
             Deep in a variable-font system, chasing tiny details, and taking on a couple of select projects for late 2026.
+          </p>
+        </div>
+        <div class="studio__text">
+          <div class="strip reveal">
+            <h2><i>02</i>About</h2>
+            <span>Frankfurt · Varna</span>
+          </div>
+          <p class="about__lead reveal" data-d="1">
+            Over eight years, I've worked across branding, packaging, motion, 3D, and digital design. I've helped wrap vehicles, fill catalogs, redesign storefronts, and build e-commerce experiences for thousands of customers.
+            I <b>studied Art and Engineering Design,</b> which shaped how I think: equally invested in how something looks and how it actually works. Today I create with <b>Adobe Creative Cloud, Figma, and Blender — building systems</b> that scale creative work and bring ambitious ideas to life with good people.
+            <b>The best part?</b> When it's finished, it feels <span class="o">effortless.</span> Even if there was a lot of thinking behind the scenes.
           </p>
         </div>
       </div>
@@ -1219,19 +1143,22 @@
 
     <!-- CONTACT -->
     <section class="sec contact" id="contact">
-      <div class="contact__glow" aria-hidden="true"></div>
-      <div class="contact__card reveal" data-dm="card · contact">
-        <div class="sec__head" style="margin-bottom:0">
-          <span class="eyebrow"><span class="dot"></span>Let's talk</span>
-          <h2 style="margin-top:24px"><span class="lt">Let's make something</span><br>that lasts.</h2>
+      <div class="strip reveal">
+        <h2><i>03</i>Contact</h2>
+        <span>Usually replies within a day</span>
+      </div>
+      <div class="hello" data-dm="grid · split">
+        <div class="hello__main">
+          <h2 class="hello__h">Say <span class="o">hello.</span></h2>
+          <a href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" class="hello__mail" data-cursor data-magnetic>vyara.dmtrv@gmail.com</a>
         </div>
-        <a href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" class="contact__mail" data-cursor data-magnetic>vyara.dmtrv@gmail.com</a>
-        <div class="contact__socials">
+        <div class="hello__meta">
           <a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>
           <a href="https://www.linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
           <a href="/assets/Vyara-Dimitrova_CV.html" data-cursor target="_blank" rel="noopener">CV</a>
+          <p class="hello__avail"><i></i>Open to new work — full-time or select projects.</p>
+          <p class="contact__local" id="contactLocal"></p>
         </div>
-        <p class="contact__local" id="contactLocal"></p>
       </div>
     </section>
 
@@ -1247,47 +1174,13 @@
   </div>
 
   <footer class="foot">
-    <div class="foot__glow" aria-hidden="true"></div>
-    <div class="foot__inner">
-
-      <div class="foot__top">
-        <div class="foot__brand reveal">
-          <span class="eyebrow"><span class="dot"></span>Frankfurt / Varna · Open to new work</span>
-          <h2 class="foot__big" data-dm="h2 · footer">Made in<br>two <span class="o">cities.</span></h2>
-          <p class="foot__note">Visual design, built to last — wherever good people are making good things. If that sounds like you, I'd love to hear about it.</p>
-        </div>
-
-        <nav class="foot__cols" aria-label="Footer">
-          <div class="foot__col reveal" data-d="1">
-            <span class="foot__col-h">Navigate</span>
-            <a href="#top" data-cursor>Home</a>
-            <a href="#work" data-cursor>Work</a>
-            <a href="#about" data-cursor>About</a>
-            <a href="#contact" data-cursor>Contact</a>
-          </div>
-          <div class="foot__col reveal" data-d="2">
-            <span class="foot__col-h">Elsewhere</span>
-            <a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>
-            <a href="https://www.linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
-            <a href="/assets/Vyara-Dimitrova_CV.html" data-cursor target="_blank" rel="noopener">CV</a>
-          </div>
-          <div class="foot__col reveal" data-d="3">
-            <span class="foot__col-h">Say hello</span>
-            <a href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" class="foot__mail" data-cursor>vyara.dmtrv@gmail.com</a>
-            <span class="foot__avail"><i></i> Usually replies within a day</span>
-          </div>
-        </nav>
-      </div>
-
-      <div class="foot__base">
-        <span class="foot__copy">© <span id="copyYear">2026</span> Vyara Dimitrova</span>
-        <span class="foot__made">Built pixel by pixel, then rebuilt a few times.</span>
-        <a href="#top" class="foot__totop" data-cursor data-magnetic>
-          Back to top
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
-        </a>
-      </div>
-
+    <div class="foot__base">
+      <span class="foot__copy">© <span id="copyYear">2026</span> Vyara Dimitrova</span>
+      <span class="foot__made">Built pixel by pixel, then rebuilt a few times.</span>
+      <a href="#top" class="foot__totop" data-cursor>
+        Back to top
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+      </a>
     </div>
   </footer>
 
@@ -1412,6 +1305,10 @@
 
   /* group + scale tween state */
   var group = new THREE.Group(); scene.add(group);
+  /* with the headline bottom-left, the sculpture sits up and to the right —
+     content and object overlap instead of stacking */
+  function placeGroup(){ group.position.set(isMobile ? 0 : 1.4, isMobile ? 0.6 : 0.25, 0); }
+  placeGroup();
   /* on mobile, shrink the sculpture ~45% so it doesn't crowd the headline */
   var ENTRY_SCALE = 0.17, FULL_SCALE = isMobile ? 0.55 : 1;
   var entryScale = ENTRY_SCALE;
@@ -1468,6 +1365,7 @@
     if (nowMobile !== isMobile){
       isMobile = nowMobile;
       FULL_SCALE = isMobile ? 0.55 : 1;
+      placeGroup();
     }
   }
   window.addEventListener('resize', function(){
@@ -2065,7 +1963,7 @@ if (sigAccent){
   sigAccent.style.strokeDashoffset = ACC_SEG; /* parked just before the path start */
 }
 
-var SIG_DUR = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sig-draw-ms')) || 1900; /* ms — matches hero__scroll's scrolldown duration; sourced from CSS so the two never drift apart */
+var SIG_DUR = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sig-draw-ms')) || 1900; /* ms — sourced from CSS so JS and CSS never drift apart */
 var sigDrawDone = false;
 
 function sigLock(){
@@ -2244,63 +2142,54 @@ function revealHero(){
   var cardsWrap = document.getElementById('cards');
   /* Clear the static baseline markup (real content for bots/screen readers/no-JS)
      before rebuilding the enhanced interactive version below. This runs once,
-     synchronously, before any card is appended, so JS-enabled visitors never
+     synchronously, before any row is appended, so JS-enabled visitors never
      see the static version and never get duplicates. */
   cardsWrap.innerHTML = '';
-  /* size variants cycle across 6 cards */
-  var sizeVariants = ['card--port','card--tall','card--square','card--wide','card--port','card--tall'];
-  /* fixed tilts: 1 (left), 2 (right), 3 (left), 4 (slight right), 5 (left) */
-  var fixedRot = { 0: -4, 1: 5, 2: -5, 3: 3, 4: -4 };
-  var cardVerbs = {'LG Electronics':'Systematised','My Market':'Rebranded','Smart Point':'Named',
-    'Reverto Winery':'Bottled','Crea Bakery':'Branded','Maynooth Furniture':'Shipped'};
+
+  /* --- the index plate: one figure to the right of the rows, crossfading to
+     whichever entry the pointer (or keyboard focus) is on. The plate itself
+     never moves — only opacity changes, at one sharp 0.25s linear step. --- */
+  var plate     = document.getElementById('indexPlate');
+  var plateImgs = plate ? Array.prototype.slice.call(plate.querySelectorAll('img')) : [];
+  var plateCap  = document.getElementById('plateCap');
+  function plateShow(i){
+    if (!plateImgs.length) return;
+    plateImgs.forEach(function(im, k){ im.classList.toggle('is-on', k === i); });
+    if (plateCap && projData[i]) plateCap.textContent = '0' + (i + 1) + ' \u2014 ' + projData[i].t;
+  }
 
   projData.forEach(function(p, i){
     /* real links, not buttons: middle-click / open-in-new-tab work, the URL
        previews on hover, and crawlers see an internal link to each project */
     var card    = document.createElement('a');
     card.href   = '#' + titleToSlug(p.t);
-    var sizeCls = sizeVariants[i];
-    var colCls  = (i % 2 === 1) ? ' card--b' : '';
-    card.className = 'card ' + sizeCls + colCls;
+    card.className = 'card';
     card.setAttribute('data-cursor', 'look');
-    card.setAttribute('aria-label', p.t + ' — ' + p.c + ', ' + p.y);
+    card.setAttribute('aria-label', p.t + ' \u2014 ' + p.c + ', ' + p.y);
 
-    var rot = (fixedRot[i] !== undefined) ? fixedRot[i] : rnd(-6, 6);
-    card.style.setProperty('--rot', rot.toFixed(2) + 'deg');
-    card.style.setProperty('--ox',  rnd(-18, 18).toFixed(0) + 'px');
-    card.style.setProperty('--oy',  rnd(-24, 38).toFixed(0) + 'px');
-    card.style.setProperty('--sc',  rnd(0.94, 1.04).toFixed(3));
+    var idx = document.createElement('span');
+    idx.className = 'card__idx';
+    idx.textContent = '0' + (i + 1);
 
-    var inner = document.createElement('span'); inner.className = 'card__inner';
+    /* thumbnail is only shown below 1100px, where the plate is hidden */
+    var thumb = document.createElement('img');
+    thumb.className = 'card__thumb';
+    thumb.src = projImg(projectSlugs[p.t], 'card');
+    thumb.alt = ''; thumb.loading = 'lazy';
 
-    var media = document.createElement('span'); media.className = 'card__media'; media.style.display = 'block';
-    var im    = document.createElement('img');
-    im.src = projImg(projectSlugs[p.t], 'card'); im.alt = p.t + ' — ' + p.c;
-    im.loading = i < 2 ? 'eager' : 'lazy';
-    if (i < 2) im.fetchPriority = 'high';
-    media.appendChild(im);
+    var body = document.createElement('span');
+    body.className = 'card__body';
+    body.innerHTML = '<span class="card__t">' + p.t + '</span>'
+                   + '<span class="card__m">' + p.c + ' \u00B7 ' + p.y + '</span>';
 
-    var frame = document.createElement('span'); frame.className = 'card__frame';
-    for (var f = 0; f < 4; f++) frame.appendChild(document.createElement('i'));
-    media.appendChild(frame);
-
-    var num = document.createElement('span'); num.className = 'card__num';
-    num.textContent = '0' + (i + 1) + ' / 06';
-    media.appendChild(num);
-    var verb = document.createElement('span'); verb.className = 'card__verb';
-    verb.textContent = p.verb || cardVerbs[p.t] || 'View';
-    media.appendChild(verb);
-
-    var cap = document.createElement('span'); cap.className = 'card__cap'; cap.style.display = 'flex';
-    cap.innerHTML = '<span class="card__idx">0' + (i+1) + '</span>'
-                  + '<span class="card__t">' + p.t + '</span>'
-                  + '<span class="card__m">' + p.c + ' · ' + p.y + '</span>';
-
-    inner.appendChild(media); inner.appendChild(cap); card.appendChild(inner);
-
+    card.appendChild(idx); card.appendChild(thumb); card.appendChild(body);
     cardsWrap.appendChild(card);
     card.dataset.projIdx = i;
+
+    card.addEventListener('mouseenter', function(){ plateShow(i); });
+    card.addEventListener('focus',      function(){ plateShow(i); });
   });
+  plateShow(0);
 
   /* upgrade the cards + any static page imagery (studio portrait, etc.) */
   enhanceImages(document.body);
@@ -3083,19 +2972,6 @@ requestAnimationFrame(function(){
       if (proj.classList.contains('is-open')) closeProject();
     }
   });
-
-  /* --- marquee --- */
-  var mq = document.getElementById('marquee');
-  var mqWords = ['Identity','Typography','Motion','Packaging','Editorial','Caffeine','3D','Web','Rebrands','Wayfinding','Strategy'];
-  function mqSpan(){
-    var sp = document.createElement('span');
-    mqWords.forEach(function(w){
-      var b = document.createElement('b'); b.textContent = w; sp.appendChild(b);
-      var dot = document.createElement('i'); sp.appendChild(dot);
-    });
-    return sp;
-  }
-  mq.appendChild(mqSpan()); mq.appendChild(mqSpan());
 
   /* --- evergreen copyright year --- */
   var copyYearEl = document.getElementById('copyYear');
