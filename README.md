@@ -45,7 +45,7 @@ assets/                        — NOT included — see "Assets" below
 - **JS split in two:**
   - `hero-sculpture.js` — the WebGL hero piece, only loaded on the homepage.
   - `script.js` — everything else (loader, cursor, reveals, nav, lightbox,
-    magnetic buttons, design mode, contact clock). All the *project-building*
+    magnetic buttons, contact clock). All the *project-building*
     code (JSON parsing, `openProject`, hash routing, popstate handling) was
     removed since it's no longer needed; the *effects/motion/interaction*
     code was kept and, where it depended on elements that only exist on

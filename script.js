@@ -1,7 +1,7 @@
 /* =====================================================================
    Vyara Dimitrova — site interactions
    (loader, cursor, magnetic buttons, scroll reveals, nav, lightbox,
-   case-study reveals/parallax, design mode, contact clock, marquee)
+   case-study reveals/parallax, contact clock, marquee)
 
    Project copy/markup now lives directly in each page's HTML (index.html
    for the work cards, projects/*.html for each case study). This file
