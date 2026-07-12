@@ -166,10 +166,7 @@
   </noscript>
 
   <div class="grain" aria-hidden="true"></div>
-  <div class="progress" id="progress" aria-hidden="true"></div>
   <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__t"></span></div>
-  <div class="dm-grid" id="dmGrid" aria-hidden="true"></div>
-  <div class="dm-badge" id="dmBadge" aria-hidden="true"><i></i> Design mode — tap to exit</div>
 
   <!-- LOADER (not aria-hidden: it holds the focusable Skip button while visible;
        .is-gone applies display:none which removes it from the a11y tree anyway) -->
@@ -219,7 +216,7 @@
       <div class="hero__sculpture" id="heroSculpture" aria-hidden="true"></div>
 
       <span class="hero__top"><span class="dot"></span> Visual Designer · Frankfurt</span>
-      <h1 class="hero__stack" data-dm="h1 · wordmark">
+      <h1 class="hero__stack">
         <span class="hero__word hero__word--left" id="wordLeft"> Making </span>
         <span class="hero__word hero__word--right" id="wordRight"> ideas <span class="o">tangible.</span></span>
       </h1>
@@ -235,7 +232,7 @@
     <section class="sec work" id="work">
       <div class="sec__head reveal">
         <span class="eyebrow"><span class="dot"></span>Selected Work · 2021—2026</span>
-        <h2 data-dm="h2 · section">Six things made <span class="lt">with care.</span></h2>
+        <h2>Six things made <span class="lt">with care.</span></h2>
       </div>
       <div class="cards reveal" data-d="1" id="cards">
         <!-- Real, permanent markup — each card links to its own project page under /projects.
@@ -344,7 +341,7 @@
         <span class="eyebrow"><span class="dot"></span>About</span>
         <h2>Hello<span style="color:var(--orange)">.</span></h2>
       </div>
-      <div class="about__grid" data-dm="grid · 2-col">
+      <div class="about__grid">
         <div class="about__photo reveal" data-d="1">
           <img src="images/main/studio-portrait.jpg" alt="Vyara Dimitrova" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>
@@ -366,7 +363,7 @@
     <!-- CONTACT -->
     <section class="sec contact" id="contact">
       <div class="contact__glow" aria-hidden="true"></div>
-      <div class="contact__card reveal" data-dm="card · contact">
+      <div class="contact__card reveal">
         <div class="sec__head" style="margin-bottom:0">
           <span class="eyebrow"><span class="dot"></span>Let's talk</span>
           <h2 style="margin-top:24px"><span class="lt">Let's make something</span><br>that lasts.</h2>
@@ -391,7 +388,7 @@
       <div class="foot__top">
         <div class="foot__brand reveal">
           <span class="eyebrow"><span class="dot"></span>Frankfurt / Varna · Open to new work</span>
-          <h2 class="foot__big" data-dm="h2 · footer">Made in<br>two <span class="o">cities.</span></h2>
+          <h2 class="foot__big">Made in<br>two <span class="o">cities.</span></h2>
           <p class="foot__note">Visual design, built to last — wherever good people are making good things. If that sounds like you, I'd love to hear about it.</p>
         </div>
 

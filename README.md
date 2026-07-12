@@ -11,10 +11,12 @@ extracted into their own files.
 index.html                     — homepage (hero, work grid, about, contact)
 styles.css                     — all shared styles
 hero-sculpture.js              — the Three.js hero animation (homepage only)
-script.js                      — shared interactions: loader, custom cursor,
-                                  magnetic buttons, scroll reveals, nav scroll-spy,
-                                  case-study reveals/parallax, lightbox, design
-                                  mode, contact clock
+script.js                      — shared interactions: loader (homepage only),
+                                  custom cursor, magnetic buttons, scroll
+                                  reveals, nav scroll-spy, case-study
+                                  reveals/parallax, lightbox, contact clock
+sitemap.xml                    — all 7 pages; update lastmod when content changes
+robots.txt                     — points crawlers to sitemap.xml
 projects/
   lg-electronics.html
   my-market.html

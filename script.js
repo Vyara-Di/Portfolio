@@ -332,15 +332,15 @@
   var projIO = null;
 
   function onProjScroll(){
+    var vh = window.innerHeight;
     projParallax.forEach(function(img){
       var parent = img.parentElement;
       var r = parent.getBoundingClientRect();
-      var vh  = proj.clientHeight;
       var pct = (r.top + r.height / 2 - vh / 2) / vh;
       img.style.transform = 'translateY(' + (pct * -40).toFixed(1) + 'px)';
     });
   }
-  if (proj) proj.addEventListener('scroll', onProjScroll, { passive: true });
+  if (proj) window.addEventListener('scroll', onProjScroll, { passive: true });
 
   function initCaseStudyReveals(){
     if (!proj) return;
@@ -349,8 +349,17 @@
         var els = proj.querySelectorAll('.proj__reveal,.proj__img--fly,.bento--fly,.bento--blur,.bento--clip,.proj__video--clip,.proj__quote-word,.proj__step--domino,.proj__print-full,.proj__video-reel,.proj__reflection-visual,.proj__reflection-accent');
         if (projIO) projIO.disconnect();
         projIO = new IntersectionObserver(function(entries){
+          var order = 0;
           entries.forEach(function(en){
             if (en.isIntersecting){
+              /* cheap stagger: copy that arrives in the same scroll-triggered
+                 batch (label, quote, paragraph, credits…) cascades in a beat
+                 apart instead of appearing as one flat block */
+              if (en.target.classList.contains('proj__reveal')){
+                en.target.style.transitionDelay = (order * 70) + 'ms';
+                order++;
+              }
+
               en.target.classList.add('is-vis');
 
               var isContainer = en.target.classList.contains('proj__bento')
@@ -370,7 +379,7 @@
               projIO.unobserve(en.target);
             }
           });
-        }, { root: proj, threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
+        }, { root: null, threshold: 0.05, rootMargin: '0px 0px -8% 0px' });
 
         els.forEach(function(el){
           var target = el.classList.contains('bento--clip') ? el.parentElement : el;
@@ -422,12 +431,12 @@
     lbPrevFocus = null;
   }
 
-  /* focus trap: while the lightbox (or, on a case-study page, the page's own
-     dialog-styled wrapper) is open, Tab cycles inside it */
+  /* focus trap: while the lightbox is open, Tab cycles inside it. Case-study
+     pages are normal in-flow documents now (not a modal), so Tab moves
+     through them like any other page. */
   document.addEventListener('keydown', function(e){
     if (e.key !== 'Tab') return;
-    var container = (lightbox && lightbox.classList.contains('is-open')) ? lightbox
-                  : ((proj && proj.classList.contains('is-open')) ? proj : null);
+    var container = (lightbox && lightbox.classList.contains('is-open')) ? lightbox : null;
     if (!container) return;
     var f = Array.prototype.slice.call(
       container.querySelectorAll('a[href], button, [tabindex]:not([tabindex="-1"])')
@@ -474,10 +483,9 @@
   var copyYearEl = document.getElementById('copyYear');
   if (copyYearEl) copyYearEl.textContent = new Date().getFullYear();
 
-  /* --- nav active state + scroll progress --- */
+  /* --- nav active state --- */
   var nav      = document.getElementById('nav');
   var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navLinks a'));
-  var progressEl = document.getElementById('progress');
 
   var navSecOffsets = [];
   function refreshNavOffsets(){
@@ -490,8 +498,6 @@
   function onScroll(){
     var y = window.scrollY;
     if (y > 40) nav.classList.add('is-stuck'); else nav.classList.remove('is-stuck');
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-    if (progressEl) progressEl.style.transform = 'scaleX(' + (h > 0 ? (y / h) : 0).toFixed(4) + ')';
     var mid = y + window.innerHeight * 0.42;
     var cur = navSecOffsets[0] ? navSecOffsets[0].link : navLinks[0];
     navSecOffsets.forEach(function(s){ if (mid >= s.top) cur = s.link; });
@@ -565,39 +571,16 @@
       if (e.target.closest('[data-cursor="look"]')){
         cur.classList.add('is-view'); cur.classList.remove('is-hover'); ct.textContent = 'View'; return;
       }
-      if (e.target.closest('[data-cursor="mode"]')){
-        cur.classList.add('is-hint'); cur.classList.remove('is-hover'); ct.textContent = 'Design mode'; return;
-      }
       if (e.target.closest('[data-cursor],a,button')) cur.classList.add('is-hover');
     });
     document.addEventListener('mouseout', function(e){
       if (e.target.closest('[data-cursor="look"]')){ cur.classList.remove('is-view'); ct.textContent = ''; }
-      else if (e.target.closest('[data-cursor="mode"]')){ cur.classList.remove('is-hint'); ct.textContent = ''; }
       else if (e.target.closest('[data-cursor],a,button')) cur.classList.remove('is-hover');
     });
     document.documentElement.addEventListener('mouseleave', function(){
       cur.classList.remove('is-on'); on = false;
     });
   }
-
-  /* --- DESIGN MODE --- */
-  (function(){
-    function toggle(){ document.body.classList.toggle('design-mode'); }
-    var orange = document.querySelector('.hero__word .o');
-    if (orange){
-      orange.setAttribute('data-cursor','mode');
-      orange.addEventListener('click', toggle);
-    }
-    var badge = document.getElementById('dmBadge');
-    if (badge) badge.addEventListener('click', toggle);
-    var lastG = 0;
-    document.addEventListener('keydown', function(e){
-      if (e.key!=='g'&&e.key!=='G') return;
-      var t=e.target; if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable)) return;
-      var now = Date.now();
-      if (now - lastG < 450){ toggle(); lastG = 0; } else { lastG = now; }
-    });
-  })();
 
   /* --- LIVE LOCAL TIME + visitor offset (Contact) --- */
   (function(){
