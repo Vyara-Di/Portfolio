@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LG Electronics Germany — Vyara Dimitrova</title>
+<meta name="description" content="A year-round design partnership with LG Electronics Germany at HS Ad — launch motion, retail POS, trade-show environments and CRM, one system.">
+<link rel="canonical" href="https://vyara.design/project-lg-electronics.html">
+<meta property="og:title" content="LG Electronics Germany — Vyara Dimitrova">
+<meta property="og:description" content="A year-round design partnership with LG Electronics Germany at HS Ad — launch motion, retail POS, trade-show environments and CRM, one system.">
+<meta property="og:image" content="https://vyara.design/assets/images/lg-electronics-germany-01.jpg">
+<meta property="og:url" content="https://vyara.design/project-lg-electronics.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LG Electronics Germany — Vyara Dimitrova">
+<meta name="twitter:description" content="A year-round design partnership with LG Electronics Germany at HS Ad — launch motion, retail POS, trade-show environments and CRM, one system.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="site.js" defer></script>
+<style>
+  .detail-hero{
+    min-height:60vh;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:140px clamp(24px,5vw,64px) 60px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .detail-hero .ghost-num{top:8%;right:-2%;font-size:min(46vw,440px);}
+  .detail-hero .back{
+    position:relative;z-index:1;
+    font-size:11px;color:var(--copper);text-decoration:none;
+    margin-bottom:40px;
+    display:inline-flex;align-items:center;gap:6px;width:fit-content;
+    padding:9px 18px;
+    border:1px solid var(--copper);
+    border-radius:999px;
+    transition:background 0.3s ease, color 0.3s ease;
+  }
+  .detail-hero .back:hover{background:var(--copper);color:var(--paper);}
+  .detail-hero .eyebrow{position:relative;z-index:1;font-size:12px;color:var(--copper);margin-bottom:20px;}
+  .detail-hero h1{position:relative;z-index:1;font-size:clamp(48px,9vw,140px);max-width:1100px;}
+  .meta-row{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:24px;
+    padding:48px clamp(24px,5vw,64px);
+    border-bottom:1px solid var(--line);
+  }
+  .meta-row .item .label{font-size:10px;color:var(--clay);margin-bottom:8px;}
+  .meta-row .item .value{font-size:15px;}
+
+  .next-project{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:60px clamp(24px,5vw,64px);
+    border-bottom:1px solid var(--line);
+    text-decoration:none;color:var(--ink);
+  }
+  .next-project .label{font-size:11px;color:var(--copper);}
+  .next-project .name{font-family:'Satoshi',sans-serif;font-weight:500;font-size:clamp(24px,4vw,44px);transition:padding-left 0.4s cubic-bezier(.16,.84,.44,1);}
+  .next-project:hover .name{padding-left:14px;}
+
+  .hero-sub{
+    position:relative;z-index:1;
+    max-width:620px;margin-top:24px;
+    font-size:clamp(14px,1.3vw,16px);
+    color:var(--ink-soft);line-height:1.6;
+  }
+
+  /* ---------- project range : one client, many distinct formats ---------- */
+  .range-intro{max-width:640px;margin-bottom:12px;}
+
+  /* full-width standalone showcase — sits above the range, not part of the grid */
+  .range-hero{
+    margin-top:72px;
+  }
+  .range-hero .plate{aspect-ratio:20/7;border-radius:2px;}
+  .range-hero-body{
+    margin-top:22px;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;
+  }
+  .range-hero-body h4{
+    font-family:'Satoshi',sans-serif;font-weight:500;
+    font-size:clamp(20px,2.4vw,26px);letter-spacing:-0.01em;color:var(--ink);
+  }
+  .range-hero-body p{font-size:13.5px;line-height:1.6;color:var(--ink-soft);max-width:46ch;margin-top:10px;}
+  .range-hero-spec{text-align:right;flex:0 0 auto;}
+  .range-hero-spec .range-tag{margin-bottom:6px;}
+
+  /* editorial masonry — real column-flow, not a uniform grid, so cards keep their native format proportions */
+  .range-grid{
+    column-count:3;column-gap:36px;
+    margin-top:64px;
+  }
+  .range-card{
+    display:block;break-inside:avoid;-webkit-column-break-inside:avoid;
+    margin-bottom:44px;
+  }
+  .range-card .plate{border-radius:2px;cursor:zoom-in;}
+  .range-body{margin-top:18px;}
+  .range-format-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:16px;}
+  .range-tag{font-size:10px;color:var(--copper);display:block;}
+  .range-spec{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--clay);letter-spacing:0.03em;white-space:nowrap;}
+  .range-body h4{
+    font-family:'Satoshi',sans-serif;font-weight:500;
+    font-size:18px;letter-spacing:-0.01em;margin-bottom:12px;color:var(--ink);
+  }
+  .range-body p{font-size:13.5px;line-height:1.7;color:var(--ink-soft);}
+
+  @media (max-width:900px){
+    .range-grid{column-count:2;column-gap:28px;}
+  }
+  @media (max-width:600px){
+    .range-grid{column-count:1;margin-top:48px;}
+    .range-hero{margin-top:48px;}
+    .range-hero-body{flex-direction:column;align-items:flex-start;}
+    .range-hero-spec{text-align:left;}
+  }
+
+  /* ---------- the account : editorial two-column spread ---------- */
+  .account-grid{
+    display:grid;grid-template-columns:1.3fr 0.85fr;
+    gap:clamp(36px,5vw,64px);
+    align-items:start;
+    margin-top:44px;
+  }
+  .account-grid .account-text .body-text{max-width:none;}
+  .account-support{
+    aspect-ratio:5/4;margin-top:28px;
+  }
+  .account-side{position:sticky;top:170px;}
+  .account-side .scroll-frame-label{
+    font-size:10px;color:var(--clay);margin-bottom:12px;
+    display:flex;justify-content:space-between;
+  }
+  @media (max-width:900px){
+    .account-grid{grid-template-columns:1fr;}
+    .account-side{position:static;}
+  }
+
+  /* ---------- reflection : diptych + credit line ---------- */
+  .reflection-grid{
+    display:grid;grid-template-columns:1.1fr 0.9fr;
+    gap:20px;margin-top:56px;
+  }
+  .reflection-grid .plate.full{margin-top:0;aspect-ratio:4/3;}
+  @media (max-width:760px){
+    .reflection-grid{grid-template-columns:1fr;}
+  }
+  .credit-line{
+    margin-top:40px;
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    padding-top:20px;border-top:1px solid var(--line);
+  }
+  .credit-line .c-label{font-size:10px;color:var(--clay);margin-bottom:6px;}
+  .credit-line .c-value{font-size:13px;color:var(--ink-soft);}
+  @media (max-width:760px){
+    .credit-line{grid-template-columns:1fr 1fr;row-gap:20px;}
+  }
+</style>
+</head>
+<body id="top">
+
+<div class="grain"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="nav" id="nav">
+  <nav class="nav__links" id="navLinks">
+    <a href="editorial-portfolio.html#top">Vyara Dimitrova</a>
+    <a href="editorial-portfolio.html#work">Work</a>
+    <a href="editorial-portfolio.html#about">About</a>
+    <a href="editorial-portfolio.html#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="detail-hero">
+  <div class="ghost-num">01</div>
+  <div class="eyebrow mono">Client Engagement — 01</div>
+  <h1 class="display" data-kinetic>LG Electronics<br>Germany</h1>
+  <p class="hero-sub">A single ongoing client inside HS Ad's Frankfurt account, rather than one campaign — the work below spans launch motion, retail POS, trade-show environments, CRM and a handful of smaller builds, all held together by one design system.</p>
+</section>
+
+
+<div class="meta-row">
+  <div class="item reveal">
+    <div class="label mono">Role</div>
+    <div class="value">Lead Digital Designer, HS Ad</div>
+  </div>
+  <div class="item reveal">
+    <div class="label mono">Client</div>
+    <div class="value">LG Electronics Germany</div>
+  </div>
+  <div class="item reveal">
+    <div class="label mono">Engagement</div>
+    <div class="value">2024 — Present</div>
+  </div>
+</div>
+
+<div class="detail-layout">
+  <nav class="rail" id="rail">
+    <span class="rail-label mono">On this page</span>
+    <div class="rail-track">
+      <a href="#s1" data-target="s1"><span class="rail-num">01</span><span class="rail-text">Overview</span></a>
+      <a href="#s2" data-target="s2"><span class="rail-num">02</span><span class="rail-text">The Account</span></a>
+      <a href="#s3" data-target="s3"><span class="rail-num">03</span><span class="rail-text">Project Range</span></a>
+      <a href="#s4" data-target="s4"><span class="rail-num">04</span><span class="rail-text">Reflection</span></a>
+    </div>
+  </nav>
+
+  <div>
+    <section class="scene" id="s1">
+      <div class="eyebrow mono">01 — Overview</div>
+      <p class="body-text reveal">LG Electronics Germany is the one account this seat is built around at HS Ad — not a single campaign, but a full-year rhythm of work across launch motion, retail, trade shows, and CRM, all drawn from the same brand architecture and adapted for a market with its own visual habits.</p>
+      <div class="mosaic two-up">
+        <div class="plate c1 reveal"><img class="plate-media" src="assets/images/lg-electronics-germany-01.jpg" alt="LG Electronics Germany — 01" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">LG Electronics Germany — 01</span><span class="zoom-hint">+</span></div>
+        <div class="plate c1 reveal" style="filter:brightness(0.88)"><img class="plate-media" src="assets/images/lg-electronics-germany-02.jpg" alt="LG Electronics Germany — 02" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">LG Electronics Germany — 02</span><span class="zoom-hint">+</span></div>
+      </div>
+    </section>
+
+    <section class="scene" id="s2">
+      <div class="eyebrow mono">02 — The Account</div>
+      <div class="account-grid">
+        <div class="account-text">
+          <p class="body-text reveal">Working a single client at agency scale is a different discipline than moving between accounts. There's no starting over each brief — instead, the job is holding one system steady across dozens of unrelated deliverables, each with its own stakeholders, timeline, and market context, while everything still has to read as the same brand.</p>
+          <p class="body-text reveal" style="margin-top:20px;">That means the work here isn't one narrative arc. It's a portfolio inside a portfolio — a running list of what the account actually needed, month over month.</p>
+          <div class="pull-quote reveal"><p>Not one campaign — a full-year rhythm of work that all has to read as the same brand.</p></div>
+          <div class="plate c3 account-support reveal"><img class="plate-media" src="assets/images/lg-working-notes-account-field-sheet.jpg" alt="Working Notes — Account Field Sheet" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Working Notes — Account Field Sheet</span><span class="zoom-hint">+</span></div>
+        </div>
+        <div class="account-side reveal">
+          <div class="scroll-frame-label mono"><span>Full Asset Index</span><span>2024–26</span></div>
+          <div class="scroll-frame">
+            <div class="scroll-frame-track">
+              <div class="plate c2"><img class="plate-media" src="assets/images/lg-a-year-on-the-account-full-index.jpg" alt="A Year on the Account — Full Index" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">A Year on the Account — Full Index</span></div>
+            </div>
+            <div class="scroll-frame-hint mono">Scroll to view the full sheet<span class="arrow">↓</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="s3">
+      <div class="eyebrow mono">03 — Project Range</div>
+      <p class="body-text reveal range-intro">A sample of what's shipped under this one client relationship — built across the full spread of formats a modern account actually needs, from a single hero shot down to the story frame it gets cropped into.</p>
+
+      <div class="range-hero reveal">
+        <div class="plate c1" style="filter:brightness(1.02)"><img class="plate-media" src="assets/images/lg-oled-evo-launch-website-hero.jpg" alt="Home Appliances Warranty campaign — Website Hero" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">OLED Evo Launch — Website Hero</span><span class="zoom-hint">+</span></div>
+        <div class="range-hero-body">
+          <div>
+            <h4>Home Appliances Warranty campaign</h4>
+            <p>The wide masthead crop that leads the campaign, sized for the LG.com homepage takeover.</p>
+          </div>
+          <div class="range-hero-spec">
+            <span class="range-tag mono">Digital · Hero Banner</span><br>
+            <span class="range-spec">2400 × 800</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="range-grid">
+        <div class="range-card reveal">
+          <div class="plate c1 video-plate" style="aspect-ratio:9/16"><video class="plate-media" src="assets/video/lg-oled-evo-launch-story.mp4" poster="assets/images/lg-oled-evo-launch-story-poster.jpg" muted loop playsinline autoplay></video>
+            <span class="video-badge"></span>
+            <span class="video-duration mono">0:08</span>
+            <span class="plate-label mono">OLED Evo Launch — Story</span>
+          </div>
+          <div class="range-body">
+            <div class="range-format-row">
+              <span class="range-tag mono">Social · Story</span>
+              <span class="range-spec">1080 × 1920</span>
+            </div>
+            <h4>LG x COD Collab Social assets</h4>
+            <p>An 8-second vertical cutdown of the hero film, built to hold up muted and full-screen.</p>
+          </div>
+        </div>
+
+        <div class="range-card reveal">
+          <div class="plate c3" style="aspect-ratio:4/5"><img class="plate-media" src="assets/images/lg-home-appliances-feed-post.jpg" alt="Home Appliances — Feed Post" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Home Appliances — Feed Post</span><span class="zoom-hint">+</span></div>
+          <div class="range-body">
+            <div class="range-format-row">
+              <span class="range-tag mono">Social · Feed Post</span>
+              <span class="range-spec">1080 × 1350</span>
+            </div>
+            <h4>Home Appliances Carousel</h4>
+            <p>A recurring template for the kitchen and laundry lines, built so the local team can populate new posts without touching the layout.</p>
+          </div>
+        </div>
+
+        <div class="range-card reveal">
+          <div class="plate c1" style="aspect-ratio:16/9;filter:brightness(0.96)"><img class="plate-media" src="assets/images/lg-home-appliances-display-ad.jpg" alt="Home Appliances — Display Ad" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Home Appliances — Display Ad</span><span class="zoom-hint">+</span></div>
+          <div class="range-body">
+            <div class="range-format-row">
+              <span class="range-tag mono">Digital · Display Ad</span>
+              <span class="range-spec">1920 × 1080</span>
+            </div>
+            <h4>Home Appliances Display Banner</h4>
+            <p>The same carousel system resized for programmatic display placements, where the crop has to hold up at a glance.</p>
+          </div>
+        </div>
+
+        <div class="range-card reveal">
+          <div class="plate c4" style="aspect-ratio:2/1"><img class="plate-media" src="assets/images/lg-crm-system-newsletter.jpg" alt="CRM System — Newsletter" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">CRM System — Newsletter</span><span class="zoom-hint">+</span></div>
+          <div class="range-body">
+            <div class="range-format-row">
+              <span class="range-tag mono">Email · Newsletter</span>
+              <span class="range-spec">1200 × 600</span>
+            </div>
+            <h4>CRM Newsletter Header</h4>
+            <p>A modular header system for the monthly customer email, covering launches, service reminders, and seasonal offers.</p>
+          </div>
+        </div>
+
+        <div class="range-card reveal">
+          <div class="plate c2" style="aspect-ratio:3/4"><img class="plate-media" src="assets/images/lg-ifa-trade-show-screen.jpg" alt="IFA Trade Show — Screen" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">IFA Trade Show — Screen</span><span class="zoom-hint">+</span></div>
+          <div class="range-body">
+            <div class="range-format-row">
+              <span class="range-tag mono">Environmental · Digital Screen</span>
+              <span class="range-spec">1080 × 1350</span>
+            </div>
+            <h4>Seasonal Social Media content</h4>
+            <p>Portrait screen graphics for Social and Paid Media</p>
+          </div>
+        </div>
+
+        <div class="range-card reveal">
+          <div class="plate c2 video-plate" style="aspect-ratio:1/1"><video class="plate-media" src="assets/video/lg-retail-demo-loop.mp4" poster="assets/images/lg-retail-demo-loop-poster.jpg" muted loop playsinline autoplay></video>
+            <span class="video-badge"></span>
+            <span class="video-duration mono">0:12</span>
+            <span class="plate-label mono">Retail Demo Loop</span>
+          </div>
+          <div class="range-body">
+            <div class="range-format-row">
+              <span class="range-tag mono">Motion · Video Loop</span>
+              <span class="range-spec">1:1 · Silent Loop</span>
+            </div>
+            <h4>Retail Partner Demo Loop</h4>
+            <p>A silent, looping product video for in-store demo units — built to read clearly with the sound off and the shelf noise on.</p>
+          </div>
+        </div>
+
+        <div class="range-card reveal">
+          <div class="plate c1" style="filter:brightness(0.94);aspect-ratio:4/3"><img class="plate-media" src="assets/images/lg-in-store-pos.jpg" alt="In-Store POS" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">In-Store POS</span><span class="zoom-hint">+</span></div>
+          <div class="range-body">
+            <div class="range-format-row">
+              <span class="range-tag mono">Print · POS</span>
+              <span class="range-spec">A4 Landscape</span>
+            </div>
+            <h4>Print - Purchase gift card</h4>
+            <p>Shelf strips, demo-unit signage, and pricing frames redrawn to hold up at a glance from across an aisle, not just on a screen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="s4">
+      <div class="eyebrow mono">04 — Reflection</div>
+      <p class="body-text reveal">Seen together, none of this reads as a single "project" in the usual portfolio sense — and that's the point. The value of a long single-client engagement isn't one hero piece, it's the discipline of keeping a system coherent across a year of unrelated asks, so the brand never feels like it's being reinvented brief to brief.</p>
+      <div class="reflection-grid reveal">
+        <div class="plate full c1" style="filter:brightness(1.02)"><img class="plate-media" src="assets/images/lg-electronics-germany-account-overview.jpg" alt="LG Electronics Germany — Account Overview" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">LG Electronics Germany — Account Overview</span><span class="zoom-hint">+</span></div>
+        <div class="plate full c3 video-plate"><video class="plate-media" src="assets/video/lg-year-in-review-recap-reel.mp4" poster="assets/images/lg-year-in-review-recap-reel-poster.jpg" muted loop playsinline autoplay></video>
+          <span class="video-badge"></span>
+          <span class="video-duration mono">0:31</span>
+          <span class="plate-label mono">Year in Review — Recap Reel</span>
+        </div>
+      </div>
+      <div class="credit-line reveal">
+        <div>
+          <div class="c-label mono">Client</div>
+          <div class="c-value">LG Electronics Germany</div>
+        </div>
+        <div>
+          <div class="c-label mono">Agency</div>
+          <div class="c-value">HS Ad, Frankfurt</div>
+        </div>
+        <div>
+          <div class="c-label mono">Role</div>
+          <div class="c-value">Lead Digital Designer</div>
+        </div>
+        <div>
+          <div class="c-label mono">Engagement</div>
+          <div class="c-value">2024 — Present</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<a class="next-project" href="project-reverto-winery.html">
+  <span class="label mono">Next</span>
+  <span class="name">Reverto Winery</span>
+</a>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close mono" id="lightboxClose">Close ✕</button>
+  <div class="lightbox-plate" id="lightboxPlate">
+    <span class="lightbox-label mono" id="lightboxLabel"></span>
+  </div>
+</div>
+
+<footer>
+  <div class="ghost-num">02</div>
+  <div class="footer-top">
+    <div class="footer-brand reveal">
+      <div class="footer-eyebrow mono"><span class="dot"></span>Frankfurt / Varna · Open to new work</div>
+      <h3 class="display" data-kinetic>Made in<br>two cities.</h3>
+      <p class="footer-note">Visual design, built to last — wherever good people are making good things. If that sounds like you, I'd love to hear about it.</p>
+    </div>
+    <nav class="footer-cols">
+      <div class="footer-col reveal">
+        <span class="footer-col-h mono">Navigate</span>
+        <a class="magnetic" href="editorial-portfolio.html#top">Home</a>
+        <a class="magnetic" href="editorial-portfolio.html#work">Work</a>
+        <a class="magnetic" href="editorial-portfolio.html#about">About</a>
+        <a class="magnetic" href="editorial-portfolio.html#contact">Contact</a>
+      </div>
+      <div class="footer-col reveal">
+        <span class="footer-col-h mono">Elsewhere</span>
+        <a class="magnetic" href="https://www.behance.net/vyaradimitrova" target="_blank" rel="noopener">Behance</a>
+        <a class="magnetic" href="https://www.linkedin.com/in/vyara-dimitrova" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <div class="footer-col reveal">
+        <span class="footer-col-h mono">Say hello</span>
+        <a class="footer-mail magnetic" href="mailto:hello@vyara.design">hello@vyara.design</a>
+        <span class="footer-avail mono"><i></i>Usually replies within a day</span>
+      </div>
+    </nav>
+  </div>
+  <div class="footer-base">
+    <span class="footer-copy">© 2026 Vyara Dimitrova</span>
+    <span>Frankfurt am Main / Varna</span>
+    <a class="footer-totop mono" href="#top">Back to top <span class="arrow">↑</span></a>
+  </div>
+</footer>
+
+<script>
+  // Reveal-on-scroll observer
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  const railLinks = document.querySelectorAll('#rail a');
+  const scenes = document.querySelectorAll('.scene');
+
+  // Progress bar + rail active-state — one rAF-throttled scroll listener, no threshold gaps
+  const bar = document.getElementById('progressBar');
+  const probeLine = 220; // px from top of viewport — roughly clears the fixed header + rail top offset
+  let ticking = false;
+
+  const navEl = document.getElementById('nav');
+
+  function updateOnScroll(){
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+    bar.style.width = pct + '%';
+    if (navEl) navEl.classList.toggle('is-stuck', window.scrollY > 40);
+
+    let currentId = scenes[0].id;
+    scenes.forEach((s) => {
+      if (s.getBoundingClientRect().top - probeLine <= 0) currentId = s.id;
+    });
+    railLinks.forEach(a => a.classList.toggle('active', a.dataset.target === currentId));
+
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateOnScroll); ticking = true; }
+  }, { passive: true });
+  updateOnScroll();
+
+  // Lightbox — one shared overlay, event delegation on the handful of plates
+  const lightbox = document.getElementById('lightbox');
+  const lbPlate = document.getElementById('lightboxPlate');
+  const lbLabel = document.getElementById('lightboxLabel');
+  const lbClose = document.getElementById('lightboxClose');
+  const textureClasses = ['c1','c2','c3','c4'];
+
+  function openLightbox(plate){
+    const texture = textureClasses.find(c => plate.classList.contains(c));
+    lbPlate.className = 'lightbox-plate' + (texture ? ' ' + texture : '');
+    lbPlate.style.filter = plate.style.filter || '';
+    lbPlate.querySelectorAll('.plate-media').forEach(el => el.remove());
+    const media = plate.querySelector('.plate-media');
+    if (media) {
+      const clone = media.cloneNode(true);
+      if (clone.tagName === 'IMG') clone.onerror = function(){ this.style.display = 'none'; };
+      lbPlate.insertBefore(clone, lbPlate.firstChild);
+    }
+    const label = plate.querySelector('.plate-label');
+    lbLabel.textContent = label ? label.textContent : '';
+    lightbox.classList.add('open');
+    document.body.classList.add('lightbox-open');
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    document.body.classList.remove('lightbox-open');
+  }
+  document.querySelectorAll('.plate').forEach(p => {
+    p.addEventListener('click', () => openLightbox(p));
+  });
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+
+</body>
+</html>

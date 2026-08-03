@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maynooth Furniture — Vyara Dimitrova</title>
+<meta name="description" content="Web design and art direction for Maynooth Furniture, an Irish solid-wood furniture maker entering the German and Scandinavian markets.">
+<link rel="canonical" href="https://vyara.design/project-maynooth-furniture.html">
+<meta property="og:title" content="Maynooth Furniture — Vyara Dimitrova">
+<meta property="og:description" content="Web design and art direction for Maynooth Furniture, an Irish solid-wood furniture maker entering the German and Scandinavian markets.">
+<meta property="og:image" content="https://vyara.design/assets/images/maynooth-furniture-01.jpg">
+<meta property="og:url" content="https://vyara.design/project-maynooth-furniture.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Maynooth Furniture — Vyara Dimitrova">
+<meta name="twitter:description" content="Web design and art direction for Maynooth Furniture, an Irish solid-wood furniture maker entering the German and Scandinavian markets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="site.js" defer></script>
+<style>
+  .detail-hero{
+    min-height:60vh;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:140px clamp(24px,5vw,64px) 60px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .detail-hero .ghost-num{top:8%;right:-2%;font-size:min(46vw,440px);}
+  .detail-hero .back{
+    position:relative;z-index:1;
+    font-size:11px;color:var(--copper);text-decoration:none;
+    margin-bottom:40px;
+    display:inline-flex;align-items:center;gap:6px;width:fit-content;
+    padding:9px 18px;
+    border:1px solid var(--copper);
+    border-radius:999px;
+    transition:background 0.3s ease, color 0.3s ease;
+  }
+  .detail-hero .back:hover{background:var(--copper);color:var(--paper);}
+  .detail-hero .eyebrow{position:relative;z-index:1;font-size:12px;color:var(--copper);margin-bottom:20px;}
+  .detail-hero h1{position:relative;z-index:1;font-size:clamp(48px,9vw,140px);max-width:1100px;}
+  .hero-sub{
+    position:relative;z-index:1;
+    max-width:620px;margin-top:24px;
+    font-size:clamp(14px,1.3vw,16px);
+    color:var(--ink-soft);line-height:1.6;
+  }
+
+  .meta-row{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:24px;
+    padding:48px clamp(24px,5vw,64px);
+    border-bottom:1px solid var(--line);
+  }
+  .meta-row .item .label{font-size:10px;color:var(--clay);margin-bottom:8px;}
+  .meta-row .item .value{font-size:15px;}
+
+  .next-project{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:60px clamp(24px,5vw,64px);
+    border-bottom:1px solid var(--line);
+    text-decoration:none;color:var(--ink);
+  }
+  .next-project .label{font-size:11px;color:var(--copper);}
+  .next-project .name{font-family:'Satoshi',sans-serif;font-weight:500;font-size:clamp(24px,4vw,44px);transition:padding-left 0.4s cubic-bezier(.16,.84,.44,1);}
+  .next-project:hover .name{padding-left:14px;}
+
+  /* ---------- live site showcase : desktop browser chrome + mobile device frame ---------- */
+  .live-intro{max-width:640px;margin-bottom:8px;}
+  .device-row{
+    display:grid;grid-template-columns:1fr 300px;
+    gap:clamp(20px,3vw,36px);align-items:start;
+    margin-top:56px;
+  }
+  .browser-frame{
+    border-radius:6px;overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:0 30px 60px -30px rgba(21,19,15,0.35);
+    background:var(--paper-dim);
+  }
+  .browser-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:12px 16px;
+    background:var(--paper-dim);
+    border-bottom:1px solid var(--line);
+  }
+  .browser-dots{display:flex;gap:6px;flex:0 0 auto;}
+  .browser-dot{width:9px;height:9px;border-radius:50%;background:var(--line);}
+  .browser-dot:first-child{background:var(--copper);}
+  .browser-url{
+    flex:1;margin:0 4px;
+    background:rgba(21,19,15,0.06);
+    border-radius:40px;padding:6px 16px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.03em;
+    color:var(--clay);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .browser-scroll{
+    height:560px;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;scrollbar-color:var(--clay) transparent;
+  }
+  .browser-scroll::-webkit-scrollbar{width:5px;}
+  .browser-scroll::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px;}
+  .browser-scroll img{display:block;width:100%;height:auto;}
+  .frame-hint{
+    display:flex;align-items:center;gap:8px;
+    padding:11px 16px;
+    border-top:1px solid var(--line);
+    background:var(--paper-dim);
+    font-size:10px;color:var(--clay);
+  }
+  .frame-hint .arrow{color:var(--copper);display:inline-block;animation:driftDown 1.8s ease-in-out infinite;}
+
+  .device-mobile{
+    border-radius:26px;overflow:hidden;
+    border:7px solid var(--ink);
+    box-shadow:0 30px 60px -30px rgba(21,19,15,0.4);
+    background:var(--ink);
+  }
+  .device-mobile-notch{
+    height:22px;display:flex;align-items:center;justify-content:center;
+    background:var(--ink);
+  }
+  .device-mobile-notch i{width:56px;height:5px;border-radius:3px;background:rgba(245,241,232,0.25);display:block;}
+  .device-mobile-scroll{
+    height:500px;overflow-y:auto;background:var(--paper-dim);
+    scrollbar-width:none;
+  }
+  .device-mobile-scroll::-webkit-scrollbar{display:none;}
+  .device-mobile-scroll img{display:block;width:100%;height:auto;}
+
+  @media (max-width:900px){
+    .device-row{grid-template-columns:1fr;}
+    .device-mobile{max-width:300px;margin:0 auto;}
+  }
+</style>
+</head>
+<body id="top" data-accent="green">
+
+<div class="grain"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="nav" id="nav">
+  <nav class="nav__links" id="navLinks">
+    <a href="editorial-portfolio.html#top">Vyara Dimitrova</a>
+    <a href="editorial-portfolio.html#work">Work</a>
+    <a href="editorial-portfolio.html#about">About</a>
+    <a href="editorial-portfolio.html#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="detail-hero">
+  <div class="ghost-num">04</div>
+  <a class="back mono" href="editorial-portfolio.html">← Back home</a>
+  <div class="eyebrow mono">Case Study — 04</div>
+  <h1 class="display" data-kinetic>Maynooth<br>Furniture</h1>
+  <p class="hero-sub">A brand and site built the way the furniture is — visible structure first, decoration only where it's actually earned its place.</p>
+</section>
+
+
+<div class="meta-row">
+  <div class="item reveal">
+    <div class="label mono">Role</div>
+    <div class="value">Brand Identity / Web</div>
+  </div>
+  <div class="item reveal">
+    <div class="label mono">Category</div>
+    <div class="value">Identity, Web, Art Direction</div>
+  </div>
+  <div class="item reveal">
+    <div class="label mono">Year</div>
+    <div class="value">—</div>
+  </div>
+</div>
+
+<div class="detail-layout">
+  <nav class="rail" id="rail">
+    <span class="rail-label mono">On this page</span>
+    <div class="rail-track">
+      <a href="#s1" data-target="s1"><span class="rail-num">01</span><span class="rail-text">Brief</span></a>
+      <a href="#s2" data-target="s2"><span class="rail-num">02</span><span class="rail-text">Challenge</span></a>
+      <a href="#s3" data-target="s3"><span class="rail-num">03</span><span class="rail-text">Approach</span></a>
+      <a href="#s4" data-target="s4"><span class="rail-num">04</span><span class="rail-text">Live Site</span></a>
+      <a href="#s5" data-target="s5"><span class="rail-num">05</span><span class="rail-text">Outcome</span></a>
+      <a href="#s6" data-target="s6"><span class="rail-num">06</span><span class="rail-text">Reflection</span></a>
+    </div>
+  </nav>
+
+  <div>
+    <section class="scene" id="s1">
+      <div class="eyebrow mono">01 — The Brief</div>
+      <p class="lead-text reveal">Maynooth Furniture crafts solid-wood pieces in County Kildare, all to commission. Entering German and Scandinavian markets, they needed photography, editorial direction, and a digital presence that could sit beside established European craft brands.</p>
+      <div class="mosaic two-up">
+        <div class="plate c4 reveal"><img class="plate-media" src="assets/images/maynooth-furniture-01.jpg" alt="Maynooth Furniture — 01" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 01</span><span class="zoom-hint">+</span></div>
+        <div class="plate c4 reveal" style="filter:brightness(0.88)"><img class="plate-media" src="assets/images/maynooth-furniture-02.jpg" alt="Maynooth Furniture — 02" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 02</span><span class="zoom-hint">+</span></div>
+      </div>
+    </section>
+
+    <section class="scene" id="s2">
+      <div class="eyebrow mono">02 — The Challenge</div>
+      <p class="body-text reveal">Irish craft has international credibility problems — the market assumes it means folk-adjacent or heritage-nostalgic. Maynooth's work is neither. The art direction had to recontextualise the brand without erasing its origin.</p>
+      <div class="plate full c4 reveal" style="filter:brightness(1.05)"><img class="plate-media" src="assets/images/maynooth-furniture-03.jpg" alt="Maynooth Furniture — 03" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 03</span><span class="zoom-hint">+</span></div>
+    </section>
+
+    <section class="scene" id="s3">
+      <div class="eyebrow mono">03 — The Approach</div>
+      <p class="body-text reveal">We shot an eight-day campaign across three locations in Ireland and one in Berlin, pairing the furniture with contemporary interiors rather than traditional ones. No peat, no fields. The editorial language references Japanese and Scandinavian restraint while the copy foregrounds the specific materials and makers — every shot lit as a still life.</p>
+
+      <div class="plate full c4 reveal" style="filter:brightness(0.96)"><img class="plate-media" src="assets/images/maynooth-furniture-04.jpg" alt="Maynooth Furniture — 04" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 04</span><span class="zoom-hint">+</span></div>
+
+      <div class="mosaic two-up" style="margin-top:32px">
+        <div class="plate c4 reveal" style="filter:brightness(1.05)"><img class="plate-media" src="assets/images/maynooth-furniture-05.jpg" alt="Maynooth Furniture — 05" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 05</span><span class="zoom-hint">+</span></div>
+        <div class="plate c4 reveal" style="filter:brightness(0.92)"><img class="plate-media" src="assets/images/maynooth-furniture-06.jpg" alt="Maynooth Furniture — 06" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 06</span><span class="zoom-hint">+</span></div>
+      </div>
+
+      <div class="pull-quote reveal"><p>Every element earns its place structurally before it's allowed to be decorative.</p></div>
+
+      <div class="plate full c4 reveal" style="filter:brightness(1.02);margin-top:0"><img class="plate-media" src="assets/images/maynooth-furniture-07.jpg" alt="Maynooth Furniture — 07" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 07</span><span class="zoom-hint">+</span></div>
+
+      <div class="mosaic three-up" style="margin-top:32px">
+        <div class="plate c4 reveal" style="filter:brightness(1.04)"><img class="plate-media" src="assets/images/maynooth-furniture-08.jpg" alt="Maynooth Furniture — 08" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 08</span><span class="zoom-hint">+</span></div>
+        <div class="plate c4 reveal" style="filter:brightness(0.9)"><img class="plate-media" src="assets/images/maynooth-furniture-09.jpg" alt="Maynooth Furniture — 09" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 09</span><span class="zoom-hint">+</span></div>
+        <div class="plate c4 reveal" style="filter:brightness(1.08)"><img class="plate-media" src="assets/images/maynooth-furniture-10.jpg" alt="Maynooth Furniture — 10" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 10</span><span class="zoom-hint">+</span></div>
+      </div>
+    </section>
+
+    <section class="scene" id="s4">
+      <div class="eyebrow mono">04 — The Live Site</div>
+      <p class="body-text reveal live-intro">The photography needed a frame that wouldn't compete with it, so the Webflow build stays quiet on purpose — a gallery-first layout with generous whitespace, a grid you can see the logic of, and nothing decorative that isn't also load-bearing. It holds up the same way at desk size and in the hand.</p>
+      <div class="device-row reveal">
+        <div class="browser-frame">
+          <div class="browser-bar">
+            <div class="browser-dots"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+            <span class="browser-url mono">maynooth-furniture.com</span>
+          </div>
+          <div class="browser-scroll"><img src="assets/images/maynooth-furniture-site-desktop.jpg" alt="Maynooth Furniture — live site, desktop" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+          <div class="frame-hint mono">↕ scroll to explore the site<span class="arrow">↓</span></div>
+        </div>
+        <div class="device-mobile">
+          <div class="device-mobile-notch"><i></i></div>
+          <div class="device-mobile-scroll"><img src="assets/images/maynooth-furniture-site-mobile.jpg" alt="Maynooth Furniture — live site, mobile" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene" id="s5">
+      <div class="eyebrow mono">05 — The Outcome</div>
+      <p class="body-text reveal">The new site launched with a 40% increase in enquiry-to-commission conversion. Two pieces were acquired for a Berlin showroom within six weeks of launch, and the campaign was cited in three interior design publications as a reference for craft brand positioning.</p>
+      <div class="mosaic three-up">
+        <div class="plate c4 reveal" style="filter:brightness(1.04)"><img class="plate-media" src="assets/images/maynooth-furniture-11.jpg" alt="Maynooth Furniture — 11" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 11</span><span class="zoom-hint">+</span></div>
+        <div class="plate c4 reveal" style="filter:brightness(0.9)"><img class="plate-media" src="assets/images/maynooth-furniture-12.jpg" alt="Maynooth Furniture — 12" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 12</span><span class="zoom-hint">+</span></div>
+        <div class="plate c4 reveal"><img class="plate-media" src="assets/images/maynooth-furniture-13.jpg" alt="Maynooth Furniture — 13" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — 13</span><span class="zoom-hint">+</span></div>
+      </div>
+    </section>
+
+    <section class="scene" id="s6">
+      <div class="eyebrow mono">06 — Reflection</div>
+      <p class="body-text reveal">The Berlin shoot was the turning point. Seeing Maynooth pieces in a contemporary Berlin apartment answered a question the brand had never been able to answer before: does this work outside Ireland? It clearly did.</p>
+      <div class="plate full c4 reveal" style="filter:brightness(1.02)"><img class="plate-media" src="assets/images/maynooth-furniture-final.jpg" alt="Maynooth Furniture — Final" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Maynooth Furniture — Final</span><span class="zoom-hint">+</span></div>
+    </section>
+  </div>
+</div>
+
+<a class="next-project" href="project-my-market.html">
+  <span class="label mono">Next</span>
+  <span class="name">My Market</span>
+</a>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close mono" id="lightboxClose">Close ✕</button>
+  <div class="lightbox-plate" id="lightboxPlate">
+    <span class="lightbox-label mono" id="lightboxLabel"></span>
+  </div>
+</div>
+
+<footer>
+  <div class="ghost-num">05</div>
+  <div class="footer-top">
+    <div class="footer-brand reveal">
+      <div class="footer-eyebrow mono"><span class="dot"></span>Frankfurt / Varna · Open to new work</div>
+      <h3 class="display" data-kinetic>Made in<br>two cities.</h3>
+      <p class="footer-note">Visual design, built to last — wherever good people are making good things. If that sounds like you, I'd love to hear about it.</p>
+    </div>
+    <nav class="footer-cols">
+      <div class="footer-col reveal">
+        <span class="footer-col-h mono">Navigate</span>
+        <a class="magnetic" href="editorial-portfolio.html#top">Home</a>
+        <a class="magnetic" href="editorial-portfolio.html#work">Work</a>
+        <a class="magnetic" href="editorial-portfolio.html#about">About</a>
+        <a class="magnetic" href="editorial-portfolio.html#contact">Contact</a>
+      </div>
+      <div class="footer-col reveal">
+        <span class="footer-col-h mono">Elsewhere</span>
+        <a class="magnetic" href="https://www.behance.net/vyaradimitrova" target="_blank" rel="noopener">Behance</a>
+        <a class="magnetic" href="https://www.linkedin.com/in/vyara-dimitrova" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <div class="footer-col reveal">
+        <span class="footer-col-h mono">Say hello</span>
+        <a class="footer-mail magnetic" href="mailto:hello@vyara.design">hello@vyara.design</a>
+        <span class="footer-avail mono"><i></i>Usually replies within a day</span>
+      </div>
+    </nav>
+  </div>
+  <div class="footer-base">
+    <span class="footer-copy">© 2026 Vyara Dimitrova</span>
+    <span>Frankfurt am Main / Varna</span>
+    <a class="footer-totop mono" href="#top">Back to top <span class="arrow">↑</span></a>
+  </div>
+</footer>
+
+<script>
+  // Reveal-on-scroll observer
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  const railLinks = document.querySelectorAll('#rail a');
+  const scenes = document.querySelectorAll('.scene');
+
+  // Progress bar + rail active-state — one rAF-throttled scroll listener, no threshold gaps
+  const bar = document.getElementById('progressBar');
+  const probeLine = 220; // px from top of viewport — roughly clears the fixed header + rail top offset
+  let ticking = false;
+
+  const navEl = document.getElementById('nav');
+
+  function updateOnScroll(){
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+    bar.style.width = pct + '%';
+    if (navEl) navEl.classList.toggle('is-stuck', window.scrollY > 40);
+
+    let currentId = scenes[0].id;
+    scenes.forEach((s) => {
+      if (s.getBoundingClientRect().top - probeLine <= 0) currentId = s.id;
+    });
+    railLinks.forEach(a => a.classList.toggle('active', a.dataset.target === currentId));
+
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateOnScroll); ticking = true; }
+  }, { passive: true });
+  updateOnScroll();
+
+  // Lightbox — one shared overlay, event delegation on the handful of plates
+  const lightbox = document.getElementById('lightbox');
+  const lbPlate = document.getElementById('lightboxPlate');
+  const lbLabel = document.getElementById('lightboxLabel');
+  const lbClose = document.getElementById('lightboxClose');
+  const textureClasses = ['c1','c2','c3','c4'];
+
+  function openLightbox(plate){
+    const texture = textureClasses.find(c => plate.classList.contains(c));
+    lbPlate.className = 'lightbox-plate' + (texture ? ' ' + texture : '');
+    lbPlate.style.filter = plate.style.filter || '';
+    lbPlate.querySelectorAll('.plate-media').forEach(el => el.remove());
+    const media = plate.querySelector('.plate-media');
+    if (media) {
+      const clone = media.cloneNode(true);
+      if (clone.tagName === 'IMG') clone.onerror = function(){ this.style.display = 'none'; };
+      lbPlate.insertBefore(clone, lbPlate.firstChild);
+    }
+    const label = plate.querySelector('.plate-label');
+    lbLabel.textContent = label ? label.textContent : '';
+    lightbox.classList.add('open');
+    document.body.classList.add('lightbox-open');
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    document.body.classList.remove('lightbox-open');
+  }
+  document.querySelectorAll('.plate').forEach(p => {
+    p.addEventListener('click', () => openLightbox(p));
+  });
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+
+</body>
+</html>

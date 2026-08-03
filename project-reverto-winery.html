@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reverto Winery — Vyara Dimitrova</title>
+<meta name="description" content="A boutique wine label system for Reverto Winery, built to hold its own on a shelf full of tradition without borrowing tradition's usual tricks.">
+<link rel="canonical" href="https://vyara.design/project-reverto-winery.html">
+<meta property="og:title" content="Reverto Winery — Vyara Dimitrova">
+<meta property="og:description" content="A boutique wine label system for Reverto Winery, built to hold its own on a shelf full of tradition without borrowing tradition's usual tricks.">
+<meta property="og:image" content="https://vyara.design/assets/images/reverto-winery-01.jpg">
+<meta property="og:url" content="https://vyara.design/project-reverto-winery.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reverto Winery — Vyara Dimitrova">
+<meta name="twitter:description" content="A boutique wine label system for Reverto Winery, built to hold its own on a shelf full of tradition without borrowing tradition's usual tricks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="site.js" defer></script>
+<style>
+  .detail-hero{
+    min-height:60vh;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:140px clamp(24px,5vw,64px) 60px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .detail-hero .ghost-num{top:8%;right:-2%;font-size:min(46vw,440px);}
+  .detail-hero .back{
+    position:relative;z-index:1;
+    font-size:11px;color:var(--copper);text-decoration:none;
+    margin-bottom:40px;
+    display:inline-flex;align-items:center;gap:6px;width:fit-content;
+    padding:9px 18px;
+    border:1px solid var(--copper);
+    border-radius:999px;
+    transition:background 0.3s ease, color 0.3s ease;
+  }
+  .detail-hero .back:hover{background:var(--copper);color:var(--paper);}
+  .detail-hero .eyebrow{position:relative;z-index:1;font-size:12px;color:var(--copper);margin-bottom:20px;}
+  .detail-hero h1{position:relative;z-index:1;font-size:clamp(48px,9vw,140px);max-width:1100px;}
+  .hero-sub{
+    position:relative;z-index:1;
+    max-width:620px;margin-top:24px;
+    font-size:clamp(14px,1.3vw,16px);
+    color:var(--ink-soft);line-height:1.6;
+  }
+
+  .meta-row{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:24px;
+    padding:48px clamp(24px,5vw,64px);
+    border-bottom:1px solid var(--line);
+  }
+  .meta-row .item .label{font-size:10px;color:var(--clay);margin-bottom:8px;}
+  .meta-row .item .value{font-size:15px;}
+
+  .next-project{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:60px clamp(24px,5vw,64px);
+    border-bottom:1px solid var(--line);
+    text-decoration:none;color:var(--ink);
+  }
+  .next-project .label{font-size:11px;color:var(--copper);}
+  .next-project .name{font-family:'Satoshi',sans-serif;font-weight:500;font-size:clamp(24px,4vw,44px);transition:padding-left 0.4s cubic-bezier(.16,.84,.44,1);}
+  .next-project:hover .name{padding-left:14px;}
+
+  /* Section 03 — Detail: larger plates for this page only */
+  #s3 .mosaic.quad{
+    grid-template-rows:clamp(280px,34vw,460px) clamp(220px,26vw,340px);
+  }
+</style>
+</head>
+<body id="top" data-accent="wine">
+
+<div class="grain"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="nav" id="nav">
+  <nav class="nav__links" id="navLinks">
+    <a href="editorial-portfolio.html#top">Vyara Dimitrova</a>
+    <a href="editorial-portfolio.html#work">Work</a>
+    <a href="editorial-portfolio.html#about">About</a>
+    <a href="editorial-portfolio.html#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="detail-hero">
+  <div class="ghost-num">02</div>
+  <div class="eyebrow mono">Case Study — 02</div>
+  <h1 class="display" data-kinetic>Reverto<br>Winery</h1>
+  <p class="hero-sub">A boutique label system built to hold its own on a shelf full of tradition — without borrowing tradition's usual visual language.</p>
+</section>
+
+
+<div class="meta-row">
+  <div class="item reveal">
+    <div class="label mono">Role</div>
+    <div class="value">Brand Identity / Packaging</div>
+  </div>
+  <div class="item reveal">
+    <div class="label mono">Category</div>
+    <div class="value">Identity, Print, Packaging</div>
+  </div>
+  <div class="item reveal">
+    <div class="label mono">Year</div>
+    <div class="value">—</div>
+  </div>
+</div>
+
+<div class="detail-layout">
+  <nav class="rail" id="rail">
+    <span class="rail-label mono">On this page</span>
+    <div class="rail-track">
+      <a href="#s1" data-target="s1"><span class="rail-num">01</span><span class="rail-text">Overview</span></a>
+      <a href="#s2" data-target="s2"><span class="rail-num">02</span><span class="rail-text">Approach</span></a>
+      <a href="#s3" data-target="s3"><span class="rail-num">03</span><span class="rail-text">Detail</span></a>
+      <a href="#s4" data-target="s4"><span class="rail-num">04</span><span class="rail-text">Outcome</span></a>
+    </div>
+  </nav>
+
+  <div>
+    <section class="scene" id="s1">
+      <div class="eyebrow mono">01 — Overview</div>
+      <p class="lead-text reveal">Wine labels usually compete by shouting — foil, crests, cursive scripts promising heritage. Reverto asked for the opposite: one serif mark, a palette pulled from soil and glass, and labels restrained enough to read as typographic studies before they read as decoration.</p>
+      <div class="mosaic two-up">
+        <div class="plate c2 reveal"><img class="plate-media" src="assets/images/reverto-winery-01.jpg" alt="Reverto Winery — 01" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Reverto Winery — 01</span><span class="zoom-hint">+</span></div>
+        <div class="plate c2 reveal" style="filter:brightness(0.88)"><img class="plate-media" src="assets/images/reverto-winery-02.jpg" alt="Reverto Winery — 02" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Reverto Winery — 02</span><span class="zoom-hint">+</span></div>
+      </div>
+    </section>
+
+    <section class="scene" id="s2">
+      <div class="eyebrow mono">02 — Approach</div>
+      <p class="body-text reveal">The brief was blunt: hold your own on a shelf built for tradition, without borrowing tradition's usual tricks. So the system leans on proportion and paper stock instead of illustration — a fixed grid carries the varietal information, and the palette shifts just slightly by vintage, the way a wine actually would.</p>
+      <div class="pull-quote reveal"><p>Restraint isn't the absence of a decision — on this shelf, it was the boldest one available.</p></div>
+    </section>
+
+    <section class="scene" id="s3">
+      <div class="eyebrow mono">03 — Detail</div>
+      <div class="mosaic quad">
+        <div class="plate c2 reveal" style="filter:brightness(1.05)"><img class="plate-media" src="assets/images/reverto-winery-03.jpg" alt="Reverto Winery — 03" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Reverto Winery — 03</span><span class="zoom-hint">+</span></div>
+        <div class="plate c2 reveal" style="filter:brightness(0.92) contrast(1.05)"><img class="plate-media" src="assets/images/reverto-winery-04.jpg" alt="Reverto Winery — 04" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Reverto Winery — 04</span><span class="zoom-hint">+</span></div>
+        <div class="plate c2 reveal" style="filter:brightness(1.1)"><img class="plate-media" src="assets/images/reverto-winery-05.jpg" alt="Reverto Winery — 05" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Reverto Winery — 05</span><span class="zoom-hint">+</span></div>
+        <div class="plate c2 reveal" style="filter:brightness(0.95)"><img class="plate-media" src="assets/images/reverto-winery-06.jpg" alt="Reverto Winery — 06" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Reverto Winery — 06</span><span class="zoom-hint">+</span></div>
+      </div>
+    </section>
+
+    <section class="scene" id="s4">
+      <div class="eyebrow mono">04 — Outcome</div>
+      <p class="body-text reveal">On a shelf where every other label is trying to look old, Reverto's looks considered instead — and that turned out to be the thing that actually stood out.</p>
+      <div class="plate full c2 reveal" style="filter:brightness(1.02)"><img class="plate-media" src="assets/images/reverto-winery-final.jpg" alt="Reverto Winery — Final" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">Reverto Winery — Final</span><span class="zoom-hint">+</span></div>
+    </section>
+  </div>
+</div>
+
+<a class="next-project" href="project-crea-bakery.html">
+  <span class="label mono">Next</span>
+  <span class="name">Crea Bakery</span>
+</a>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close mono" id="lightboxClose">Close ✕</button>
+  <div class="lightbox-plate" id="lightboxPlate">
+    <span class="lightbox-label mono" id="lightboxLabel"></span>
+  </div>
+</div>
+
+<footer>
+  <div class="ghost-num">03</div>
+  <div class="footer-top">
+    <div class="footer-brand reveal">
+      <div class="footer-eyebrow mono"><span class="dot"></span>Frankfurt / Varna · Open to new work</div>
+      <h3 class="display" data-kinetic>Made in<br>two cities.</h3>
+      <p class="footer-note">Visual design, built to last — wherever good people are making good things. If that sounds like you, I'd love to hear about it.</p>
+    </div>
+    <nav class="footer-cols">
+      <div class="footer-col reveal">
+        <span class="footer-col-h mono">Navigate</span>
+        <a class="magnetic" href="editorial-portfolio.html#top">Home</a>
+        <a class="magnetic" href="editorial-portfolio.html#work">Work</a>
+        <a class="magnetic" href="editorial-portfolio.html#about">About</a>
+        <a class="magnetic" href="editorial-portfolio.html#contact">Contact</a>
+      </div>
+      <div class="footer-col reveal">
+        <span class="footer-col-h mono">Elsewhere</span>
+        <a class="magnetic" href="https://www.behance.net/vyaradimitrova" target="_blank" rel="noopener">Behance</a>
+        <a class="magnetic" href="https://www.linkedin.com/in/vyara-dimitrova" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <div class="footer-col reveal">
+        <span class="footer-col-h mono">Say hello</span>
+        <a class="footer-mail magnetic" href="mailto:hello@vyara.design">hello@vyara.design</a>
+        <span class="footer-avail mono"><i></i>Usually replies within a day</span>
+      </div>
+    </nav>
+  </div>
+  <div class="footer-base">
+    <span class="footer-copy">© 2026 Vyara Dimitrova</span>
+    <span>Frankfurt am Main / Varna</span>
+    <a class="footer-totop mono" href="#top">Back to top <span class="arrow">↑</span></a>
+  </div>
+</footer>
+
+<script>
+  // Reveal-on-scroll observer
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  const railLinks = document.querySelectorAll('#rail a');
+  const scenes = document.querySelectorAll('.scene');
+
+  // Progress bar + rail active-state — one rAF-throttled scroll listener, no threshold gaps
+  const bar = document.getElementById('progressBar');
+  const probeLine = 220; // px from top of viewport — roughly clears the fixed header + rail top offset
+  let ticking = false;
+
+  const navEl = document.getElementById('nav');
+
+  function updateOnScroll(){
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+    bar.style.width = pct + '%';
+    if (navEl) navEl.classList.toggle('is-stuck', window.scrollY > 40);
+
+    let currentId = scenes[0].id;
+    scenes.forEach((s) => {
+      if (s.getBoundingClientRect().top - probeLine <= 0) currentId = s.id;
+    });
+    railLinks.forEach(a => a.classList.toggle('active', a.dataset.target === currentId));
+
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateOnScroll); ticking = true; }
+  }, { passive: true });
+  updateOnScroll();
+
+  // Lightbox — one shared overlay, event delegation on the handful of plates
+  const lightbox = document.getElementById('lightbox');
+  const lbPlate = document.getElementById('lightboxPlate');
+  const lbLabel = document.getElementById('lightboxLabel');
+  const lbClose = document.getElementById('lightboxClose');
+  const textureClasses = ['c1','c2','c3','c4'];
+
+  function openLightbox(plate){
+    const texture = textureClasses.find(c => plate.classList.contains(c));
+    lbPlate.className = 'lightbox-plate' + (texture ? ' ' + texture : '');
+    lbPlate.style.filter = plate.style.filter || '';
+    lbPlate.querySelectorAll('.plate-media').forEach(el => el.remove());
+    const media = plate.querySelector('.plate-media');
+    if (media) {
+      const clone = media.cloneNode(true);
+      if (clone.tagName === 'IMG') clone.onerror = function(){ this.style.display = 'none'; };
+      lbPlate.insertBefore(clone, lbPlate.firstChild);
+    }
+    const label = plate.querySelector('.plate-label');
+    lbLabel.textContent = label ? label.textContent : '';
+    lightbox.classList.add('open');
+    document.body.classList.add('lightbox-open');
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    document.body.classList.remove('lightbox-open');
+  }
+  document.querySelectorAll('.plate').forEach(p => {
+    p.addEventListener('click', () => openLightbox(p));
+  });
+  lbClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+
+</body>
+</html>
