@@ -76,7 +76,7 @@
   /* 5 — tab-away title swap */
   const originalTitle = document.title;
   document.addEventListener('visibilitychange', () => {
-    document.title = document.hidden ? '— proof pending —' : originalTitle;
+    document.title = document.hidden ? 'Vyara - Designer' : originalTitle;
   });
 
   /* 6 — fast-scroll remark, only on pages that actually have plates */
