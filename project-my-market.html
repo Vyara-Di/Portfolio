@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Market — Vyara Dimitrova</title>
 <meta name="description" content="Bringing consistency, visibility and personality to My Market, a fast-moving retail brand, across catalogs, packaging, outdoor and in-store materials.">
@@ -19,146 +20,26 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<script src="site.js" defer></script>
-<style>
-  .detail-hero{
-    min-height:60vh;
-    display:flex;flex-direction:column;justify-content:flex-end;
-    padding:140px clamp(24px,5vw,64px) 60px;
-    position:relative;
-    overflow:hidden;
-    border-bottom:1px solid var(--line);
-  }
-  .detail-hero .ghost-num{top:8%;right:-2%;font-size:min(46vw,440px);}
-  .detail-hero .back{
-    position:relative;z-index:1;
-    font-size:11px;color:var(--copper);text-decoration:none;
-    margin-bottom:40px;
-    display:inline-flex;align-items:center;gap:6px;width:fit-content;
-    padding:9px 18px;
-    border:1px solid var(--copper);
-    border-radius:999px;
-    transition:background 0.3s ease, color 0.3s ease;
-  }
-  .detail-hero .back:hover{background:var(--copper);color:var(--paper);}
-  .detail-hero .eyebrow{position:relative;z-index:1;font-size:12px;color:var(--copper);margin-bottom:20px;}
-  .detail-hero h1{position:relative;z-index:1;font-size:clamp(48px,9vw,140px);max-width:1100px;}
-  .hero-sub{
-    position:relative;z-index:1;
-    max-width:620px;margin-top:24px;
-    font-size:clamp(14px,1.3vw,16px);
-    color:var(--ink-soft);line-height:1.6;
-  }
-
-  .meta-row{
-    display:grid;grid-template-columns:repeat(3,1fr);
-    gap:24px;
-    padding:48px clamp(24px,5vw,64px);
-    border-bottom:1px solid var(--line);
-  }
-  .meta-row .item .label{font-size:10px;color:var(--clay);margin-bottom:8px;}
-  .meta-row .item .value{font-size:15px;}
-
-  .project-pager{
-    display:grid;grid-template-columns:1fr 1fr;
-    border-bottom:1px solid var(--line);
-  }
-  .project-pager a{
-    display:flex;flex-direction:column;gap:12px;
-    padding:60px clamp(24px,5vw,64px);
-    text-decoration:none;color:var(--ink);
-    transition:background 0.3s ease;
-  }
-  .project-pager a:hover{background:rgba(127,127,127,0.06);}
-  .project-pager .prev{border-right:1px solid var(--line);align-items:flex-start;text-align:left;}
-  .project-pager .next{align-items:flex-end;text-align:right;}
-  .project-pager .label{font-size:11px;color:var(--copper);}
-  .project-pager .name{font-family:'Satoshi',sans-serif;font-weight:500;font-size:clamp(20px,3.6vw,44px);line-height:1.1;transition:transform 0.4s cubic-bezier(.16,.84,.44,1);}
-  .project-pager .prev:hover .name{transform:translateX(-14px);}
-  .project-pager .next:hover .name{transform:translateX(14px);}
-  @media (max-width:560px){
-    .project-pager a{padding:40px 20px;}
-    .project-pager .prev:hover .name,.project-pager .next:hover .name{transform:none;}
-  }
-
-  /* =====================================================================
-     SIDE RAIL — "Back home" orb + organic thread tracker
-     Scoped to #rail so nothing leaks into the rest of the page.
-     ===================================================================== */
-
-  /* ---------- Back home · orb ---------- */
-  #rail .rail-home-wrap{margin:0 0 34px;}
-  #rail .home-orb{
-    position:relative;display:inline-flex;align-items:center;justify-content:center;
-    width:84px;height:84px;margin:0;padding:0;border:0;background:none;
-    text-decoration:none;color:var(--ink-soft);
-  }
-  #rail .home-orb .ring{
-    position:absolute;inset:0;width:100%;height:100%;
-    animation:xpSpin 14s linear infinite;
-    animation-play-state:paused;            /* still until hovered / focused */
-  }
-  #rail .home-orb:hover .ring,
-  #rail .home-orb:focus-visible .ring{animation-play-state:running;}
-  #rail .home-orb .core{
-    position:relative;width:56px;height:56px;border-radius:50%;
-    background:var(--copper);color:var(--paper);
-    display:grid;place-items:center;
-    transition:transform .6s cubic-bezier(.34,1.56,.64,1);
-  }
-  #rail .home-orb .core svg{width:28px;height:28px;display:block;transition:transform .45s cubic-bezier(.16,.84,.44,1);}
-  #rail .home-orb:hover .core{transform:scale(1.07);}
-  #rail .home-orb:hover .core svg{transform:translateX(-3px);}
-  @keyframes xpSpin{to{transform:rotate(360deg)}}
-
-  /* ---------- Page tracker · thread ---------- */
-  #rail .flow{position:relative;width:100%;}
-  #rail #flows:not(.is-ready) .fl-item{position:static;transform:none;padding:6px 0;}   /* no-JS fallback: plain list */
-  #rail .fl-item{
-    position:absolute;left:0;right:0;display:block;margin:0;padding:0 0 0 56px;border:0;background:none;
-    transform:translateY(-50%);text-decoration:none;color:var(--ink);
-  }
-  #rail .fl-in{display:flex;align-items:baseline;gap:10px;will-change:transform,opacity;}
-  #rail .fl-n{font-size:10px;color:var(--clay);transition:color .3s ease;}
-  #rail .fl-in.on .fl-n{color:var(--copper);}
-  #rail .fl-t{font-size:13px;line-height:1.2;}
-
-  #rail .fl1-svg{position:absolute;left:0;top:0;overflow:visible;}
-  #rail .fl1-svg .base{fill:none;stroke:var(--line);stroke-width:1.5;stroke-linecap:round;}
-  #rail .fl1-svg .prog{fill:none;stroke:var(--copper);stroke-width:1.5;stroke-linecap:round;}
-  #rail .fl1-svg .node{fill:var(--paper);stroke:var(--line);stroke-width:1.5;transition:fill .35s ease,stroke .35s ease;}
-  #rail .fl1-svg .node.on{fill:var(--copper);stroke:var(--copper);}
-  #rail .fl1-goo{position:absolute;left:0;top:0;width:40px;filter:url(#xpGoo);pointer-events:none;}
-  #rail .fl1-goo i{position:absolute;left:0;top:0;border-radius:50%;background:var(--copper);will-change:transform;}
-
-  @media (prefers-reduced-motion:reduce){
-    #rail .home-orb .ring{animation:none;}
-  }
-</style>
+<link rel="stylesheet" href="style.css?v=20261019">
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" integrity="sha384-B2WBjDzEjJpYvhmi2UyEn7rektqkf5suS6sNoyyrf0EBAwBHdkiXxIlU0V5Ru2ed" crossorigin="anonymous"></script>
+<script defer src="site.js?v=20261019"></script>
 </head>
-<body id="top" data-accent="red">
+<body id="top" data-accent="red" class="project" data-page="my-market">
+<div class="pt" aria-hidden="true"></div>
 
 <div class="grain"></div>
 <div class="progress-bar" id="progressBar"></div>
 
-<header class="nav" id="nav">
-  <nav class="nav__links" id="navLinks">
-    <a href="index.html#top">Vyara Dimitrova</a>
-    <a href="index.html#work">Work</a>
-    <a href="index.html#about">About</a>
-    <a href="index.html#contact">Contact</a>
-  </nav>
-</header>
+<header class="nav mono"><a href="index.html#top" data-cursor>Vyara</a><nav aria-label="Primary"><a href="index.html#work">Work</a><a href="index.html#about">About</a><a href="index.html#contact">Contact</a></nav></header>
+<a class="home-fab" href="index.html#work" aria-label="Back to all work"><svg class="ring" viewBox="0 0 56 56" aria-hidden="true"><circle class="bg" cx="28" cy="28" r="26"/><circle class="pg" cx="28" cy="28" r="26"/></svg><span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4"/><path d="M10 6l-6 6 6 6"/></svg></span><span class="lbl mono">Back to work</span></a>
 
 <section class="detail-hero">
-  <div class="ghost-num">05</div>
-  <div class="eyebrow mono">Case Study — 05</div>
+  <div class="ghost-num">02</div>
+  <div class="eyebrow mono">Case Study — 02</div>
   <h1 class="display" data-kinetic>My<br>Market</h1>
   <p class="hero-sub">Over 2.5 years, shaping a fast-moving retail brand's visual presence across catalogs, packaging, outdoor advertising, stationery, and in-store materials — one cohesive experience across every touchpoint.</p>
-</section>
-
-
 <div class="meta-row">
   <div class="item reveal">
     <div class="label mono">Role</div>
@@ -173,48 +54,40 @@
     <div class="value">2021</div>
   </div>
 </div>
+</section>
 
-<div class="detail-layout">
-  <nav class="rail" id="rail">
-    <div class="rail-home-wrap">
-      <a class="home-orb" href="index.html#top" aria-label="Back home">
-        <svg class="ring" viewBox="0 0 84 84" aria-hidden="true">
-          <defs><path id="xpRing" d="M42,42 m-33,0 a33,33 0 1,1 66,0 a33,33 0 1,1 -66,0"/></defs>
-          <text font-size="5.6" fill="currentColor" font-family="'IBM Plex Mono',monospace" textLength="207" lengthAdjust="spacing"><textPath href="#xpRing" textLength="207" lengthAdjust="spacing">BACK HOME • BACK HOME • BACK HOME • BACK HOME • </textPath></text>
-        </svg>
-        <span class="core">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H4"/><path d="M10 6l-6 6 6 6"/></svg>
-        </span>
-      </a>
-    </div>
-    <span class="rail-label mono">On this page</span>
-    <div id="flows">
+
+<nav class="rail" id="rail" aria-label="On this page">
+<div id="flows">
       <a class="fl-item" href="#s1"><span class="fl-in"><span class="fl-n mono">01</span><span class="fl-t">Brief</span></span></a>
       <a class="fl-item" href="#s2"><span class="fl-in"><span class="fl-n mono">02</span><span class="fl-t">Challenge</span></span></a>
       <a class="fl-item" href="#s3"><span class="fl-in"><span class="fl-n mono">03</span><span class="fl-t">Approach</span></span></a>
       <a class="fl-item" href="#s4"><span class="fl-in"><span class="fl-n mono">04</span><span class="fl-t">Outcome</span></span></a>
       <a class="fl-item" href="#s5"><span class="fl-in"><span class="fl-n mono">05</span><span class="fl-t">Reflection</span></span></a>
     </div>
-  </nav>
+</nav>
+
+<div class="detail-layout">
+  
 
   <div>
     <section class="scene" id="s1">
       <div class="eyebrow mono">01 — The Brief</div>
       <p class="lead-text reveal">Over 2.5 years, I helped shape My Market's visual presence across catalogs, packaging, outdoor advertising, stationery, and in-store materials. The goal was simple: create a more cohesive brand experience across every customer touchpoint.</p>
       <div class="mosaic two-up">
-        <div class="plate c5 reveal"><img class="plate-media" src="assets/images/my-market-01.jpg" alt="My Market — 01" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 01</span><span class="zoom-hint">+</span></div>
-        <div class="plate c5 reveal" style="filter:brightness(0.88)"><img class="plate-media" src="assets/images/my-market-02.jpg" alt="My Market — 02" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 02</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal"><img class="plate-media" src="assets/images/my-market-01.jpg" alt="My Market — 01" loading="lazy"><span class="plate-label mono">My Market — 01</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(0.88)"><img class="plate-media" src="assets/images/my-market-02.jpg" alt="My Market — 02" loading="lazy"><span class="plate-label mono">My Market — 02</span><span class="zoom-hint">+</span></div>
       </div>
     </section>
 
     <section class="scene" id="s2">
       <div class="eyebrow mono">02 — The Challenge</div>
       <p class="body-text reveal">Retail never stands still. With bi-weekly campaigns, seasonal promotions, and hundreds of assets moving through production, the challenge was keeping everything fresh while maintaining a consistent brand identity.</p>
-      <div class="plate full c5 reveal" style="filter:brightness(1.05)"><img class="plate-media" src="assets/images/my-market-03.jpg" alt="My Market — 03" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 03</span><span class="zoom-hint">+</span></div>
+      <div class="plate full c5 reveal" style="filter:brightness(1.05)"><img class="plate-media" src="assets/images/my-market-03.jpg" alt="My Market — 03" loading="lazy"><span class="plate-label mono">My Market — 03</span><span class="zoom-hint">+</span></div>
       <div class="mosaic three-up">
-        <div class="plate c5 reveal" style="filter:brightness(0.92)"><img class="plate-media" src="assets/images/my-market-04.jpg" alt="My Market — 04" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 04</span><span class="zoom-hint">+</span></div>
-        <div class="plate c5 reveal" style="filter:brightness(1.08)"><img class="plate-media" src="assets/images/my-market-05.jpg" alt="My Market — 05" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 05</span><span class="zoom-hint">+</span></div>
-        <div class="plate c5 reveal" style="filter:brightness(0.96)"><img class="plate-media" src="assets/images/my-market-06.jpg" alt="My Market — 06" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 06</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(0.92)"><img class="plate-media" src="assets/images/my-market-04.jpg" alt="My Market — 04" loading="lazy"><span class="plate-label mono">My Market — 04</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(1.08)"><img class="plate-media" src="assets/images/my-market-05.jpg" alt="My Market — 05" loading="lazy"><span class="plate-label mono">My Market — 05</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(0.96)"><img class="plate-media" src="assets/images/my-market-06.jpg" alt="My Market — 06" loading="lazy"><span class="plate-label mono">My Market — 06</span><span class="zoom-hint">+</span></div>
       </div>
     </section>
 
@@ -222,10 +95,10 @@
       <div class="eyebrow mono">03 — The Approach</div>
       <p class="body-text reveal">I developed and delivered a wide range of print and brand assets — from 16–52 page catalogs and product packaging to billboards, fleet graphics, loyalty cards, and promotional materials. Each piece was designed within the brand framework while introducing campaign-specific concepts, themes, and storytelling that kept the communication engaging and relevant.</p>
       <div class="mosaic quad">
-        <div class="plate c5 reveal" style="filter:brightness(1.02)"><img class="plate-media" src="assets/images/my-market-07.jpg" alt="My Market — 07" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 07</span><span class="zoom-hint">+</span></div>
-        <div class="plate c5 reveal" style="filter:brightness(0.9)"><img class="plate-media" src="assets/images/my-market-08.jpg" alt="My Market — 08" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 08</span><span class="zoom-hint">+</span></div>
-        <div class="plate c5 reveal" style="filter:brightness(1.1)"><img class="plate-media" src="assets/images/my-market-09.jpg" alt="My Market — 09" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 09</span><span class="zoom-hint">+</span></div>
-        <div class="plate c5 reveal" style="filter:brightness(0.95)"><img class="plate-media" src="assets/images/my-market-10.jpg" alt="My Market — 10" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 10</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(1.02)"><img class="plate-media" src="assets/images/my-market-07.jpg" alt="My Market — 07" loading="lazy"><span class="plate-label mono">My Market — 07</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(0.9)"><img class="plate-media" src="assets/images/my-market-08.jpg" alt="My Market — 08" loading="lazy"><span class="plate-label mono">My Market — 08</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(1.1)"><img class="plate-media" src="assets/images/my-market-09.jpg" alt="My Market — 09" loading="lazy"><span class="plate-label mono">My Market — 09</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(0.95)"><img class="plate-media" src="assets/images/my-market-10.jpg" alt="My Market — 10" loading="lazy"><span class="plate-label mono">My Market — 10</span><span class="zoom-hint">+</span></div>
       </div>
       <div class="pull-quote reveal"><p>A neighbourhood brand should feel like it <span class="o">grew</span> there.</p></div>
     </section>
@@ -234,24 +107,24 @@
       <div class="eyebrow mono">04 — The Outcome</div>
       <p class="body-text reveal">A stronger and more unified brand presence across print, retail, outdoor, and digital channels — supporting ongoing promotional activity at scale.</p>
       <div class="mosaic three-up">
-        <div class="plate c5 reveal" style="filter:brightness(1.04)"><img class="plate-media" src="assets/images/my-market-11.jpg" alt="My Market — 11" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 11</span><span class="zoom-hint">+</span></div>
-        <div class="plate c5 reveal" style="filter:brightness(0.9)"><img class="plate-media" src="assets/images/my-market-12.jpg" alt="My Market — 12" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 12</span><span class="zoom-hint">+</span></div>
-        <div class="plate c5 reveal"><img class="plate-media" src="assets/images/my-market-13.jpg" alt="My Market — 13" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — 13</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(1.04)"><img class="plate-media" src="assets/images/my-market-11.jpg" alt="My Market — 11" loading="lazy"><span class="plate-label mono">My Market — 11</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal" style="filter:brightness(0.9)"><img class="plate-media" src="assets/images/my-market-12.jpg" alt="My Market — 12" loading="lazy"><span class="plate-label mono">My Market — 12</span><span class="zoom-hint">+</span></div>
+        <div class="plate c5 reveal"><img class="plate-media" src="assets/images/my-market-13.jpg" alt="My Market — 13" loading="lazy"><span class="plate-label mono">My Market — 13</span><span class="zoom-hint">+</span></div>
       </div>
     </section>
 
     <section class="scene" id="s5">
       <div class="eyebrow mono">05 — Reflection</div>
       <p class="body-text reveal">This project reinforced the value of systems thinking. Good retail design isn't about a single standout asset — it's about making hundreds of touchpoints feel like they're part of the same conversation.</p>
-      <div class="plate full c5 reveal" style="filter:brightness(1.02)"><img class="plate-media" src="assets/images/my-market-final.jpg" alt="My Market — Final" loading="lazy" onerror="this.style.display='none'"><span class="plate-label mono">My Market — Final</span><span class="zoom-hint">+</span></div>
+      <div class="plate full c5 reveal" style="filter:brightness(1.02)"><img class="plate-media" src="assets/images/my-market-final.jpg" alt="My Market — Final" loading="lazy"><span class="plate-label mono">My Market — Final</span><span class="zoom-hint">+</span></div>
     </section>
   </div>
 </div>
 
 <nav class="project-pager" aria-label="Project navigation">
-  <a class="prev" href="project-maynooth-furniture.html" rel="prev">
+  <a class="prev" href="project-lg-electronics.html" rel="prev">
     <span class="label mono">← Previous</span>
-    <span class="name">Maynooth Furniture</span>
+    <span class="name">LG Electronics Germany</span>
   </a>
   <a class="next" href="project-smart-point.html" rel="next">
     <span class="label mono">Next →</span>
@@ -266,82 +139,6 @@
   </div>
 </div>
 
-<script>
-  // Reveal-on-scroll observer
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  revealEls.forEach(el => io.observe(el));
-
-  const railLinks = document.querySelectorAll('#rail a');
-  const scenes = document.querySelectorAll('.scene');
-
-  // Progress bar + rail active-state — one rAF-throttled scroll listener, no threshold gaps
-  const bar = document.getElementById('progressBar');
-  const probeLine = 220; // px from top of viewport — roughly clears the fixed header + rail top offset
-  let ticking = false;
-
-  const navEl = document.getElementById('nav');
-
-  function updateOnScroll(){
-    const h = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
-    bar.style.width = pct + '%';
-    if (navEl) navEl.classList.toggle('is-stuck', window.scrollY > 40);
-
-    let currentId = scenes[0].id;
-    scenes.forEach((s) => {
-      if (s.getBoundingClientRect().top - probeLine <= 0) currentId = s.id;
-    });
-    railLinks.forEach(a => a.classList.toggle('active', a.dataset.target === currentId));
-
-    ticking = false;
-  }
-  window.addEventListener('scroll', () => {
-    if (!ticking) { requestAnimationFrame(updateOnScroll); ticking = true; }
-  }, { passive: true });
-  updateOnScroll();
-
-  // Lightbox — one shared overlay, event delegation on the handful of plates
-  const lightbox = document.getElementById('lightbox');
-  const lbPlate = document.getElementById('lightboxPlate');
-  const lbLabel = document.getElementById('lightboxLabel');
-  const lbClose = document.getElementById('lightboxClose');
-  const textureClasses = ['c1','c2','c3','c4','c5','c6'];
-
-  function openLightbox(plate){
-    const texture = textureClasses.find(c => plate.classList.contains(c));
-    lbPlate.className = 'lightbox-plate' + (texture ? ' ' + texture : '');
-    lbPlate.style.filter = plate.style.filter || '';
-    lbPlate.querySelectorAll('.plate-media').forEach(el => el.remove());
-    const media = plate.querySelector('.plate-media');
-    if (media) {
-      const clone = media.cloneNode(true);
-      if (clone.tagName === 'IMG') clone.onerror = function(){ this.style.display = 'none'; };
-      lbPlate.insertBefore(clone, lbPlate.firstChild);
-    }
-    const label = plate.querySelector('.plate-label');
-    lbLabel.textContent = label ? label.textContent : '';
-    lightbox.classList.add('open');
-    document.body.classList.add('lightbox-open');
-  }
-  function closeLightbox(){
-    lightbox.classList.remove('open');
-    document.body.classList.remove('lightbox-open');
-  }
-  document.querySelectorAll('.plate').forEach(p => {
-    p.addEventListener('click', () => openLightbox(p));
-  });
-  lbClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
-</script>
 
 
 <!-- goo filter used by the thread's droplet -->
@@ -354,145 +151,6 @@
   </defs>
 </svg>
 
-<script>
-/* Organic thread tracker
-   - progress p runs 0 → n-1 continuously through the sections
-   - the droplet is driven by an under-damped spring (it overshoots a touch and settles),
-     the trailing blob follows it on a softer spring, the goo filter joins them
-   - the line itself breathes: node positions and curve handles sway slowly, even when idle
-   - droplet squashes/stretches with scroll speed                                             */
-(function(){
-  var rail   = document.getElementById('rail');
-  var host   = document.getElementById('flows');
-  var anchors = [].slice.call(host.querySelectorAll('a.fl-item')).filter(function(a){ return document.querySelector(a.getAttribute('href')); });
-  var scenes  = anchors.map(function(a){ return document.querySelector(a.getAttribute('href')); });
-  var n = anchors.length; if (n < 2) return;
-
-  var step = n > 5 ? 64 : n > 4 ? 72 : 80, pad = 22, H = (n-1)*step + pad*2;   // long track, a little tighter when there are many sections
-  var CX = 20, A = 12;                                // centre line + arc width
-  var amps = [-1, .9, -1.08, .86, -.96, 1.04, -1, .9]; // each arc a little different
-  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var NS = 'http://www.w3.org/2000/svg';
-  var y = function(i){ return pad + i*step; };
-  var clamp = function(v,a,b){ return Math.min(b, Math.max(a, v)); };
-  var lerp = function(a,b,u){ return a + (b-a)*u; };
-
-  function mk(tag, cls, parent){ var e = document.createElement(tag); if (cls) e.className = cls; if (parent) parent.appendChild(e); return e; }
-  function mkS(tag, attrs, parent){ var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
-
-  var f = mk('div','flow',host); f.style.height = H+'px';
-  var svg  = mkS('svg',{'class':'fl1-svg',width:40,height:H},f);
-  var base = mkS('path',{'class':'base'},svg);
-  var prog = mkS('path',{'class':'prog'},svg);
-  var nodeEls = anchors.map(function(){ return mkS('circle',{'class':'node',r:3.5},svg); });
-  var goo = mk('div','fl1-goo',f); goo.style.height = H+'px';
-  var bLead = mk('i','',goo), bTrail = mk('i','',goo);
-  bLead.style.width = bLead.style.height = '13px';
-  bTrail.style.width = bTrail.style.height = '9px';
-  anchors.forEach(function(a,i){ a.style.top = y(i)+'px'; f.appendChild(a); });
-  host.classList.add('is-ready');
-  var labs = anchors;
-  var labIn = anchors.map(function(a){ return a.firstElementChild; });
-
-  /* ---- geometry (cubic segments between nodes, recalculated each frame so the line can sway) ---- */
-  var nodes = [], segs = [];
-  function geometry(t){
-    var i;
-    nodes = [];
-    for (i=0;i<n;i++) nodes.push({ x: CX + amps[i%amps.length]*A + Math.sin(t*0.0009 + i*1.7)*2.6, y: y(i) });
-    segs = [];
-    for (i=1;i<n;i++){
-      var a = nodes[i-1], b = nodes[i];
-      var hm = step*(0.5 + 0.09*Math.sin(t*0.0007 + i*2.1));
-      var s1 = Math.sin(t*0.0011 + i*1.3)*4, s2 = Math.sin(t*0.0010 + i*2.2)*4;
-      segs.push([a.x,a.y, a.x+s1,a.y+hm, b.x+s2,b.y-hm, b.x,b.y]);
-    }
-  }
-  function bez(s,u){
-    var p = segs[s], v = 1-u, a = v*v*v, b = 3*v*v*u, c = 3*v*u*u, d = u*u*u;
-    return { x:a*p[0]+b*p[2]+c*p[4]+d*p[6], y:a*p[1]+b*p[3]+c*p[5]+d*p[7] };
-  }
-  function firstHalf(s,u){            // de Casteljau split → control points of the part up to u
-    var p = segs[s];
-    var x01=lerp(p[0],p[2],u), y01=lerp(p[1],p[3],u), x12=lerp(p[2],p[4],u), y12=lerp(p[3],p[5],u), x23=lerp(p[4],p[6],u), y23=lerp(p[5],p[7],u);
-    var x012=lerp(x01,x12,u), y012=lerp(y01,y12,u), x123=lerp(x12,x23,u), y123=lerp(y12,y23,u);
-    return [x01,y01,x012,y012,lerp(x012,x123,u),lerp(y012,y123,u)];
-  }
-  function C(p){ return ' C'+p[0].toFixed(2)+' '+p[1].toFixed(2)+' '+p[2].toFixed(2)+' '+p[3].toFixed(2)+' '+p[4].toFixed(2)+' '+p[5].toFixed(2); }
-
-  /* ---- progress model ---- */
-  var probe = 220, target = 0, cur = 0, vel = 0, cur2 = 0, vel2 = 0, last = performance.now(), lastNear = -1;
-  function computeTarget(){
-    var idx = 0;
-    for (var k=0;k<scenes.length;k++){ if (scenes[k].getBoundingClientRect().top - probe <= 0) idx = k; }
-    var r = scenes[idx].getBoundingClientRect();
-    var p = idx + clamp((probe - r.top)/r.height, 0, 1);
-    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) p = n-1;
-    return clamp(p, 0, n-1);
-  }
-  window.addEventListener('scroll', function(){ target = computeTarget(); }, { passive:true });
-  window.addEventListener('resize', function(){ target = computeTarget(); });
-
-  function frame(now){
-    var dt = Math.min(40, now - last)/16.667; last = now;
-
-    if (reduce){ cur = cur2 = target; vel = vel2 = 0; }
-    else {
-      vel  += (target - cur)*0.07*dt;  vel  *= Math.pow(0.74, dt);  cur  += vel*dt;   // lead: lively, slight overshoot
-      vel2 += (cur - cur2)*0.04*dt;    vel2 *= Math.pow(0.80, dt);  cur2 += vel2*dt;  // trail: lazier, follows the lead
-    }
-    var cc = clamp(cur,0,n-1), c2 = clamp(cur2,0,n-1);
-    var t  = reduce ? 0 : now;
-
-    geometry(t);
-
-    // base + progress paths
-    var d = 'M'+nodes[0].x.toFixed(2)+' '+nodes[0].y.toFixed(2), i;
-    for (i=0;i<segs.length;i++) d += C(segs[i].slice(2));
-    base.setAttribute('d', d);
-    var sg = Math.min(n-2, Math.floor(cc)), u = cc - sg;
-    var pd = 'M'+nodes[0].x.toFixed(2)+' '+nodes[0].y.toFixed(2);
-    for (i=0;i<sg;i++) pd += C(segs[i].slice(2));
-    pd += C(firstHalf(sg,u));
-    prog.setAttribute('d', pd);
-
-    // nodes: grow a little as the droplet approaches, fill once passed
-    nodeEls.forEach(function(c,k){
-      var near = Math.max(0, 1 - Math.abs(cc - k));
-      c.setAttribute('cx', nodes[k].x.toFixed(2)); c.setAttribute('cy', nodes[k].y.toFixed(2));
-      c.setAttribute('r', (3.5 + 1.6*near).toFixed(2));
-      c.classList.toggle('on', cc >= k - 0.02);
-    });
-
-    // droplets (squash & stretch with speed, gentle breathing + sideways wobble)
-    var a = bez(sg, u);
-    var sg2 = Math.min(n-2, Math.floor(c2)), b = bez(sg2, c2 - sg2);
-    var st1 = reduce ? 0 : clamp(Math.abs(vel)*14, 0, .8);
-    var st2 = reduce ? 0 : clamp(Math.abs(vel2)*10, 0, .6);
-    var br  = reduce ? 1 : 1 + .07*Math.sin(now*0.005);
-    var wob = reduce ? 0 : Math.sin(now*0.004)*(0.7 + st1*2);
-    bLead.style.transform  = 'translate('+(a.x + wob - 6.5).toFixed(2)+'px,'+(a.y - 6.5).toFixed(2)+'px) scale('+(br*(1 - st1*.3)).toFixed(3)+','+(br*(1 + st1)).toFixed(3)+')';
-    bTrail.style.transform = 'translate('+(b.x - wob*.6 - 4.5).toFixed(2)+'px,'+(b.y - 4.5).toFixed(2)+'px) scale('+(1 - st2*.25).toFixed(3)+','+(1 + st2).toFixed(3)+')';
-
-    // labels
-    labIn.forEach(function(el,k){
-      var kk = Math.max(0, 1 - Math.abs(cc - k));
-      el.style.opacity = (0.42 + 0.58*kk).toFixed(3);
-      el.style.transform = 'translateX('+(kk*6).toFixed(2)+'px)';
-      el.classList.toggle('on', kk > 0.5);
-    });
-    var near = Math.round(cc);
-    if (near !== lastNear){
-      labs.forEach(function(el,k){ if (k === near) el.setAttribute('aria-current','true'); else el.removeAttribute('aria-current'); });
-      lastNear = near;
-    }
-    requestAnimationFrame(frame);
-  }
-
-  target = cur = cur2 = computeTarget();
-  requestAnimationFrame(frame);
-})();
-</script>
 
 </body>
 </html>
