@@ -2,7 +2,7 @@
 
   /* 1 — console colophon */
   console.log(
-    '%cVYARA DIMITROVA%c\nSet in Satoshi, Urbanist, IBM Plex Mono.\nInk #15130F on paper #F5F1E8. Orange #E5602B.\nSingle-file HTML/CSS, no build step. Printed on-screen, ' + new Date().getFullYear() + '.',
+    '%cVYARA DIMITROVA%c\nSet in Satoshi and IBM Plex Mono.\nInk #15130F on paper #F5F1E8. Orange #E5602B.\nSingle-file HTML/CSS, no build step. Printed on-screen, ' + new Date().getFullYear() + '.',
     'font-size:14px;font-weight:700;color:#E5602B;',
     'font-size:11px;color:#8C8468;line-height:1.6;'
   );
@@ -16,7 +16,7 @@
     panel.innerHTML =
       '<div class="colophon-inner">' +
         '<button class="colophon-close mono" id="colophonClose">Close ✕</button>' +
-        '<div class="colophon-row"><span>Typefaces</span><span>Satoshi / Urbanist / IBM Plex Mono</span></div>' +
+        '<div class="colophon-row"><span>Typefaces</span><span>Satoshi / IBM Plex Mono</span></div>' +
         '<div class="colophon-row"><span>Palette</span><span>Paper #F5F1E8 · Ink #15130F · Orange #E5602B</span></div>' +
         '<div class="colophon-row"><span>Built</span><span>Single-file HTML &amp; CSS, no build step</span></div>' +
         '<div class="colophon-row"><span>Printed</span><span>On-screen, ' + new Date().getFullYear() + '</span></div>' +
@@ -40,18 +40,6 @@
       else buildColophon();
     }
     if (e.key === 'Escape') closeColophon();
-  });
-
-  /* 3 — crosshair registration mark: click for a quick colour-bar flash */
-  document.querySelectorAll('.card-mark').forEach((mark) => {
-    mark.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const card = mark.closest('.card');
-      if (!card || card.classList.contains('bars')) return;
-      card.classList.add('bars');
-      setTimeout(() => card.classList.remove('bars'), 950);
-    });
   });
 
   /* 4 — ghost numeral revision flicker: 01 → 01A → 01B → 01 */
@@ -138,8 +126,6 @@
 
     const hoverMap = [
       ['.plate', 'Zoom'],
-      ['.card', 'View'],
-      ['.next-project', 'Next'],
       ['.rail a', 'Jump'],
       ['a[target="_blank"]', 'Open'],
       ['a, button, .ghost-num', ''],
@@ -197,20 +183,6 @@
   }, { threshold: 0.3 });
   kineticEls.forEach((el) => kineticIo.observe(el));
   
-    /* --- nav active state + scroll progress --- */
-  var nav      = document.getElementById('nav');
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navLinks a'));
-
-  /* 9 — magnetic hover: small pull-toward-cursor nudge on nav links, CTAs */
-  document.querySelectorAll('.magnetic').forEach((el) => {
-    el.addEventListener('mousemove', (e) => {
-      const r = el.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width / 2;
-      const y = e.clientY - r.top - r.height / 2;
-      el.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
-    });
-    el.addEventListener('mouseleave', () => { el.style.transform = 'translate(0,0)'; });
-  });
 
 })();
 
@@ -270,16 +242,31 @@
     $$('.reveal').forEach(function(el){ io.observe(el); });
 
     /* progress bar + nav state */
-    var bar = $('#progressBar'), navEl = $('#nav'), ticking = false;
+    var bar = $('#progressBar'), ticking = false;
     function upd(){
       var h = doc.scrollHeight - window.innerHeight, pct = h > 0 ? (window.scrollY / h) * 100 : 0;
       if (bar) bar.style.width = pct + '%';
       var ring = $('.home-fab .pg'); if (ring) ring.style.strokeDashoffset = (163.36 * (1 - pct / 100)).toFixed(2);
-      if (navEl) navEl.classList.toggle('is-stuck', window.scrollY > 40);
       ticking = false;
     }
     window.addEventListener('scroll', function(){ if (!ticking){ requestAnimationFrame(upd); ticking = true; } }, { passive: true });
     upd();
+
+    /* last project: tap the goodbye for a little shower of hearts */
+    var endNote = $('.end-note');
+    if (endNote){
+      var pop = function(e){
+        var r = endNote.getBoundingClientRect(), x = e.clientX ? e.clientX - r.left : r.width * .8, y = e.clientY ? e.clientY - r.top : r.height * .5;
+        for (var i = 0; i < 10; i++){
+          var h = document.createElement('span'); h.className = 'heart-pop'; h.textContent = '❤️';
+          h.style.left = x + 'px'; h.style.top = y + 'px'; h.style.animationDelay = (i * 60) + 'ms';
+          h.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px'); h.style.setProperty('--r', (Math.random() * 50 - 25) + 'deg');
+          endNote.appendChild(h); setTimeout(function(n){ n.remove(); }, 2000, h);
+        }
+      };
+      endNote.addEventListener('click', pop);
+      endNote.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pop(e); } });
+    }
 
     /* lightbox */
     var lb = $('#lightbox'), lbPlate = $('#lightboxPlate'), lbLabel = $('#lightboxLabel'), lbClose = $('#lightboxClose');
@@ -482,7 +469,7 @@
         var st = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
         gsap.to('.detail-hero .ghost-num', { yPercent: 28, ease: 'none', scrollTrigger: st });
         gsap.to('.detail-hero h1', { x: '-4vw', yPercent: -10, ease: 'none', scrollTrigger: st });
-        gsap.to('.detail-hero .hero-sub,.detail-hero .back,.detail-hero .eyebrow', { y: -34, opacity: 0, ease: 'none', scrollTrigger: st });
+        gsap.to('.detail-hero .hero-sub,.detail-hero .eyebrow', { y: -34, opacity: 0, ease: 'none', scrollTrigger: st });
       }
       /* copy lights up word by word */
       $$('.lead-text,.body-text').forEach(function(p){
@@ -890,7 +877,7 @@ tr.forEach(function(t,k){var s='<span>'+W.map(function(w){return'<b>'+w+'</b><i>
 gsap.ticker.add(function(){var v=lenis.velocity||0;tr.forEach(function(t,k){xs[k]=gsap.utils.wrap(-50,0,xs[k]+dr[k]*(.012+Math.abs(v)*.012));gsap.set(t,{xPercent:xs[k],skewX:gsap.utils.clamp(-4,4,-v*.2)})})});
 /* about */
 gsap.fromTo('.about__ph',{clipPath:'inset(14% 10% 14% 10%)',borderRadius:'50%'},{clipPath:'inset(0% 0% 0% 0%)',borderRadius:'8px',ease:'none',scrollTrigger:{trigger:'.about__ph',start:'top 90%',end:'top 30%',scrub:true}});
-gsap.fromTo('.about__ph img',{yPercent:-7},{yPercent:7,ease:'none',scrollTrigger:{trigger:'.about__ph',start:'top bottom',end:'bottom top',scrub:true}});
+gsap.fromTo('.about__ph img',{yPercent:-6},{yPercent:6,ease:'none',scrollTrigger:{trigger:'.about__ph',start:'top bottom',end:'bottom top',scrub:true}});
 $$('.about__lead,.about__now').forEach(function(p){gsap.from(words(p),{opacity:0,y:18,stagger:.015,duration:.9,ease:'power3.out',scrollTrigger:{trigger:p,start:'top 82%'}})});
 $$('[data-n]').forEach(function(e){var o={v:0};gsap.to(o,{v:+e.dataset.n,duration:1.6,ease:'power2.out',onUpdate:function(){e.textContent=Math.round(o.v)},scrollTrigger:{trigger:e,start:'top 90%'}})});
 gsap.from('.sent > *',{y:40,opacity:0,stagger:.12,duration:1,ease:'power3.out',scrollTrigger:{trigger:'#form',start:'top 80%'}});
