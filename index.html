@@ -45,11 +45,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261020">
+<link rel="stylesheet" href="style.css?v=20261023">
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" integrity="sha384-B2WBjDzEjJpYvhmi2UyEn7rektqkf5suS6sNoyyrf0EBAwBHdkiXxIlU0V5Ru2ed" crossorigin="anonymous"></script>
 <script defer src="site.js?v=20261020"></script>
+<script defer src="glass-cursor.js?v=20261023"></script>
 </head>
 <body class="home">
 <div class="grain" aria-hidden="true"></div><div class="bar" id="bar" aria-hidden="true"></div><div class="cur" id="cur" aria-hidden="true"></div>
@@ -85,49 +86,42 @@
   <div class="cmeta mono"><a class="mail" href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" data-cursor>vyara.dmtrv@gmail.com</a><a href="https://www.behance.net/vyaradimitrova" target="_blank" rel="noopener">Behance</a><a href="https://www.linkedin.com/in/vyara-dimitrova" target="_blank" rel="noopener">LinkedIn</a><span id="local"></span></div>
 </div></section>
 </main>
-<footer class="foot">
-    <div class="foot__glow" aria-hidden="true"></div>
-    <div class="foot__inner">
-
-      <div class="foot__top">
-        <div class="foot__brand">
-          <span class="eyebrow"><span class="dot"></span>Frankfurt / Varna · Open to new work</span>
-          <h2 class="foot__big">Made in<br>two <span class="o">cities.</span></h2>
-          <p class="foot__note">Visual design, built to last — wherever good people are making good things. If that sounds like you, I'd love to hear about it.</p>
-        </div>
-
-        <nav class="foot__cols" aria-label="Footer">
-          <div class="foot__col">
-            <span class="foot__col-h">Navigate</span>
-            <a href="#top" data-cursor>Home</a>
-            <a href="#work" data-cursor>Work</a>
-            <a href="#about" data-cursor>About</a>
-            <a href="#contact" data-cursor>Contact</a>
-          </div>
-          <div class="foot__col">
-            <span class="foot__col-h">Elsewhere</span>
-            <a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>
-            <a href="https://www.linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
-          </div>
-          <div class="foot__col">
-            <span class="foot__col-h">Say hello</span>
-            <a href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" class="foot__mail" data-cursor>vyara.dmtrv@gmail.com</a>
-            <span class="foot__avail"><i></i> Usually replies within a day</span>
-          </div>
-        </nav>
-      </div>
-
-      <div class="foot__base">
-        <span class="foot__copy">© 2026 Vyara Dimitrova</span>
-        <span class="foot__made">Built pixel by pixel, then rebuilt a few times.</span>
-        <a href="#top" class="foot__totop" data-cursor data-magnetic>
-          Back to top
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
-        </a>
-      </div>
-
+<footer class="foot chap ink">
+  <div class="foot__glow" aria-hidden="true"></div>
+  <div class="foot__inner">
+    <div class="foot__brand">
+      <span class="foot__tag mono"><i></i>Frankfurt / Varna · Open to new work</span>
+      <h2 class="foot__big d">Made in<br>two <span class="o">cities.</span></h2>
     </div>
-  </footer>
+    <div class="foot__top">
+      <p class="foot__note">Visual design, built to last — wherever good people are making good things. If that sounds like you, I'd love to hear about it.</p>
+      <nav class="foot__cols" aria-label="Footer">
+        <div class="foot__col">
+          <span class="foot__col-h mono">Navigate</span>
+          <a href="#top" data-cursor>Home</a>
+          <a href="#work" data-cursor>Work</a>
+          <a href="#about" data-cursor>About</a>
+          <a href="#contact" data-cursor>Contact</a>
+        </div>
+        <div class="foot__col">
+          <span class="foot__col-h mono">Elsewhere</span>
+          <a href="https://www.behance.net/vyaradimitrova" data-cursor target="_blank" rel="noopener">Behance</a>
+          <a href="https://www.linkedin.com/in/vyara-dimitrova" data-cursor target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+        <div class="foot__col">
+          <span class="foot__col-h mono">Say hello</span>
+          <a href="mailto:vyara.dmtrv@gmail.com?subject=Project%20enquiry" class="foot__mail" data-cursor>vyara.dmtrv@gmail.com</a>
+          <span class="foot__avail mono"><i></i>Usually replies within a day</span>
+        </div>
+      </nav>
+    </div>
+    <div class="foot__base mono">
+      <span class="foot__copy">© 2026 Vyara Dimitrova</span>
+      <span class="foot__made">Built pixel by pixel, then rebuilt a few times.</span>
+      <a href="#top" class="foot__totop" data-cursor data-magnetic>Back to top<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></a>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
